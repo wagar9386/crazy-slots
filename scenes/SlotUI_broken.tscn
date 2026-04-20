@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://clgdja88ia58w"]
+
+[node name="SlotUI" type="Control" unique_id=1020616595]
+custom_minimum_size = Vector2(1024, 768)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1024.0
+offset_bottom = 768.0
+
+[node name="SlotUI#Background" type="ColorRect" parent="." unique_id=1328434857]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.031, 0.039, 0.094, 1)
+
+[node name="SlotUI#UIFrame" type="Panel" parent="." unique_id=784934934]
+layout_mode = 0
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+
+[node name="SlotUI_UIFrame#LayoutMargin" type="MarginContainer" parent="." unique_id=811379806]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SlotUI_UIFrame_LayoutMargin#MainColumn" type="VBoxContainer" parent="." unique_id=889670788]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn#TitleLabel" type="Label" parent="." unique_id=1904131447]
+layout_mode = 0
+size_flags_horizontal = 3
+text = "Golden Temple Slots"
+horizontal_alignment = 1
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn#StatsRow" type="HBoxContainer" parent="." unique_id=1323481928]
+layout_mode = 0
+size_flags_horizontal = 3
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn_StatsRow#BalancePanel" type="Panel" parent="." unique_id=854754661]
+layout_mode = 0
+size_flags_horizontal = 3
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn_StatsRow_BalancePanel#BalanceMargin" type="MarginContainer" parent="." unique_id=1069451909]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn_StatsRow_BalancePanel_BalanceMargin#BalanceColumn" type="VBoxContainer" parent="." unique_id=880497190]
+layout_mode = 0
+
+[node name="SlotUI_UIFrame_LayoutMargin_MainColumn_StatsRow_BalancePanel_BalanceMargin_BalanceColumn#BalanceLabel" type="Label" parent="." unique_id=1296543236]
+layout_mode = 0
+text = "Balance"
+
+[node name="BalanceColumn#BalanceValue" type="Label" parent="." unique_id=1262456826]
+layout_mode = 0
+text = "$12,500"
+
+[node name="StatsRow#BetPanel" type="Panel" parent="." unique_id=1801509490]
+layout_mode = 0
+size_flags_horizontal = 3
+
+[node name="BetPanel#BetMargin" type="MarginContainer" parent="." unique_id=1604337351]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="BetMargin#BetColumn" type="VBoxContainer" parent="." unique_id=1264976622]
+layout_mode = 0
+
+[node name="BetColumn#BetLabel" type="Label" parent="." unique_id=420481086]
+layout_mode = 0
+text = "Current Bet"
+
+[node name="BetColumn#BetValue" type="Label" parent="." unique_id=1903550762]
+layout_mode = 0
+text = "$325"
+
+[node name="MainColumn#ReelPanel" type="Panel" parent="." unique_id=2030534688]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ReelPanel#ReelMargin" type="MarginContainer" parent="." unique_id=542688255]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ReelMargin#ReelGrid" type="GridContainer" parent="." unique_id=1798034891]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 5
+
+[node name="ReelGrid#Symbol_01" type="ColorRect" parent="." unique_id=1137508678]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.149, 0.435, 0.839, 1)
+
+[node name="ReelGrid#Symbol_02" type="ColorRect" parent="." unique_id=1571269308]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.204, 0.651, 0.396, 1)
+
+[node name="ReelGrid#Symbol_03" type="ColorRect" parent="." unique_id=1826364456]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.898, 0.396, 0.243, 1)
+
+[node name="ReelGrid#Symbol_04" type="ColorRect" parent="." unique_id=1262371869]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.914, 0.725, 0.212, 1)
+
+[node name="ReelGrid#Symbol_05" type="ColorRect" parent="." unique_id=1696650397]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.643, 0.298, 0.678, 1)
+
+[node name="ReelGrid#Symbol_06" type="ColorRect" parent="." unique_id=1825217882]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.16, 0.431, 0.639, 1)
+
+[node name="ReelGrid#Symbol_07" type="ColorRect" parent="." unique_id=1296185448]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.288, 0.596, 0.176, 1)
+
+[node name="ReelGrid#Symbol_08" type="ColorRect" parent="." unique_id=740339329]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.932, 0.396, 0.435, 1)
+
+[node name="ReelGrid#Symbol_09" type="ColorRect" parent="." unique_id=1571733822]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.945, 0.616, 0.153, 1)
+
+[node name="ReelGrid#Symbol_10" type="ColorRect" parent="." unique_id=859271220]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.635, 0.286, 0.725, 1)
+
+[node name="ReelGrid#Symbol_11" type="ColorRect" parent="." unique_id=2087169418]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.161, 0.243, 0.6, 1)
+
+[node name="ReelGrid#Symbol_12" type="ColorRect" parent="." unique_id=599475444]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.212, 0.71, 0.47, 1)
+
+[node name="ReelGrid#Symbol_13" type="ColorRect" parent="." unique_id=2089146575]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.953, 0.455, 0.192, 1)
+
+[node name="ReelGrid#Symbol_14" type="ColorRect" parent="." unique_id=1281127621]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.953, 0.71, 0.271, 1)
+
+[node name="ReelGrid#Symbol_15" type="ColorRect" parent="." unique_id=856822907]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.624, 0.331, 0.722, 1)
+
+[node name="ReelGrid#Symbol_16" type="ColorRect" parent="." unique_id=2095287794]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.129, 0.447, 0.665, 1)
+
+[node name="ReelGrid#Symbol_17" type="ColorRect" parent="." unique_id=209911311]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.251, 0.596, 0.227, 1)
+
+[node name="ReelGrid#Symbol_18" type="ColorRect" parent="." unique_id=299327807]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.926, 0.388, 0.478, 1)
+
+[node name="ReelGrid#Symbol_19" type="ColorRect" parent="." unique_id=2106874543]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.973, 0.651, 0.157, 1)
+
+[node name="ReelGrid#Symbol_20" type="ColorRect" parent="." unique_id=995434522]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 0
+color = Color(0.549, 0.247, 0.694, 1)
+
+[node name="MainColumn#ControlsRow" type="HBoxContainer" parent="." unique_id=1816049798]
+layout_mode = 0
+size_flags_horizontal = 3
+
+[node name="ControlsRow#SpinButton" type="Button" parent="." unique_id=137324015]
+layout_mode = 0
+text = "Spin"
+
+[node name="ControlsRow#MaxBetButton" type="Button" parent="." unique_id=2056803410]
+layout_mode = 0
+text = "Max Bet"
+
+[node name="ControlsRow#AutoSpinButton" type="Button" parent="." unique_id=509282804]
+layout_mode = 0
+text = "Auto"
+
+[node name="MainColumn#NotificationLabel" type="Label" parent="." unique_id=1489000513]
+layout_mode = 0
+size_flags_horizontal = 3
+text = "Big win window opens when 3 or more matching symbols connect!"
+horizontal_alignment = 1
