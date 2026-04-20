@@ -30,3 +30,7 @@ export_presets.cfg
 Thumbs.db
 cb85562 (Test)
 addons/ziva_agent/bin/
+addons/**/bin/
+*.so
+*.dll
+*.dylib

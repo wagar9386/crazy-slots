@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b4cuboy5tvb3v"]
+[gd_scene format=3 uid="uid://bs75h7m3fovdf"]
 
 [node name="SlotUI" type="Control" unique_id=1020616595]
 custom_minimum_size = Vector2(1024, 768)
@@ -8,6 +8,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = 1024.0
 offset_bottom = 768.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="SlotUI#Background" type="ColorRect" parent="." unique_id=1328434857]
 layout_mode = 0
