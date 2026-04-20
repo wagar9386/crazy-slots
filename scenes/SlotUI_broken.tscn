@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://clgdja88ia58w"]
+[gd_scene format=3 uid="uid://b4cuboy5tvb3v"]
 
 [node name="SlotUI" type="Control" unique_id=1020616595]
 custom_minimum_size = Vector2(1024, 768)
