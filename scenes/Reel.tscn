@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ct8ae67px2djl"]
+
+[node name="Reel" type="Node2D" unique_id=1074526099]
+scale = Vector2(640, 640)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=214796942]
+offset_right = 40.0
+offset_bottom = 40.0
