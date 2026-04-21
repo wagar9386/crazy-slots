@@ -595,6 +595,12 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="PaytableButton" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=782458766]
+custom_minimum_size = Vector2(140, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "PAYTABLE"
+
 [node name="SpinButton" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=782458765]
 custom_minimum_size = Vector2(150, 52)
 layout_mode = 2

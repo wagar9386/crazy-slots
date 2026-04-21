@@ -31,7 +31,7 @@ const WEIGHTED_SYMBOLS: Array[int] = [
 ]
 
 # Base symbol values
-const SYMBOL_VALUES: Dictionary = {
+const SYMBOL_VALUES: Dictionary[int, int] = {
 	Symbol.A: 3,
 	Symbol.B: 6,
 	Symbol.C: 9,
@@ -42,7 +42,7 @@ const SYMBOL_VALUES: Dictionary = {
 }
 
 # Symbol textures
-const SYMBOL_TEXTURES: Dictionary = {
+const SYMBOL_TEXTURES: Dictionary[int, Texture2D] = {
 	Symbol.A: preload("res://symbols/cherries.png"),
 	Symbol.B: preload("res://symbols/diamond.png"),
 	Symbol.C: preload("res://symbols/grapes.png"),
@@ -51,6 +51,7 @@ const SYMBOL_TEXTURES: Dictionary = {
 	Symbol.G: preload("res://symbols/seven.png"),
 	Symbol.Wild: preload("res://symbols/wild.png")
 }
+const PAYTABLE_SCENE: PackedScene = preload("res://scenes/Paytable.tscn")
 
 # Grid data
 var grid: Array = []
@@ -70,20 +71,29 @@ var last_win: int = 0
 # Animator
 var animator: SlotSpinAnimatorV2
 
+var paytable_overlay: PaytablePopup
+
 # UI references
 @onready var reel_grid: GridContainer = get_node("UILayer/SlotsUI/ReelGrid")
 @onready var hud_controls: HBoxContainer = get_node("UILayer/SlotsUI/HUD/HUDControls")
 @onready var credits_label: Label = hud_controls.get_node("CreditsLabel")
-@onready var bet_label: Label = hud_controls.get_node("BetLabel")
+@onready var win_label: Label = hud_controls.get_node("WinLabel")
 @onready var spin_button: Button = hud_controls.get_node("SpinButton")
-@onready var bet_4_button: Button = hud_controls.get_node("BetButtons/Bet4Button")
-@onready var bet_8_button: Button = hud_controls.get_node("BetButtons/Bet8Button")
-@onready var bet_16_button: Button = hud_controls.get_node("BetButtons/Bet16Button")
-@onready var bet_30_button: Button = hud_controls.get_node("BetButtons/Bet30Button")
-@onready var Win_label: Label = hud_controls.get_node("WinLabel")
+@onready var paytable_button: Button = hud_controls.get_node("PaytableButton")
+@onready var ui_root: Control = get_node("UILayer/SlotsUI")
+
+@onready var bet_buttons_container: HBoxContainer = hud_controls.get_node("BetButtons")
+@onready var bet_label: Label = bet_buttons_container.get_node("BetLabel")
+@onready var bet_4_button: Button = bet_buttons_container.get_node("Bet4Button")
+@onready var bet_8_button: Button = bet_buttons_container.get_node("Bet8Button")
+@onready var bet_16_button: Button = bet_buttons_container.get_node("Bet16Button")
+@onready var bet_30_button: Button = bet_buttons_container.get_node("Bet30Button")
 
 func _ready() -> void:
 	randomize()
+
+	# --- UI POLISH ---
+	_apply_visual_polish()
 
 	# Ensure bet is valid
 	if not BET_OPTIONS.has(bet):
@@ -105,6 +115,10 @@ func _ready() -> void:
 	bet_8_button.pressed.connect(_on_bet_button_pressed.bind(8))
 	bet_16_button.pressed.connect(_on_bet_button_pressed.bind(16))
 	bet_30_button.pressed.connect(_on_bet_button_pressed.bind(30))
+	paytable_button.pressed.connect(_on_paytable_pressed)
+	paytable_overlay = PAYTABLE_SCENE.instantiate() as PaytablePopup
+	ui_root.add_child(paytable_overlay)
+	paytable_overlay.call_deferred("setup", SYMBOL_TEXTURES, SYMBOL_VALUES, BET_OPTIONS, bet, MIN_BET)
 
 	# Initial state
 	_generate_grid()
@@ -132,6 +146,13 @@ func get_random_symbol() -> int:
 
 func _on_spin_pressed() -> void:
 	spin()
+
+func _on_paytable_pressed() -> void:
+	if not paytable_overlay:
+		return
+	paytable_overlay.set_display_bet(bet)
+	paytable_overlay.move_to_front()
+	paytable_overlay.show()
 
 # Change bet
 func _on_bet_button_pressed(amount: int) -> void:
@@ -292,12 +313,73 @@ func _clear_cell_highlights() -> void:
 func _update_ui() -> void:
 	credits_label.text = "Credits: %d" % credits
 	bet_label.text = "Bet: %d" % bet
-	Win_label.text = "Win: %d" % last_win
+	win_label.text = "Win: %d" % last_win
 
 	bet_4_button.button_pressed = bet == 4
 	bet_8_button.button_pressed = bet == 8
 	bet_16_button.button_pressed = bet == 16
 	bet_30_button.button_pressed = bet == 30
+	if paytable_overlay:
+		paytable_overlay.set_display_bet(bet)
+
+func _apply_visual_polish() -> void:
+	# Add some neon styling to the UI
+	var title: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel")
+	if title:
+		title.text = "NEON REELS"
+		title.add_theme_color_override("font_color", Color(1, 0.0, 1.0)) # Magenta
+		title.add_theme_constant_override("outline_size", 12)
+		title.add_theme_color_override("font_outline_color", Color(0.1, 0, 0.3))
+
+	var subtitle: Label = get_node_or_null("UILayer/SlotsUI/SubtitleLabel")
+	if subtitle:
+		subtitle.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0)) # Cyan
+
+	# Machine Board & Glow
+	var board: ColorRect = get_node_or_null("UILayer/SlotsUI/MachineBoard")
+	if board:
+		board.color = Color(0.02, 0.02, 0.05, 0.9)
+	
+	var glow: ColorRect = get_node_or_null("UILayer/SlotsUI/BoardGlow")
+	if glow:
+		glow.color = Color(0.2, 0.0, 0.4, 0.5)
+
+	# Spin Button Polish
+	var spin_style := StyleBoxFlat.new()
+	spin_style.bg_color = Color(0.9, 0.1, 0.5)
+	spin_style.set_corner_radius_all(15)
+	spin_style.set_border_width_all(3)
+	spin_style.border_color = Color(1.0, 0.6, 1.0)
+	spin_style.shadow_size = 10
+	spin_style.shadow_color = Color(1, 0, 0.5, 0.3)
+	
+	spin_button.add_theme_stylebox_override("normal", spin_style)
+	spin_button.add_theme_stylebox_override("hover", spin_style)
+	spin_button.add_theme_stylebox_override("pressed", spin_style)
+	spin_button.add_theme_color_override("font_color", Color.WHITE)
+	spin_button.add_theme_font_size_override("font_size", 24)
+	
+	# Credits and Win labels
+	credits_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4)) # Neon Green
+	win_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.2)) # Neon Yellow
+	bet_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1.0)) # Light Blue
+	
+	# Polish the bet buttons
+	for btn in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
+		var bstyle := StyleBoxFlat.new()
+		bstyle.bg_color = Color(0.1, 0.1, 0.2)
+		bstyle.set_corner_radius_all(5)
+		bstyle.border_width_bottom = 2
+		bstyle.border_color = Color(0.3, 0.3, 0.6)
+		btn.add_theme_stylebox_override("normal", bstyle)
+		
+		var bstyle_sel := StyleBoxFlat.new()
+		bstyle_sel.bg_color = Color(0.2, 0.3, 0.6)
+		bstyle_sel.set_corner_radius_all(5)
+		bstyle_sel.set_border_width_all(2)
+		bstyle_sel.border_color = Color(0.5, 0.7, 1.0)
+		btn.add_theme_stylebox_override("pressed", bstyle_sel)
+		btn.toggle_mode = true
 
 # Enable/disable bet buttons
 func _set_bet_buttons_disabled(disabled: bool) -> void:
