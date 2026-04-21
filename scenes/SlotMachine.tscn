@@ -81,7 +81,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_04r4t")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell2" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=365875053]
 layout_mode = 2
@@ -96,7 +98,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_mf0q4")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell3" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=117521036]
 layout_mode = 2
@@ -111,7 +115,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("3_en4nw")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell4" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1613730606]
 layout_mode = 2
@@ -126,7 +132,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("4_ueo72")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell5" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1592474425]
 layout_mode = 2
@@ -141,7 +149,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("5_wo56j")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell6" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1089765198]
 layout_mode = 2
@@ -156,7 +166,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("6_lqjbj")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell7" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1871539535]
 layout_mode = 2
@@ -171,7 +183,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_04r4t")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell8" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=130206354]
 layout_mode = 2
@@ -186,7 +200,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_mf0q4")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell9" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1318127899]
 layout_mode = 2
@@ -201,7 +217,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("3_en4nw")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell10" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=639867047]
 layout_mode = 2
@@ -216,7 +234,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("4_ueo72")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell11" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=539910788]
 layout_mode = 2
@@ -231,7 +251,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("5_wo56j")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell12" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=2079285679]
 layout_mode = 2
@@ -246,7 +268,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("6_lqjbj")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell13" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1100473351]
 layout_mode = 2
@@ -261,7 +285,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_04r4t")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell14" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=71778321]
 layout_mode = 2
@@ -276,7 +302,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_mf0q4")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell15" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1610127524]
 layout_mode = 2
@@ -291,7 +319,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("3_en4nw")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell16" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=381916304]
 layout_mode = 2
@@ -306,7 +336,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("4_ueo72")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell17" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1049731897]
 layout_mode = 2
@@ -321,7 +353,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("5_wo56j")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell18" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=822541491]
 layout_mode = 2
@@ -336,7 +370,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("6_lqjbj")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell19" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=1473645110]
 layout_mode = 2
@@ -351,7 +387,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("1_04r4t")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="ReelGrid#Cell20" type="ColorRect" parent="SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid" unique_id=202451200]
 layout_mode = 2
@@ -366,7 +404,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource("2_mf0q4")
+expand_mode = 1
 stretch_mode = 5
+custom_minimum_size = Vector2(100, 100)
 
 [node name="HUD" type="Control" parent="SlotMachine#UILayer/UILayer#SlotsUI" unique_id=211111111]
 anchors_preset = 0

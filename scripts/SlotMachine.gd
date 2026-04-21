@@ -30,7 +30,7 @@ const SYMBOL_TEXTURES: Dictionary = {
 	Symbol.B: preload("res://symbols/diamond.png"),
 	Symbol.C: preload("res://symbols/grapes.png"),
 	Symbol.D: preload("res://symbols/lemon.png"),
-	Symbol.E: preload("res://symbols/seven.png"),
+	Symbol.E: preload("res://symbols/orange.png"),
 	Symbol.G: preload("res://symbols/seven.png"),
 	Symbol.Wild: preload("res://symbols/wild.png")
 }
@@ -44,6 +44,7 @@ var grid: Array = []
 var symbol_nodes: Array = []
 var credits: int = 100
 @export var bet: int = 4
+var is_spinning: bool = false
 
 @onready var reel_grid: GridContainer = get_node("SlotMachine#UILayer/UILayer#SlotsUI/SlotsUI#ReelGrid") as GridContainer
 @onready var hud_controls: HBoxContainer = get_node("SlotMachine#UILayer/UILayer#SlotsUI/HUD/HUDControls") as HBoxContainer
@@ -98,6 +99,21 @@ func get_random_symbol() -> int:
 	return WEIGHTED_SYMBOLS[index]
 
 func spin() -> void:
+	if is_spinning:
+		return
+	is_spinning = true
+	spin_button.disabled = true
+	
+	for i in range(15):
+		for row in range(GRID_ROWS):
+			for column in range(GRID_COLS):
+				var random_sym: int = get_random_symbol()
+				var node: TextureRect = symbol_nodes[row][column]
+				if node:
+					node.texture = SYMBOL_TEXTURES.get(random_sym)
+					node.self_modulate = SYMBOL_MODULATION.get(random_sym, Color(1, 1, 1))
+		await get_tree().create_timer(0.05).timeout
+
 	generate_grid()
 	var win: int = check_win()
 	credits -= bet
@@ -116,6 +132,9 @@ func spin() -> void:
 		print("Win: %d" % win)
 	update_ui()
 	print("Credits: %d" % credits)
+	
+	is_spinning = false
+	spin_button.disabled = false
 
 func check_win() -> int:
 	var total_win: int = 0
