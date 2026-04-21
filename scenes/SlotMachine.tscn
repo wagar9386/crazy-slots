@@ -19,19 +19,31 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -10.0
+offset_right = 16.0
+offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="BoardGlow" type="ColorRect" parent="UILayer/SlotsUI" unique_id=1168645796]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.12
 anchor_top = 0.05
 anchor_right = 0.88
 anchor_bottom = 0.94
+offset_left = -141.23999
+offset_top = -33.4
+offset_right = 140.23999
+offset_bottom = 42.880005
 color = Color(0.56, 0.22, 0.76, 0.22)
+metadata/_edit_lock_ = true
 
 [node name="MachineBoard" type="ColorRect" parent="UILayer/SlotsUI" unique_id=312538190]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.14
 anchor_top = 0.11
 anchor_right = 0.86
@@ -50,7 +62,8 @@ text = "NEON JACKPOT"
 horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=1709872831]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.3
 anchor_top = 0.17
 anchor_right = 0.7
@@ -473,17 +486,25 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="HUD" type="Control" parent="UILayer/SlotsUI" unique_id=892131190]
-anchors_preset = 0
-anchor_left = 0.18
-anchor_top = 0.79
-anchor_right = 0.82
-anchor_bottom = 0.89
+layout_mode = 1
+anchor_left = 0.14
+anchor_top = 0.87900007
+anchor_right = 0.86
+anchor_bottom = 0.975
+offset_left = -0.05999756
+offset_top = -0.32507324
+offset_right = 0.05999756
+offset_bottom = -0.125
 
 [node name="HUDBackground" type="ColorRect" parent="UILayer/SlotsUI/HUD" unique_id=440531408]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.1, 0.09, 0.18, 0.97)
+metadata/_edit_lock_ = true
 
 [node name="HUDControls" type="HBoxContainer" parent="UILayer/SlotsUI/HUD" unique_id=617683592]
 layout_mode = 0
@@ -496,6 +517,7 @@ offset_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
+metadata/_edit_lock_ = true
 
 [node name="CreditsLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=760396384]
 layout_mode = 2
@@ -505,12 +527,16 @@ theme_override_font_sizes/font_size = 22
 text = "Credits: 100"
 vertical_alignment = 1
 
-[node name="BetLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=1226334554]
+[node name="Spacer3" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=210867269]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WinLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=248761667]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
 theme_override_font_sizes/font_size = 20
-text = "Bet: 4"
+text = "Win: 4"
 vertical_alignment = 1
 
 [node name="BetButtons" type="HBoxContainer" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=1975489356]
@@ -545,7 +571,27 @@ theme_override_font_sizes/font_size = 18
 toggle_mode = true
 text = "30"
 
-[node name="Spacer" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=587625110]
+[node name="Spacer" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=1525314733]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer2" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=521983674]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer3" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=1682757582]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BetLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=1226334554]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 20
+text = "Bet: 4"
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=587625110]
 layout_mode = 2
 size_flags_horizontal = 3
 

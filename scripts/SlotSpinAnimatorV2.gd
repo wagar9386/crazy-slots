@@ -24,13 +24,22 @@ func start_spin(final_grid: Array) -> void:
 
 	var rows: int = symbol_nodes.size()
 	var cols: int = symbol_nodes[0].size()
-	var base_spins: int = 11
-	var spin_delay: float = 0.028
-	_set_all_blur(1.0)
+	var base_spins: int = 12
+	var spin_delay: float = 0.025
+	
+	# Reset all blur just in case
+	_set_all_blur(0.0)
 
 	for column in range(cols):
-		var column_spins: int = base_spins + (column * 4)
-		for _i in range(column_spins):
+		# Only blur the current column that is about to spin
+		_set_column_blur(column, 4.0)
+		
+		var column_spins: int = base_spins + (column * 3)
+		for i in range(column_spins):
+			# If we are in the last few frames, maybe reduce blur for a smoother transition
+			if i > column_spins - 3:
+				_set_column_blur(column, 1.5)
+				
 			for row in range(rows):
 				var node: TextureRect = symbol_nodes[row][column] as TextureRect
 				if node != null:
@@ -39,6 +48,7 @@ func start_spin(final_grid: Array) -> void:
 					node.self_modulate = Color.WHITE
 			await get_tree().create_timer(spin_delay).timeout
 
+		# Snap back to clarity and set final symbols
 		_set_column_blur(column, 0.0)
 		for row in range(rows):
 			var final_symbol: int = final_grid[column][row] as int
@@ -46,11 +56,11 @@ func start_spin(final_grid: Array) -> void:
 			if settle_node != null:
 				settle_node.texture = textures.get(final_symbol)
 				settle_node.self_modulate = Color.WHITE
+				# Small pop animation for "stopping" feel
 				var pop_tween: Tween = get_tree().create_tween()
-				pop_tween.tween_property(settle_node, "scale", Vector2(1.12, 1.12), 0.08)
-				pop_tween.tween_property(settle_node, "scale", Vector2.ONE, 0.08)
+				pop_tween.tween_property(settle_node, "scale", Vector2(1.15, 1.15), 0.07)
+				pop_tween.tween_property(settle_node, "scale", Vector2.ONE, 0.07)
 
-	_set_all_blur(0.0)
 	is_spinning = false
 	spin_completed.emit()
 
