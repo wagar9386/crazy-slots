@@ -34,3 +34,4 @@ addons/**/bin/
 *.so
 *.dll
 *.dylib
+/addons/
