@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bat58nx3o4o" path="res://symbols/orange.png" id="5_lqjbj"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://symbols/seven.png" id="6_c0xrn"]
 [ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://symbols/wild.png" id="7_1pl1y"]
-[ext_resource type="Script" uid="uid://cf6yl61r3c2dn" path="res://scripts/SlotMachine.gd" id="8_jchow"]
+[ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://scripts/SlotMachineV2.gd" id="8_jchow"]
 
 [node name="SlotMachine" type="Node2D" unique_id=1648049221]
 script = ExtResource("8_jchow")
@@ -23,13 +23,12 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="BoardGlow" type="ColorRect" parent="UILayer/SlotsUI" unique_id=1168645796]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.11
-anchor_top = 0.08
-anchor_right = 0.89
-anchor_bottom = 0.9
-color = Color(0.42, 0.15, 0.62, 0.28)
+layout_mode = 0
+anchor_left = 0.12
+anchor_top = 0.05
+anchor_right = 0.88
+anchor_bottom = 0.94
+color = Color(0.56, 0.22, 0.76, 0.22)
 
 [node name="MachineBoard" type="ColorRect" parent="UILayer/SlotsUI" unique_id=312538190]
 layout_mode = 0
@@ -41,11 +40,12 @@ color = Color(0.05, 0.03, 0.11, 1)
 
 [node name="TitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=672498583]
 layout_mode = 0
-anchor_left = 0.24
-anchor_top = 0.115
-anchor_right = 0.76
-anchor_bottom = 0.17
-theme_override_font_sizes/font_size = 36
+anchor_left = 0.22
+anchor_top = 0.095
+anchor_right = 0.78
+anchor_bottom = 0.15
+theme_override_colors/font_color = Color(0.95, 0.93, 1, 1)
+theme_override_font_sizes/font_size = 38
 text = "NEON JACKPOT"
 horizontal_alignment = 1
 
@@ -60,16 +60,16 @@ text = "4x5 Premium Reels"
 horizontal_alignment = 1
 
 [node name="ReelGrid" type="GridContainer" parent="UILayer/SlotsUI" unique_id=637675004]
-custom_minimum_size = Vector2(700, 420)
+custom_minimum_size = Vector2(760, 430)
 layout_mode = 0
-anchor_left = 0.19
-anchor_top = 0.22
-anchor_right = 0.81
-anchor_bottom = 0.78
+anchor_left = 0.18
+anchor_top = 0.215
+anchor_right = 0.82
+anchor_bottom = 0.77
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/h_separation = 6
-theme_override_constants/v_separation = 6
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 columns = 5
 
 [node name="Cell1" type="ColorRect" parent="UILayer/SlotsUI/ReelGrid" unique_id=651131245]
@@ -474,44 +474,83 @@ stretch_mode = 5
 
 [node name="HUD" type="Control" parent="UILayer/SlotsUI" unique_id=892131190]
 anchors_preset = 0
-anchor_left = 0.22
-anchor_top = 0.9
-anchor_right = 0.78
-anchor_bottom = 0.98
+anchor_left = 0.18
+anchor_top = 0.79
+anchor_right = 0.82
+anchor_bottom = 0.89
 
 [node name="HUDBackground" type="ColorRect" parent="UILayer/SlotsUI/HUD" unique_id=440531408]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.1, 0.09, 0.18, 0.92)
+color = Color(0.1, 0.09, 0.18, 0.97)
 
 [node name="HUDControls" type="HBoxContainer" parent="UILayer/SlotsUI/HUD" unique_id=617683592]
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 23.559998
-offset_top = 5.799988
-offset_right = -16.440002
-offset_bottom = -4.040039
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = -8.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 10
 
 [node name="CreditsLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=760396384]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.92, 0.94, 1, 1)
 theme_override_font_sizes/font_size = 22
 text = "Credits: 100"
+vertical_alignment = 1
+
+[node name="BetLabel" type="Label" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=1226334554]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 20
+text = "Bet: 4"
+vertical_alignment = 1
+
+[node name="BetButtons" type="HBoxContainer" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=1975489356]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Bet4Button" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=153739307]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+toggle_mode = true
+text = "4"
+
+[node name="Bet8Button" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=61114934]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+toggle_mode = true
+text = "8"
+
+[node name="Bet16Button" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=1127931795]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+toggle_mode = true
+text = "16"
+
+[node name="Bet30Button" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=388824506]
+custom_minimum_size = Vector2(56, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+toggle_mode = true
+text = "30"
 
 [node name="Spacer" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=587625110]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="SpinButton" type="Button" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=782458765]
-custom_minimum_size = Vector2(140, 0)
+custom_minimum_size = Vector2(150, 52)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "SPIN"
