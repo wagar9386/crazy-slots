@@ -3,7 +3,7 @@ extends Node
 
 signal spin_completed
 
-const BLUR_SHADER: Shader = preload("res://scripts/slot_spin_blur.gdshader")
+const BLUR_SHADER: Shader = preload("res://Goti/scripts/slot_spin_blur.gdshader")
 
 var is_spinning: bool = false
 var symbol_nodes: Array = []

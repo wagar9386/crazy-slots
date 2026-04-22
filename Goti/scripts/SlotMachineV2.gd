@@ -17,7 +17,7 @@ const BET_OPTIONS: Array[int] = [4, 8, 16, 30]
 const BASE_CELL_COLOR: Color = Color(0.07, 0.08, 0.15, 1.0)
 
 # Animator script
-const ANIMATOR_SCRIPT: GDScript = preload("res://scripts/SlotSpinAnimatorV2.gd")
+const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2.gd")
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
@@ -43,15 +43,15 @@ const SYMBOL_VALUES: Dictionary[int, int] = {
 
 # Symbol textures
 const SYMBOL_TEXTURES: Dictionary[int, Texture2D] = {
-	Symbol.A: preload("res://symbols/cherries.png"),
-	Symbol.B: preload("res://symbols/diamond.png"),
-	Symbol.C: preload("res://symbols/grapes.png"),
-	Symbol.D: preload("res://symbols/lemon.png"),
-	Symbol.E: preload("res://symbols/orange.png"),
-	Symbol.G: preload("res://symbols/seven.png"),
-	Symbol.Wild: preload("res://symbols/wild.png")
+	Symbol.A: preload("res://Goti/symbols/cherries.png"),
+	Symbol.B: preload("res://Goti/symbols/diamond.png"),
+	Symbol.C: preload("res://Goti/symbols/grapes.png"),
+	Symbol.D: preload("res://Goti/symbols/lemon.png"),
+	Symbol.E: preload("res://Goti/symbols/orange.png"),
+	Symbol.G: preload("res://Goti/symbols/seven.png"),
+	Symbol.Wild: preload("res://Goti/symbols/wild.png")
 }
-const PAYTABLE_SCENE: PackedScene = preload("res://scenes/Paytable.tscn")
+const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
 
 # Grid data
 var grid: Array = []
@@ -360,9 +360,12 @@ func _apply_visual_polish() -> void:
 	spin_button.add_theme_font_size_override("font_size", 24)
 	
 	# Credits and Win labels
-	credits_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4)) # Neon Green
-	win_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.2)) # Neon Yellow
-	bet_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1.0)) # Light Blue
+	if credits_label:
+		credits_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4)) # Neon Green
+	if win_label:
+		win_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.2)) # Neon Yellow
+	if bet_label:
+		bet_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1.0)) # Light Blue
 	
 	# Polish the bet buttons
 	for btn in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
