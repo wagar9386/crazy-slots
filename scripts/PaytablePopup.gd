@@ -28,7 +28,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	background.mouse_filter = Control.MOUSE_FILTER_STOP
 	close_button.pressed.connect(_on_close_pressed)
-	payout_list.columns = 1
+	payout_list.columns = 2
 	payout_list.set("custom_constants/hseparation", 14)
 	payout_list.set("custom_constants/vseparation", 10)
 	hide()

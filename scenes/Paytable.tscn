@@ -35,30 +35,22 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0784314, 0.0784314, 0.156863, 1)
 
-[node name="Title" type="Label" parent="Panel" unique_id=255914999]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 68.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0, 1, 1)
-theme_override_font_sizes/font_size = 42
-text = "PAYTABLE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="BetInfo" type="Label" parent="Panel" unique_id=1052970781]
+[node name="Title" type="Label" parent="Panel" unique_id=1052970781]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.2
-anchor_top = 0.15
-anchor_right = 0.8
-anchor_bottom = 0.26
+anchor_top = 0.038000003
+anchor_right = 0.799
+anchor_bottom = 0.148
+offset_left = -1.0
+offset_top = 0.19999886
+offset_right = -0.10003662
+offset_bottom = 0.19999695
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.6, 0.85, 1, 1)
 theme_override_font_sizes/font_size = 20
-text = "Displaying payouts for Bet 4 (Base bet 4)."
+text = "Paytable"
 horizontal_alignment = 1
 vertical_alignment = 1
 
