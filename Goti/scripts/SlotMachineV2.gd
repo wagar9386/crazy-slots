@@ -419,7 +419,7 @@ func _debug_grid() -> void:
 		for column in range(GRID_COLS):
 			line += "%s " % _symbol_to_label(grid[column][row])
 		print(line)
-wagag
+
 # Convert symbol to text
 func _symbol_to_label(symbol: int) -> String:
 	match symbol:
