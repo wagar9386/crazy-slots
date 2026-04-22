@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d1h06jt5frdf2"]
+
+[ext_resource type="SpriteFrames" uid="uid://c702jweniyrgu" path="res://scenes/Bonus/Bonus 2/Personatje/sprite frames persontje.tres" id="1_c1rwj"]
+[ext_resource type="Script" uid="uid://ddvd7l5j8x5q4" path="res://scenes/Bonus/Bonus 2/Personatje/goti.gd" id="1_vm7vt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c1rwj"]
+size = Vector2(14, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vm7vt"]
+size = Vector2(14, 16)
+
+[node name="personatje" type="CharacterBody2D" unique_id=1882249185 node_paths=PackedStringArray("animacio", "area_2d")]
+collision_layer = 4
+script = ExtResource("1_vm7vt")
+animacio = NodePath("AnimatedSprite2D")
+area_2d = NodePath("Area2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1846173760]
+sprite_frames = ExtResource("1_c1rwj")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1366793518]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_c1rwj")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=42328093]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1655921176]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_vm7vt")
