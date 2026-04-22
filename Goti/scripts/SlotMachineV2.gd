@@ -44,10 +44,10 @@ const SYMBOL_VALUES: Dictionary[int, int] = {
 # Symbol textures
 const SYMBOL_TEXTURES: Dictionary[int, Texture2D] = {
 	Symbol.A: preload("res://Goti/symbols/cherries.png"),
-	Symbol.B: preload("res://Goti/symbols/diamond.png"),
+	Symbol.B: preload("res://Goti/symbols/orange.png"),
 	Symbol.C: preload("res://Goti/symbols/grapes.png"),
 	Symbol.D: preload("res://Goti/symbols/lemon.png"),
-	Symbol.E: preload("res://Goti/symbols/orange.png"),
+	Symbol.E: preload("res://Goti/symbols/diamond.png"),
 	Symbol.G: preload("res://Goti/symbols/seven.png"),
 	Symbol.Wild: preload("res://Goti/symbols/wild.png")
 }
@@ -178,10 +178,11 @@ func _on_spin_completed() -> void:
 
 	# Apply credits
 	credits -= bet
+	credits += scaled_win
+	
 	if credits <= 0:
-		credits += 10
-	else:
-		credits += scaled_win
+		credits = 10
+		
 
 	_update_display_grid()
 	_animate_winning_cells(winning_lines)

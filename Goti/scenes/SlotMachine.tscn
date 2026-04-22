@@ -2,10 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
 [ext_resource type="Texture2D" uid="uid://cdu7qsjberl6j" path="res://Goti/symbols/cherries.png" id="2_5t3yw"]
-[ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="3_m3dnr"]
 [ext_resource type="Texture2D" uid="uid://cfkiw3t0ywfyj" path="res://Goti/symbols/grapes.png" id="4_y4kgl"]
 [ext_resource type="Texture2D" uid="uid://bwgaolem1jlgb" path="res://Goti/symbols/lemon.png" id="5_1gho0"]
-[ext_resource type="Texture2D" uid="uid://bat58nx3o4o" path="res://Goti/symbols/orange.png" id="6_so65n"]
+[ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="6_so65n"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
 [ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://Goti/symbols/wild.png" id="8_3dira"]
 
@@ -44,10 +43,14 @@ metadata/_edit_lock_ = true
 [node name="MachineBoard" type="ColorRect" parent="UILayer/SlotsUI" unique_id=312538190]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.14
-anchor_top = 0.11
-anchor_right = 0.86
-anchor_bottom = 0.88
+anchor_left = 0.042000003
+anchor_top = 0.095000006
+anchor_right = 0.95800006
+anchor_bottom = 0.98700005
+offset_left = 0.48199463
+offset_top = -0.12500763
+offset_right = 0.51794434
+offset_bottom = -0.22503662
 color = Color(0.05, 0.03, 0.11, 1)
 
 [node name="TitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=672498583]
@@ -121,7 +124,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_m3dnr")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -261,7 +264,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_m3dnr")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -401,7 +404,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_m3dnr")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -487,14 +490,14 @@ stretch_mode = 5
 
 [node name="HUD" type="Control" parent="UILayer/SlotsUI" unique_id=892131190]
 layout_mode = 1
-anchor_left = 0.14
-anchor_top = 0.87900007
-anchor_right = 0.86
+anchor_left = 0.097
+anchor_top = 0.86700004
+anchor_right = 0.91
 anchor_bottom = 0.975
-offset_left = -0.05999756
-offset_top = -0.32507324
-offset_right = 0.05999756
-offset_bottom = -0.125
+offset_left = -0.3630066
+offset_top = -0.22503662
+offset_right = 0.10998535
+offset_bottom = -2.125
 
 [node name="HUDBackground" type="ColorRect" parent="UILayer/SlotsUI/HUD" unique_id=440531408]
 layout_mode = 1

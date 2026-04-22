@@ -9,10 +9,10 @@ class_name PaytablePopup
 
 const SYMBOL_NAMES: Dictionary[int, String] = {
 	0: "Cherries",
-	1: "Diamond",
+	1: "Orange",
 	2: "Grapes",
 	3: "Lemon",
-	4: "Orange",
+	4: "Diamond",
 	5: "Seven",
 	6: "Wild"
 }
