@@ -54,38 +54,61 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 	symbol_ids.sort()
 
 	for symbol_id in symbol_ids:
-		var card: VBoxContainer = VBoxContainer.new()
+		var card: PanelContainer = PanelContainer.new()
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.size_flags_vertical = Control.SIZE_FILL
-		card.custom_minimum_size = Vector2(0, 60)
-		card.set("custom_constants/separation", 2)
+		card.custom_minimum_size = Vector2(0, 64)
+		card.set("custom_constants/separation", 4)
+		var card_style: StyleBoxFlat = StyleBoxFlat.new()
+		card_style.bg_color = Color(0.06, 0.06, 0.12, 0.4)
+		card_style.border_color = Color(0.2, 0.3, 0.6, 0.9)
+		card_style.set_border_width_all(1)
+		card_style.set_corner_radius_all(8)
+		card.add_theme_stylebox_override("panel", card_style)
+
+		var row: HBoxContainer = HBoxContainer.new()
+		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.size_flags_vertical = Control.SIZE_FILL
+		row.custom_minimum_size = Vector2(0, 52)
+		row.set("custom_constants/separation", 12)
 
 		var icon_wrapper: CenterContainer = CenterContainer.new()
-		icon_wrapper.custom_minimum_size = Vector2(0, 30)
-		icon_wrapper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		icon_wrapper.custom_minimum_size = Vector2(38, 38)
+		icon_wrapper.size_flags_horizontal = Control.SIZE_FILL
 		icon_wrapper.size_flags_vertical = Control.SIZE_FILL
 
 		var texture_rect: TextureRect = TextureRect.new()
 		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		texture_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		texture_rect.custom_minimum_size = Vector2(12, 12)
+		texture_rect.custom_minimum_size = Vector2(32, 32)
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		var symbol_texture: Texture2D = symbol_textures.get(symbol_id) as Texture2D
 		if symbol_texture:
-			var display_texture: Texture2D = _get_scaled_symbol_texture(symbol_texture)
-			if display_texture:
-				texture_rect.texture = display_texture
-		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			var scaled_texture: Texture2D = _get_scaled_symbol_texture(symbol_texture)
+			texture_rect.texture = scaled_texture if scaled_texture else symbol_texture
 		icon_wrapper.add_child(texture_rect)
-		card.add_child(icon_wrapper)
+		row.add_child(icon_wrapper)
 
-		var info_label: Label = Label.new()
-		info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		info_label.add_theme_font_size_override("font_size", 14)
-		card.add_child(info_label)
+		var text_column: VBoxContainer = VBoxContainer.new()
+		text_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		text_column.size_flags_vertical = Control.SIZE_FILL
+		text_column.set("custom_constants/separation", 2)
 
+		var name_label: Label = Label.new()
+		name_label.text = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id)
+		name_label.add_theme_font_size_override("font_size", 18)
+		name_label.add_theme_color_override("font_color", Color(0.8, 0.9, 1.0))
+		text_column.add_child(name_label)
+
+		var payout_label: Label = Label.new()
+		payout_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		payout_label.add_theme_font_size_override("font_size", 14)
+		text_column.add_child(payout_label)
+
+		row.add_child(text_column)
+		card.add_child(row)
 		payout_list.add_child(card)
 
-		var symbol_name: String = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id)
 		var base_value: int = symbol_values.get(symbol_id, 0) as int
 		var multipliers: Array[int] = []
 		if symbol_id == WILD_SYMBOL_ID:
@@ -94,10 +117,12 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 			multipliers = [2, 5, 12]
 
 		symbol_entry_data[symbol_id] = {
-			"label": info_label,
+			"payout_label": payout_label,
+			"icon": texture_rect,
+			"texture": symbol_texture,
 			"base_value": base_value,
 			"multipliers": multipliers,
-			"name": symbol_name
+			"name": name_label.text
 		}
 
 func _build_bet_buttons(bet_options: Array[int]) -> void:
@@ -128,16 +153,22 @@ func set_display_bet(amount: int) -> void:
 
 func _refresh_payouts() -> void:
 	for entry in symbol_entry_data.values():
-		var label: Label = entry.get("label") as Label
+		var payout_label: Label = entry.get("payout_label") as Label
+		var icon_rect: TextureRect = entry.get("icon") as TextureRect
 		var base_value: int = entry.get("base_value", 0) as int
 		var multipliers: Array[int] = entry.get("multipliers", []) as Array[int]
 		var symbol_name: String = entry.get("name", "Symbol") as String
+		var stored_texture: Texture2D = entry.get("texture") as Texture2D
 
-		if label and multipliers.size() >= 3:
+		if icon_rect and stored_texture:
+			var scaled_icon: Texture2D = _get_scaled_symbol_texture(stored_texture)
+			icon_rect.texture = scaled_icon if scaled_icon else stored_texture
+
+		if payout_label and multipliers.size() >= 3:
 			var payouts: Array[int] = []
 			for multiplier in multipliers:
 				payouts.append(_scaled_payout(base_value, multiplier))
-			label.text = "%s\n3x: %d   4x: %d   5x: %d" % [symbol_name, payouts[0], payouts[1], payouts[2]]
+			payout_label.text = "3x: %d\n4x: %d\n5x: %d" % [payouts[0], payouts[1], payouts[2]]
 
 func _scaled_payout(base_value: int, multiplier: int) -> int:
 	var raw_value: int = base_value * multiplier
@@ -161,13 +192,8 @@ func _get_scaled_symbol_texture(texture: Texture2D) -> Texture2D:
 	var resized_image: Image = source_image.duplicate()
 	resized_image.resize(target_width, target_height, Image.INTERPOLATE_BILINEAR)
 	var scaled_texture: ImageTexture = ImageTexture.new()
-	scaled_texture.create_from_image(resized_image, Texture2D.FLAG_FILTER)
+	scaled_texture.create_from_image(resized_image)
 	return scaled_texture
-	var raw_value: int = base_value * multiplier
-	if base_bet_value <= 0 or active_display_bet <= 0:
-		return raw_value
-	var ratio: float = float(active_display_bet) / float(base_bet_value)
-	return int(round(float(raw_value) * ratio))
 
 func _on_display_bet_pressed(amount: int) -> void:
 	set_display_bet(amount)
