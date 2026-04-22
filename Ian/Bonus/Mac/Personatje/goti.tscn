@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d1h06jt5frdf2"]
 
-[ext_resource type="SpriteFrames" uid="uid://c702jweniyrgu" path="res://Ian/Bonus/Bonus 2/Personatje/sprite frames persontje.tres" id="1_c1rwj"]
-[ext_resource type="Script" uid="uid://ddvd7l5j8x5q4" path="res://Ian/Bonus/Bonus 2/Personatje/goti.gd" id="1_vm7vt"]
+[ext_resource type="SpriteFrames" uid="uid://c702jweniyrgu" path="res://Ian/Bonus/Mac/Personatje/sprite frames persontje.tres" id="1_c1rwj"]
+[ext_resource type="Script" uid="uid://ddvd7l5j8x5q4" path="res://Ian/Bonus/Mac/Personatje/goti.gd" id="1_vm7vt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c1rwj"]
 size = Vector2(14, 16)
