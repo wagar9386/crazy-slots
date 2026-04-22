@@ -3,6 +3,7 @@ extends Node2D
 	
 var pin_scene = preload("res://Ian/Bonus/Plinko/pin.tscn")
 
+
 func _ready():
 	create_pins()
 

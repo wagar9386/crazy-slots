@@ -8,8 +8,6 @@ size = Vector2(1002.5, 78)
 [node name="Node2D" type="Node2D" unique_id=95835559]
 script = ExtResource("1_20qta")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=500933413]
-
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=378622838]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1503165805]
