@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://55tw027vsgoq"
-path="res://.godot/imported/wild.png-773ff96da944dd485672a489390922a8.ctex"
+uid="uid://bwgaolem1jlgb"
+path="res://.godot/imported/lemon.png-afc9050d33f1d4626d164bb357a72a3f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://symbols/wild.png"
-dest_files=["res://.godot/imported/wild.png-773ff96da944dd485672a489390922a8.ctex"]
+source_file="res://Goti/symbols/lemon.png"
+dest_files=["res://.godot/imported/lemon.png-afc9050d33f1d4626d164bb357a72a3f.ctex"]
 
 [params]
 

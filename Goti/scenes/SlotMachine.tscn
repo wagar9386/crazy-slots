@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://d1l22hjvdfsbb"]
 
-[ext_resource type="Texture2D" uid="uid://cdu7qsjberl6j" path="res://symbols/cherries.png" id="1_mf0q4"]
-[ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://symbols/diamond.png" id="2_en4nw"]
-[ext_resource type="Texture2D" uid="uid://cfkiw3t0ywfyj" path="res://symbols/grapes.png" id="3_ueo72"]
-[ext_resource type="Texture2D" uid="uid://bwgaolem1jlgb" path="res://symbols/lemon.png" id="4_wo56j"]
-[ext_resource type="Texture2D" uid="uid://bat58nx3o4o" path="res://symbols/orange.png" id="5_lqjbj"]
-[ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://symbols/seven.png" id="6_c0xrn"]
-[ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://symbols/wild.png" id="7_1pl1y"]
-[ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://scripts/SlotMachineV2.gd" id="8_jchow"]
+[ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
+[ext_resource type="Texture2D" uid="uid://cdu7qsjberl6j" path="res://Goti/symbols/cherries.png" id="2_5t3yw"]
+[ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="3_m3dnr"]
+[ext_resource type="Texture2D" uid="uid://cfkiw3t0ywfyj" path="res://Goti/symbols/grapes.png" id="4_y4kgl"]
+[ext_resource type="Texture2D" uid="uid://bwgaolem1jlgb" path="res://Goti/symbols/lemon.png" id="5_1gho0"]
+[ext_resource type="Texture2D" uid="uid://bat58nx3o4o" path="res://Goti/symbols/orange.png" id="6_so65n"]
+[ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
+[ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://Goti/symbols/wild.png" id="8_3dira"]
 
 [node name="SlotMachine" type="Node2D" unique_id=1648049221]
-script = ExtResource("8_jchow")
+script = ExtResource("1_gsijy")
 
 [node name="UILayer" type="CanvasLayer" parent="." unique_id=1042641568]
 
@@ -101,7 +101,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("1_mf0q4")
+texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -121,7 +121,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_en4nw")
+texture = ExtResource("3_m3dnr")
 expand_mode = 1
 stretch_mode = 5
 
@@ -141,7 +141,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_ueo72")
+texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -161,7 +161,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_wo56j")
+texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -181,7 +181,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_lqjbj")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -201,7 +201,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_c0xrn")
+texture = ExtResource("7_cbq64")
 expand_mode = 1
 stretch_mode = 5
 
@@ -221,7 +221,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("7_1pl1y")
+texture = ExtResource("8_3dira")
 expand_mode = 1
 stretch_mode = 5
 
@@ -241,7 +241,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("1_mf0q4")
+texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -261,7 +261,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_en4nw")
+texture = ExtResource("3_m3dnr")
 expand_mode = 1
 stretch_mode = 5
 
@@ -281,7 +281,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_ueo72")
+texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -301,7 +301,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_wo56j")
+texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -321,7 +321,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_lqjbj")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -341,7 +341,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_c0xrn")
+texture = ExtResource("7_cbq64")
 expand_mode = 1
 stretch_mode = 5
 
@@ -361,7 +361,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("7_1pl1y")
+texture = ExtResource("8_3dira")
 expand_mode = 1
 stretch_mode = 5
 
@@ -381,7 +381,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("1_mf0q4")
+texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -401,7 +401,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_en4nw")
+texture = ExtResource("3_m3dnr")
 expand_mode = 1
 stretch_mode = 5
 
@@ -421,7 +421,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("3_ueo72")
+texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -441,7 +441,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_wo56j")
+texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -461,7 +461,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_lqjbj")
+texture = ExtResource("6_so65n")
 expand_mode = 1
 stretch_mode = 5
 
@@ -481,7 +481,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_c0xrn")
+texture = ExtResource("7_cbq64")
 expand_mode = 1
 stretch_mode = 5
 

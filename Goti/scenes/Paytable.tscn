@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://clqj8jy8x1q8j"]
 
-[ext_resource type="Script" uid="uid://bde0hlnenreym" path="res://scripts/PaytablePopup.gd" id="1_badc"]
+[ext_resource type="Script" uid="uid://bde0hlnenreym" path="res://Goti/scripts/PaytablePopup.gd" id="1_06xe3"]
 
 [node name="PaytableOverlay" type="Control" unique_id=1920646234]
 layout_mode = 3
@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_badc")
+script = ExtResource("1_06xe3")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1548302178]
 layout_mode = 1

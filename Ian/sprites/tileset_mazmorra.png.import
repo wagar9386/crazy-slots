@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ds3n8yetavkgm"
-path="res://.godot/imported/seven.png-ad4cb8db4dcc70065d6d5c797db8a0d6.ctex"
+uid="uid://47o35pl1b7ou"
+path="res://.godot/imported/tileset_mazmorra.png-4b525e175aa499da6ff198aaa237abcd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://symbols/seven.png"
-dest_files=["res://.godot/imported/seven.png-ad4cb8db4dcc70065d6d5c797db8a0d6.ctex"]
+source_file="res://Ian/sprites/tileset_mazmorra.png"
+dest_files=["res://.godot/imported/tileset_mazmorra.png-4b525e175aa499da6ff198aaa237abcd.ctex"]
 
 [params]
 

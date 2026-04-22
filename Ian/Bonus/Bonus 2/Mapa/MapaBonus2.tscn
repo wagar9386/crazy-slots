@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bwj8afk5xs12v"]
 
-[ext_resource type="TileSet" uid="uid://c7kyg0hd774t3" path="res://tile_sets/mazmorra.tres" id="1_0t5xo"]
-[ext_resource type="PackedScene" uid="uid://d1h06jt5frdf2" path="res://scenes/Bonus/Bonus 2/Personatje/goti.tscn" id="2_ay4fn"]
+[ext_resource type="TileSet" uid="uid://c7kyg0hd774t3" path="res://Ian/tile_sets/mazmorra.tres" id="1_0t5xo"]
+[ext_resource type="PackedScene" uid="uid://d1h06jt5frdf2" path="res://Ian/Bonus/Bonus 2/Personatje/goti.tscn" id="2_ay4fn"]
 
 [node name="Bonus 2" type="Node2D" unique_id=660268488]
 

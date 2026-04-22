@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfkiw3t0ywfyj"
-path="res://.godot/imported/grapes.png-fa0a82f05902f58c28fde107bf9b8341.ctex"
+uid="uid://dikaop4nchj18"
+path="res://.godot/imported/mago_spritesheet.png-d45e6cbfd6b2ab67e15c4822c249c6aa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://symbols/grapes.png"
-dest_files=["res://.godot/imported/grapes.png-fa0a82f05902f58c28fde107bf9b8341.ctex"]
+source_file="res://Ian/sprites/mago_spritesheet.png"
+dest_files=["res://.godot/imported/mago_spritesheet.png-d45e6cbfd6b2ab67e15c4822c249c6aa.ctex"]
 
 [params]
 

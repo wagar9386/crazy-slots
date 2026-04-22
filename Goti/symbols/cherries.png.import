@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://47o35pl1b7ou"
-path="res://.godot/imported/tileset_mazmorra.png-995e5bfa4cad9f0eb88f2627b42749f5.ctex"
+uid="uid://cdu7qsjberl6j"
+path="res://.godot/imported/cherries.png-59396e69e3f051107f22581c1a61d67b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/tileset_mazmorra.png"
-dest_files=["res://.godot/imported/tileset_mazmorra.png-995e5bfa4cad9f0eb88f2627b42749f5.ctex"]
+source_file="res://Goti/symbols/cherries.png"
+dest_files=["res://.godot/imported/cherries.png-59396e69e3f051107f22581c1a61d67b.ctex"]
 
 [params]
 

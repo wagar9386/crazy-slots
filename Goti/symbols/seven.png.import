@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwgaolem1jlgb"
-path="res://.godot/imported/lemon.png-43ca31227b5e13f43562bd67d437b3b4.ctex"
+uid="uid://ds3n8yetavkgm"
+path="res://.godot/imported/seven.png-48529a23130f1535aa4ee820878ffe0a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://symbols/lemon.png"
-dest_files=["res://.godot/imported/lemon.png-43ca31227b5e13f43562bd67d437b3b4.ctex"]
+source_file="res://Goti/symbols/seven.png"
+dest_files=["res://.godot/imported/seven.png-48529a23130f1535aa4ee820878ffe0a.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dgt5vvsv2gyqu"]
 
-[ext_resource type="Script" uid="uid://bvoih62qo7k3j" path="res://scenes/Bonus/Bonus 2/bonus_2_principal.gd" id="1_gppxg"]
-[ext_resource type="PackedScene" uid="uid://bwj8afk5xs12v" path="res://scenes/Bonus/Bonus 2/Mapa/MapaBonus2.tscn" id="2_tf8km"]
+[ext_resource type="Script" uid="uid://bvoih62qo7k3j" path="res://Ian/Bonus/Bonus 2/bonus_2_principal.gd" id="1_gppxg"]
+[ext_resource type="PackedScene" uid="uid://bwj8afk5xs12v" path="res://Ian/Bonus/Bonus 2/Mapa/MapaBonus2.tscn" id="2_tf8km"]
 
 [node name="Bonus 2 Principal" type="Node2D" unique_id=1869092721]
 script = ExtResource("1_gppxg")
