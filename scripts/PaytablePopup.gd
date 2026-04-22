@@ -28,7 +28,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	background.mouse_filter = Control.MOUSE_FILTER_STOP
 	close_button.pressed.connect(_on_close_pressed)
-	payout_list.columns = 2
+	payout_list.columns = 1
 	payout_list.set("custom_constants/hseparation", 14)
 	payout_list.set("custom_constants/vseparation", 10)
 	hide()
@@ -57,29 +57,30 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var card: PanelContainer = PanelContainer.new()
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.size_flags_vertical = Control.SIZE_FILL
-		card.custom_minimum_size = Vector2(0, 64)
-		card.set("custom_constants/separation", 4)
+		card.custom_minimum_size = Vector2(0, 80)
+		card.set("custom_constants/separation", 6)
 		var card_style: StyleBoxFlat = StyleBoxFlat.new()
-		card_style.bg_color = Color(0.06, 0.06, 0.12, 0.4)
-		card_style.border_color = Color(0.2, 0.3, 0.6, 0.9)
+		card_style.bg_color = Color(0.06, 0.06, 0.12, 0.5)
+		card_style.border_color = Color(0.2, 0.3, 0.6, 0.8)
 		card_style.set_border_width_all(1)
-		card_style.set_corner_radius_all(8)
+		card_style.set_corner_radius_all(10)
 		card.add_theme_stylebox_override("panel", card_style)
 
 		var row: HBoxContainer = HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.size_flags_vertical = Control.SIZE_FILL
-		row.custom_minimum_size = Vector2(0, 52)
-		row.set("custom_constants/separation", 12)
+		row.custom_minimum_size = Vector2(0, 64)
+		row.set("custom_constants/separation", 18)
 
 		var icon_wrapper: CenterContainer = CenterContainer.new()
-		icon_wrapper.custom_minimum_size = Vector2(38, 38)
+		icon_wrapper.custom_minimum_size = Vector2(48, 48)
 		icon_wrapper.size_flags_horizontal = Control.SIZE_FILL
 		icon_wrapper.size_flags_vertical = Control.SIZE_FILL
 
 		var texture_rect: TextureRect = TextureRect.new()
-		texture_rect.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		texture_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		texture_rect.size_flags_horizontal = Control.SIZE_FILL
+		texture_rect.size_flags_vertical = Control.SIZE_FILL
+		texture_rect.expand = true
 		texture_rect.custom_minimum_size = Vector2(32, 32)
 		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		var symbol_texture: Texture2D = symbol_textures.get(symbol_id) as Texture2D
@@ -92,12 +93,12 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var text_column: VBoxContainer = VBoxContainer.new()
 		text_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		text_column.size_flags_vertical = Control.SIZE_FILL
-		text_column.set("custom_constants/separation", 2)
+		text_column.set("custom_constants/separation", 3)
 
 		var name_label: Label = Label.new()
 		name_label.text = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id)
 		name_label.add_theme_font_size_override("font_size", 18)
-		name_label.add_theme_color_override("font_color", Color(0.8, 0.9, 1.0))
+		name_label.add_theme_color_override("font_color", Color(0.85, 0.9, 1.0))
 		text_column.add_child(name_label)
 
 		var payout_label: Label = Label.new()
@@ -157,7 +158,6 @@ func _refresh_payouts() -> void:
 		var icon_rect: TextureRect = entry.get("icon") as TextureRect
 		var base_value: int = entry.get("base_value", 0) as int
 		var multipliers: Array[int] = entry.get("multipliers", []) as Array[int]
-		var symbol_name: String = entry.get("name", "Symbol") as String
 		var stored_texture: Texture2D = entry.get("texture") as Texture2D
 
 		if icon_rect and stored_texture:
@@ -191,9 +191,7 @@ func _get_scaled_symbol_texture(texture: Texture2D) -> Texture2D:
 	var target_height: int = max(1, int(round(source_image.get_height() * scale_ratio)))
 	var resized_image: Image = source_image.duplicate()
 	resized_image.resize(target_width, target_height, Image.INTERPOLATE_BILINEAR)
-	var scaled_texture: ImageTexture = ImageTexture.new()
-	scaled_texture.create_from_image(resized_image)
-	return scaled_texture
+	return ImageTexture.create_from_image(resized_image)
 
 func _on_display_bet_pressed(amount: int) -> void:
 	set_display_bet(amount)
