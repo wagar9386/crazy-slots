@@ -98,6 +98,9 @@ func _ready() -> void:
 	# Ensure bet is valid
 	if not BET_OPTIONS.has(bet):
 		bet = MIN_BET
+	
+	
+		
 
 	# Setup grid visuals
 	_gather_grid_nodes()
@@ -165,6 +168,7 @@ func _on_bet_button_pressed(amount: int) -> void:
 
 # Called when spin animation finishes
 func _on_spin_completed() -> void:
+	
 	var win_result: Dictionary = _evaluate_wins()
 
 	var base_win: int = win_result.get("total_win", 0) as int
@@ -181,7 +185,7 @@ func _on_spin_completed() -> void:
 	credits += scaled_win
 	
 	if credits <= 0:
-		credits = 10
+		credits = 4
 		
 
 	_update_display_grid()
@@ -315,7 +319,9 @@ func _update_ui() -> void:
 	credits_label.text = "Credits: %d" % credits
 	bet_label.text = "Bet: %d" % bet
 	win_label.text = "Win: %d" % last_win
+	
 
+	
 	bet_4_button.button_pressed = bet == 4
 	bet_8_button.button_pressed = bet == 8
 	bet_16_button.button_pressed = bet == 16
@@ -391,6 +397,20 @@ func _set_bet_buttons_disabled(disabled: bool) -> void:
 	bet_8_button.disabled = disabled
 	bet_16_button.disabled = disabled
 	bet_30_button.disabled = disabled
+
+func broke_mf(disabled: bool) -> void:
+	bet_8_button.disabled = disabled
+	bet_16_button.disabled = disabled
+	bet_30_button.disabled = disabled
+
+func _process(delta: float) -> void:
+	if is_spinning:
+		return  # don’t run logic while spinning
+
+	# runs every frame when NOT spinning
+	bet_8_button.disabled = credits < 8
+	bet_16_button.disabled = credits < 16
+	bet_30_button.disabled = credits < 30
 
 # Debug print grid
 func _debug_grid() -> void:
