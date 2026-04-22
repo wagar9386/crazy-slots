@@ -149,7 +149,6 @@ func set_display_bet(amount: int) -> void:
 		var btn: Button = bet_buttons[option]
 		btn.set_pressed(option == amount)
 	var ratio: float = float(amount) / float(base_bet_value)
-	bet_info_label.text = "Previewing payouts for Bet %d (%.1fx Base bet %d). Higher bets increase payouts." % [amount, ratio, base_bet_value]
 	_refresh_payouts()
 
 func _refresh_payouts() -> void:
