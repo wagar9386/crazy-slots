@@ -36,3 +36,4 @@ addons/**/bin/
 *.dylib
 **/addons/**
 **/ziva_agent/*
+/addons/ziva_agent/*
