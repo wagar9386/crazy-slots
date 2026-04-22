@@ -35,3 +35,4 @@ addons/**/bin/
 *.dll
 *.dylib
 **/addons/**
+**/ziva_agent/*
