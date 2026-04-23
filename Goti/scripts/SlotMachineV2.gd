@@ -14,7 +14,7 @@ const MIN_BET: int = 4
 const BET_OPTIONS: Array[int] = [4, 8, 16, 30]
 
 # Default cell color
-const BASE_CELL_COLOR: Color = Color(0.07, 0.08, 0.15, 1.0)
+const BASE_CELL_COLOR: Color = Color(0.05, 0.03, 0.02, 1.0)
 
 # Animator script
 const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2.gd")
@@ -51,6 +51,16 @@ const SYMBOL_TEXTURES: Dictionary[int, Texture2D] = {
 	Symbol.G: preload("res://Goti/symbols/seven.png"),
 	Symbol.Wild: preload("res://Goti/symbols/wild.png")
 }
+const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
+const COWBOY_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
+const GOLDEN_METAL: Color = Color(0.98, 0.75, 0.32, 1)
+const RUSTIC_MAHOGANY: Color = Color(0.1, 0.04, 0.02, 1)
+const REEL_BACKDROP_COLOR: Color = Color(0.13, 0.05, 0.02, 0.95)
+const BOARD_BASE_COLOR: Color = Color(0.06, 0.02, 0.01, 1)
+const HUD_PANEL_COLOR: Color = Color(0.1, 0.03, 0.01, 0.95)
+const GLOW_HALO_COLOR: Color = Color(0.94, 0.62, 0.2, 0.55)
+const STONE_EDGE_COLOR: Color = Color(0.85, 0.55, 0.2, 0.6)
+const BURNISHED_BRASS_COLOR: Color = Color(0.93, 0.79, 0.47, 1)
 const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
 
 # Grid data
@@ -81,6 +91,10 @@ var paytable_overlay: PaytablePopup
 @onready var spin_button: Button = hud_controls.get_node("SpinButton")
 @onready var paytable_button: Button = hud_controls.get_node("PaytableButton")
 @onready var ui_root: Control = get_node("UILayer/SlotsUI")
+@onready var title_panel: ColorRect = get_node("UILayer/SlotsUI/TitlePanel") as ColorRect
+@onready var marquee_label: Label = get_node("UILayer/SlotsUI/MarqueeLabel") as Label
+@onready var reel_backdrop: ColorRect = get_node("UILayer/SlotsUI/ReelBackdrop") as ColorRect
+@onready var background_pattern: TextureRect = get_node("UILayer/SlotsUI/BackgroundPattern") as TextureRect
 
 @onready var bet_buttons_container: HBoxContainer = hud_controls.get_node("BetButtons")
 @onready var bet_label: Label = bet_buttons_container.get_node("BetLabel")
@@ -94,6 +108,7 @@ func _ready() -> void:
 
 	# --- UI POLISH ---
 	_apply_visual_polish()
+	_apply_old_west_theme()
 
 	# Ensure bet is valid
 	if not BET_OPTIONS.has(bet):
@@ -343,66 +358,262 @@ func _update_ui() -> void:
 		paytable_overlay.set_display_bet(bet)
 
 func _apply_visual_polish() -> void:
-	# Add some neon styling to the UI
+	if background_pattern:
+		background_pattern.stretch_mode = TextureRect.STRETCH_TILE
+		background_pattern.modulate = Color(1, 0.82, 0.7, 0.72)
+		background_pattern.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	if title_panel:
+		title_panel.color = Color(0.07, 0.02, 0.01, 0.92)
+
 	var title: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel")
 	if title:
-		title.text = "NEON REELS"
-		title.add_theme_color_override("font_color", Color(1, 0.0, 1.0)) # Magenta
+		title.text = "CRAZY SLOTS"
+		title.add_theme_font_size_override("font_size", 46)
+		title.add_theme_color_override("font_color", Color(1, 0.88, 0.32, 1))
 		title.add_theme_constant_override("outline_size", 12)
-		title.add_theme_color_override("font_outline_color", Color(0.1, 0, 0.3))
+		title.add_theme_color_override("font_outline_color", Color(0.18, 0.05, 0))
+
+	if marquee_label:
+		marquee_label.text = "MEGA JACKPOT REELS"
+		marquee_label.add_theme_font_size_override("font_size", 20)
+		marquee_label.add_theme_color_override("font_color", Color(0.98, 0.72, 0.2, 1))
+		marquee_label.add_theme_constant_override("outline_size", 3)
+		marquee_label.add_theme_color_override("font_outline_color", Color(0.12, 0.04, 0))
 
 	var subtitle: Label = get_node_or_null("UILayer/SlotsUI/SubtitleLabel")
 	if subtitle:
-		subtitle.add_theme_color_override("font_color", Color(0.0, 1.0, 1.0)) # Cyan
+		subtitle.text = "High Roller 4x5 Reels"
+		subtitle.add_theme_font_size_override("font_size", 18)
+		subtitle.add_theme_color_override("font_color", Color(0.95, 0.74, 0.3, 1))
 
-	# Machine Board & Glow
+	if reel_backdrop:
+		reel_backdrop.color = Color(0.11, 0.03, 0.02, 0.94)
+
 	var board: ColorRect = get_node_or_null("UILayer/SlotsUI/MachineBoard")
 	if board:
-		board.color = Color(0.02, 0.02, 0.05, 0.9)
-	
+		board.color = Color(0.03, 0.01, 0.02, 1)
+
 	var glow: ColorRect = get_node_or_null("UILayer/SlotsUI/BoardGlow")
 	if glow:
-		glow.color = Color(0.2, 0.0, 0.4, 0.5)
+		glow.color = Color(1, 0.76, 0.24, 0.48)
 
-	# Spin Button Polish
-	var spin_style := StyleBoxFlat.new()
-	spin_style.bg_color = Color(0.9, 0.1, 0.5)
-	spin_style.set_corner_radius_all(15)
-	spin_style.set_border_width_all(3)
-	spin_style.border_color = Color(1.0, 0.6, 1.0)
-	spin_style.shadow_size = 10
-	spin_style.shadow_color = Color(1, 0, 0.5, 0.3)
-	
-	spin_button.add_theme_stylebox_override("normal", spin_style)
-	spin_button.add_theme_stylebox_override("hover", spin_style)
-	spin_button.add_theme_stylebox_override("pressed", spin_style)
-	spin_button.add_theme_color_override("font_color", Color.WHITE)
-	spin_button.add_theme_font_size_override("font_size", 24)
-	
-	# Credits and Win labels
+	var hud_bg: ColorRect = get_node_or_null("UILayer/SlotsUI/HUD/HUDBackground")
+	if hud_bg:
+		hud_bg.color = Color(0.06, 0.02, 0.01, 0.96)
+
+	var spin_normal: StyleBoxFlat = StyleBoxFlat.new()
+	spin_normal.bg_color = Color(0.95, 0.62, 0.08)
+	spin_normal.border_color = Color(1.0, 0.9, 0.43)
+	spin_normal.set_border_width_all(3)
+	spin_normal.set_corner_radius_all(18)
+	spin_normal.shadow_size = 14
+	spin_normal.shadow_color = Color(0.8, 0.4, 0.08, 0.65)
+
+	var spin_hover: StyleBoxFlat = StyleBoxFlat.new()
+	spin_hover.bg_color = Color(1, 0.7, 0.1)
+	spin_hover.border_color = Color(1.0, 0.92, 0.5)
+	spin_hover.set_border_width_all(3)
+	spin_hover.set_corner_radius_all(18)
+
+	var spin_pressed: StyleBoxFlat = StyleBoxFlat.new()
+	spin_pressed.bg_color = Color(0.72, 0.32, 0.08)
+	spin_pressed.border_color = Color(0.96, 0.56, 0.2)
+	spin_pressed.set_border_width_all(3)
+	spin_pressed.set_corner_radius_all(18)
+
+	spin_button.add_theme_stylebox_override("normal", spin_normal)
+	spin_button.add_theme_stylebox_override("hover", spin_hover)
+	spin_button.add_theme_stylebox_override("pressed", spin_pressed)
+	spin_button.add_theme_color_override("font_color", Color(0.1, 0.03, 0, 1))
+	spin_button.add_theme_font_size_override("font_size", 26)
+
 	if credits_label:
-		credits_label.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4)) # Neon Green
+		credits_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.6))
+		credits_label.add_theme_font_size_override("font_size", 24)
 	if win_label:
-		win_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.2)) # Neon Yellow
+		win_label.add_theme_color_override("font_color", Color(1.0, 0.78, 0.24))
+		win_label.add_theme_font_size_override("font_size", 22)
 	if bet_label:
-		bet_label.add_theme_color_override("font_color", Color(0.4, 0.6, 1.0)) # Light Blue
-	
-	# Polish the bet buttons
+		bet_label.add_theme_color_override("font_color", Color(0.97, 0.85, 0.35))
+		bet_label.add_theme_font_size_override("font_size", 22)
+
 	for btn in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
-		var bstyle := StyleBoxFlat.new()
-		bstyle.bg_color = Color(0.1, 0.1, 0.2)
-		bstyle.set_corner_radius_all(5)
-		bstyle.border_width_bottom = 2
-		bstyle.border_color = Color(0.3, 0.3, 0.6)
+		var bstyle: StyleBoxFlat = StyleBoxFlat.new()
+		bstyle.bg_color = Color(0.16, 0.06, 0.02)
+		bstyle.border_color = Color(0.95, 0.78, 0.3)
+		bstyle.set_border_width_all(2)
+		bstyle.set_corner_radius_all(8)
+		bstyle.shadow_size = 4
+		bstyle.shadow_color = Color(0.7, 0.38, 0.13, 0.7)
 		btn.add_theme_stylebox_override("normal", bstyle)
-		
-		var bstyle_sel := StyleBoxFlat.new()
-		bstyle_sel.bg_color = Color(0.2, 0.3, 0.6)
-		bstyle_sel.set_corner_radius_all(5)
+
+		var bstyle_sel: StyleBoxFlat = StyleBoxFlat.new()
+		bstyle_sel.bg_color = Color(0.98, 0.68, 0.24)
+		bstyle_sel.border_color = Color(0.92, 0.45, 0.12)
 		bstyle_sel.set_border_width_all(2)
-		bstyle_sel.border_color = Color(0.5, 0.7, 1.0)
+		bstyle_sel.set_corner_radius_all(8)
+		bstyle_sel.shadow_size = 4
+		bstyle_sel.shadow_color = Color(0.85, 0.5, 0.15, 0.8)
 		btn.add_theme_stylebox_override("pressed", bstyle_sel)
+		btn.add_theme_color_override("font_color", Color(0.98, 0.9, 0.65))
 		btn.toggle_mode = true
+
+	if paytable_button:
+		var paytable_style: StyleBoxFlat = StyleBoxFlat.new()
+		paytable_style.bg_color = Color(0.12, 0.05, 0.02)
+		paytable_style.border_color = Color(0.99, 0.78, 0.3)
+		paytable_style.set_border_width_all(2)
+		paytable_style.set_corner_radius_all(10)
+		paytable_style.shadow_size = 6
+		paytable_style.shadow_color = Color(0.85, 0.45, 0.12, 0.6)
+		paytable_button.add_theme_stylebox_override("normal", paytable_style)
+		paytable_button.add_theme_stylebox_override("hover", paytable_style)
+
+		var paytable_pressed: StyleBoxFlat = StyleBoxFlat.new()
+		paytable_pressed.bg_color = Color(0.95, 0.62, 0.24)
+		paytable_pressed.border_color = Color(0.92, 0.48, 0.15)
+		paytable_pressed.set_border_width_all(2)
+		paytable_pressed.set_corner_radius_all(10)
+		paytable_pressed.shadow_size = 6
+		paytable_pressed.shadow_color = Color(0.85, 0.45, 0.12, 0.5)
+		paytable_button.add_theme_stylebox_override("pressed", paytable_pressed)
+		paytable_button.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
+		paytable_button.add_theme_font_size_override("font_size", 22)
+
+func _apply_old_west_theme() -> void:
+	if background_pattern:
+		background_pattern.texture = BACKGROUND_TEXTURE
+		background_pattern.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		background_pattern.modulate = Color(1, 0.92, 0.78, 1)
+		background_pattern.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	if title_panel:
+		title_panel.color = Color(0.11, 0.04, 0.02, 0.9)
+
+	var title: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel")
+	if title:
+		title.text = "CRAZY SLOTS"
+		title.add_theme_font_override("font", COWBOY_FONT)
+		title.add_theme_font_size_override("font_size", 48)
+		title.add_theme_color_override("font_color", GOLDEN_METAL)
+		title.add_theme_constant_override("outline_size", 10)
+		title.add_theme_color_override("font_outline_color", Color(0.16, 0.04, 0.01))
+
+	if marquee_label:
+		marquee_label.text = "HIGH NOON JACKPOT"
+		marquee_label.add_theme_font_override("font", COWBOY_FONT)
+		marquee_label.add_theme_font_size_override("font_size", 20)
+		marquee_label.add_theme_color_override("font_color", GOLDEN_METAL)
+		marquee_label.add_theme_constant_override("outline_size", 4)
+		marquee_label.add_theme_color_override("font_outline_color", Color(0.13, 0.05, 0.01))
+
+	var subtitle: Label = get_node_or_null("UILayer/SlotsUI/SubtitleLabel")
+	if subtitle:
+		subtitle.text = "High Noon 4x5 Reels"
+		subtitle.add_theme_font_override("font", COWBOY_FONT)
+		subtitle.add_theme_font_size_override("font_size", 18)
+		subtitle.add_theme_color_override("font_color", Color(0.94, 0.81, 0.46))
+
+	if reel_backdrop:
+		reel_backdrop.color = REEL_BACKDROP_COLOR
+
+	var board: ColorRect = get_node_or_null("UILayer/SlotsUI/MachineBoard")
+	if board:
+		board.color = RUSTIC_MAHOGANY
+
+	var glow: ColorRect = get_node_or_null("UILayer/SlotsUI/BoardGlow")
+	if glow:
+		glow.color = GLOW_HALO_COLOR
+
+	var hud_bg: ColorRect = get_node_or_null("UILayer/SlotsUI/HUD/HUDBackground")
+	if hud_bg:
+		hud_bg.color = HUD_PANEL_COLOR
+
+	var spin_normal: StyleBoxFlat = StyleBoxFlat.new()
+	spin_normal.bg_color = Color(0.48, 0.2, 0.08)
+	spin_normal.border_color = Color(0.9, 0.6, 0.22)
+	spin_normal.set_border_width_all(3)
+	spin_normal.set_corner_radius_all(20)
+	spin_normal.shadow_size = 14
+	spin_normal.shadow_color = Color(0.22, 0.08, 0.02, 0.65)
+
+	var spin_hover: StyleBoxFlat = StyleBoxFlat.new()
+	spin_hover.bg_color = Color(0.65, 0.32, 0.1)
+	spin_hover.border_color = Color(0.94, 0.72, 0.35)
+	spin_hover.set_border_width_all(3)
+	spin_hover.set_corner_radius_all(20)
+
+	var spin_pressed: StyleBoxFlat = StyleBoxFlat.new()
+	spin_pressed.bg_color = Color(0.38, 0.15, 0.05)
+	spin_pressed.border_color = Color(0.8, 0.45, 0.2)
+	spin_pressed.set_border_width_all(3)
+	spin_pressed.set_corner_radius_all(20)
+
+	spin_button.add_theme_stylebox_override("normal", spin_normal)
+	spin_button.add_theme_stylebox_override("hover", spin_hover)
+	spin_button.add_theme_stylebox_override("pressed", spin_pressed)
+	spin_button.add_theme_font_override("font", COWBOY_FONT)
+	spin_button.add_theme_font_size_override("font_size", 28)
+	spin_button.add_theme_color_override("font_color", STONE_EDGE_COLOR)
+
+	if credits_label:
+		credits_label.add_theme_font_override("font", COWBOY_FONT)
+		credits_label.add_theme_color_override("font_color", Color(0.96, 0.89, 0.6))
+		credits_label.add_theme_font_size_override("font_size", 22)
+	if win_label:
+		win_label.add_theme_font_override("font", COWBOY_FONT)
+		win_label.add_theme_color_override("font_color", Color(0.96, 0.82, 0.4))
+		win_label.add_theme_font_size_override("font_size", 22)
+	if bet_label:
+		bet_label.add_theme_font_override("font", COWBOY_FONT)
+		bet_label.add_theme_color_override("font_color", Color(0.95, 0.85, 0.42))
+		bet_label.add_theme_font_size_override("font_size", 22)
+
+	for btn in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
+		var bstyle: StyleBoxFlat = StyleBoxFlat.new()
+		bstyle.bg_color = Color(0.18, 0.08, 0.03)
+		bstyle.border_color = Color(0.92, 0.68, 0.3)
+		bstyle.set_border_width_all(2)
+		bstyle.set_corner_radius_all(10)
+		bstyle.shadow_size = 5
+		bstyle.shadow_color = Color(0.25, 0.08, 0.02, 0.7)
+		btn.add_theme_stylebox_override("normal", bstyle)
+
+		var bstyle_sel: StyleBoxFlat = StyleBoxFlat.new()
+		bstyle_sel.bg_color = Color(0.98, 0.74, 0.24)
+		bstyle_sel.border_color = Color(0.85, 0.4, 0.13)
+		bstyle_sel.set_border_width_all(2)
+		bstyle_sel.set_corner_radius_all(10)
+		bstyle_sel.shadow_size = 5
+		bstyle_sel.shadow_color = Color(0.95, 0.6, 0.22, 0.85)
+		btn.add_theme_stylebox_override("pressed", bstyle_sel)
+		btn.add_theme_font_override("font", COWBOY_FONT)
+		btn.add_theme_color_override("font_color", BURNISHED_BRASS_COLOR)
+		btn.toggle_mode = true
+
+	if paytable_button:
+		var paytable_style: StyleBoxFlat = StyleBoxFlat.new()
+		paytable_style.bg_color = Color(0.16, 0.06, 0.03)
+		paytable_style.border_color = Color(0.98, 0.75, 0.32)
+		paytable_style.set_border_width_all(2)
+		paytable_style.set_corner_radius_all(12)
+		paytable_style.shadow_size = 8
+		paytable_style.shadow_color = Color(0.3, 0.12, 0.04, 0.6)
+		paytable_button.add_theme_stylebox_override("normal", paytable_style)
+		paytable_button.add_theme_stylebox_override("hover", paytable_style)
+
+		var paytable_pressed: StyleBoxFlat = StyleBoxFlat.new()
+		paytable_pressed.bg_color = Color(0.95, 0.74, 0.24)
+		paytable_pressed.border_color = Color(0.92, 0.48, 0.14)
+		paytable_pressed.set_border_width_all(2)
+		paytable_pressed.set_corner_radius_all(12)
+		paytable_pressed.shadow_size = 8
+		paytable_pressed.shadow_color = Color(0.85, 0.5, 0.18, 0.7)
+		paytable_button.add_theme_stylebox_override("pressed", paytable_pressed)
+		paytable_button.add_theme_font_override("font", COWBOY_FONT)
+		paytable_button.add_theme_font_size_override("font_size", 22)
+		paytable_button.add_theme_color_override("font_color", Color(1, 1, 0.94))
 
 # Enable/disable bet buttons
 func _set_bet_buttons_disabled(disabled: bool) -> void:

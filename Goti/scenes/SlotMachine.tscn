@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
 [ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://Goti/symbols/wild.png" id="8_3dira"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lrutk"]
+
 [node name="SlotMachine" type="Node2D" unique_id=1648049221]
 script = ExtResource("1_gsijy")
 
@@ -26,6 +28,18 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
+[node name="BackgroundPattern" type="TextureRect" parent="UILayer/SlotsUI" unique_id=1991111111]
+modulate = Color(1, 0.86, 0.78, 0.6)
+z_index = -2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CompressedTexture2D_lrutk")
+stretch_mode = 1
+
 [node name="BoardGlow" type="ColorRect" parent="UILayer/SlotsUI" unique_id=1168645796]
 layout_mode = 1
 anchors_preset = -1
@@ -37,7 +51,7 @@ offset_left = -141.23999
 offset_top = -33.4
 offset_right = 140.23999
 offset_bottom = 42.880005
-color = Color(0.56, 0.22, 0.76, 0.22)
+color = Color(0.85, 0.58, 0.05, 0.38)
 metadata/_edit_lock_ = true
 
 [node name="MachineBoard" type="ColorRect" parent="UILayer/SlotsUI" unique_id=312538190]
@@ -51,7 +65,16 @@ offset_left = 0.48199463
 offset_top = -0.12500763
 offset_right = 0.51794434
 offset_bottom = -0.22503662
-color = Color(0.05, 0.03, 0.11, 1)
+color = Color(0.04, 0.01, 0.01, 1)
+
+[node name="TitlePanel" type="ColorRect" parent="UILayer/SlotsUI" unique_id=212222333]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18
+anchor_top = 0.07
+anchor_right = 0.82
+anchor_bottom = 0.17
+color = Color(0.07, 0.02, 0.01, 0.85)
 
 [node name="TitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=672498583]
 layout_mode = 0
@@ -61,19 +84,41 @@ anchor_right = 0.78
 anchor_bottom = 0.15
 theme_override_colors/font_color = Color(0.95, 0.93, 1, 1)
 theme_override_font_sizes/font_size = 38
-text = "NEON JACKPOT"
+text = "CRAZY SLOTS"
 horizontal_alignment = 1
+
+[node name="MarqueeLabel" type="Label" parent="UILayer/SlotsUI" unique_id=333444555]
+layout_mode = 0
+anchor_left = 0.25
+anchor_top = 0.145
+anchor_right = 0.75
+anchor_bottom = 0.195
+theme_override_colors/font_color = Color(0.98, 0.68, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "MEGA JACKPOT REELS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=1709872831]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.3
-anchor_top = 0.17
+anchor_top = 0.21
 anchor_right = 0.7
-anchor_bottom = 0.2
+anchor_bottom = 0.26
 theme_override_font_sizes/font_size = 18
-text = "4x5 Premium Reels"
+text = "High Roller 4x5 Reels"
 horizontal_alignment = 1
+
+[node name="ReelBackdrop" type="ColorRect" parent="UILayer/SlotsUI" unique_id=212345678]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.205
+anchor_right = 0.83
+anchor_bottom = 0.785
+color = Color(0.12, 0.04, 0.02, 0.92)
 
 [node name="ReelGrid" type="GridContainer" parent="UILayer/SlotsUI" unique_id=637675004]
 custom_minimum_size = Vector2(760, 430)
@@ -506,7 +551,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1, 0.09, 0.18, 0.97)
+color = Color(0.05, 0.02, 0.01, 0.95)
 metadata/_edit_lock_ = true
 
 [node name="HUDControls" type="HBoxContainer" parent="UILayer/SlotsUI/HUD" unique_id=617683592]

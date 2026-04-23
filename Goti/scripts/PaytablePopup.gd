@@ -18,20 +18,71 @@ const SYMBOL_NAMES: Dictionary[int, String] = {
 }
 const WILD_SYMBOL_ID: int = 6
 const MAX_SYMBOL_ICON_SIZE: int = 18
+const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
+const COWBOY_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
+const PAYTABLE_PANEL_COLOR: Color = Color(0.07, 0.02, 0.01, 0.95)
+const CARD_BG_COLOR: Color = Color(0.1, 0.04, 0.02, 0.82)
+const CARD_BORDER_COLOR: Color = Color(0.96, 0.74, 0.28, 0.95)
+const BUTTON_BG_COLOR: Color = Color(0.18, 0.07, 0.03, 0.96)
+const BUTTON_ACTIVE_COLOR: Color = Color(0.98, 0.72, 0.25, 1)
+const TEXT_GOLD_COLOR: Color = Color(0.99, 0.86, 0.52, 1)
+const TEXT_LIGHT_COLOR: Color = Color(1, 0.95, 0.85, 1)
 
 var symbol_entry_data: Dictionary[int, Dictionary] = {}
 var bet_buttons: Dictionary[int, Button] = {}
 var active_display_bet: int = 0
 var base_bet_value: int = 1
+var background_image: TextureRect = null
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	background.mouse_filter = Control.MOUSE_FILTER_STOP
+	_create_background_texture()
+	background.color = Color(0, 0, 0, 0.72)
+	var panel: ColorRect = get_node("Panel") as ColorRect
+	if panel:
+		panel.color = PAYTABLE_PANEL_COLOR
+		var glint: TextureRect = panel.get_node("PanelGlint") as TextureRect
+		if glint:
+			glint.modulate = Color(1, 0.85, 0.6, 0.4)
+	var title_label: Label = get_node("Panel/Title") as Label
+	if title_label:
+		title_label.add_theme_font_override("font", COWBOY_FONT)
+		title_label.add_theme_font_size_override("font_size", 26)
+		title_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
+		title_label.add_theme_constant_override("outline_size", 5)
+		title_label.add_theme_color_override("font_outline_color", Color(0.16, 0.04, 0.01))
+	bet_info_label.add_theme_font_override("font", COWBOY_FONT)
+	bet_info_label.add_theme_font_size_override("font_size", 18)
+	bet_info_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
+	var selection_label: Label = get_node("Panel/BetSelection/Label") as Label
+	if selection_label:
+		selection_label.add_theme_font_override("font", COWBOY_FONT)
+		selection_label.add_theme_font_size_override("font_size", 20)
+		selection_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
+	close_button.add_theme_font_override("font", COWBOY_FONT)
+	close_button.add_theme_font_size_override("font_size", 20)
+	close_button.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 	close_button.pressed.connect(_on_close_pressed)
 	payout_list.columns = 2
 	payout_list.set("custom_constants/hseparation", 14)
 	payout_list.set("custom_constants/vseparation", 10)
 	hide()
+
+func _create_background_texture() -> void:
+	if background_image:
+		return
+	background_image = TextureRect.new()
+	background_image.texture = BACKGROUND_TEXTURE
+	background_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	background_image.anchor_left = 0
+	background_image.anchor_top = 0
+	background_image.anchor_right = 1
+	background_image.anchor_bottom = 1
+	background_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	background_image.z_index = -2
+	add_child(background_image)
+	background_image.move_to_back()
 
 func setup(symbol_textures: Dictionary[int, Texture2D], symbol_values: Dictionary[int, int], bet_options: Array[int], current_bet: int, base_bet: int) -> void:
 	symbol_entry_data.clear()
@@ -60,10 +111,12 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		card.custom_minimum_size = Vector2(0, 80)
 		card.set("custom_constants/separation", 6)
 		var card_style: StyleBoxFlat = StyleBoxFlat.new()
-		card_style.bg_color = Color(0.06, 0.06, 0.12, 0.5)
-		card_style.border_color = Color(0.2, 0.3, 0.6, 0.8)
-		card_style.set_border_width_all(1)
-		card_style.set_corner_radius_all(10)
+		card_style.bg_color = CARD_BG_COLOR
+		card_style.border_color = CARD_BORDER_COLOR
+		card_style.set_border_width_all(2)
+		card_style.set_corner_radius_all(16)
+		card_style.shadow_size = 8
+		card_style.shadow_color = Color(0.92, 0.5, 0.12, 0.7)
 		card.add_theme_stylebox_override("panel", card_style)
 
 		var row: HBoxContainer = HBoxContainer.new()
@@ -97,13 +150,16 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 
 		var name_label: Label = Label.new()
 		name_label.text = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id)
+		name_label.add_theme_font_override("font", COWBOY_FONT)
 		name_label.add_theme_font_size_override("font_size", 18)
-		name_label.add_theme_color_override("font_color", Color(0.85, 0.9, 1.0))
+		name_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 		text_column.add_child(name_label)
 
 		var payout_label: Label = Label.new()
 		payout_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		payout_label.add_theme_font_size_override("font_size", 14)
+		payout_label.add_theme_font_override("font", COWBOY_FONT)
+		payout_label.add_theme_font_size_override("font_size", 16)
+		payout_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
 		text_column.add_child(payout_label)
 
 		row.add_child(text_column)
@@ -137,6 +193,25 @@ func _build_bet_buttons(bet_options: Array[int]) -> void:
 		btn.text = "Bet %d" % amount
 		btn.toggle_mode = true
 		btn.custom_minimum_size = Vector2(64, 36)
+		var bet_style: StyleBoxFlat = StyleBoxFlat.new()
+		bet_style.bg_color = BUTTON_BG_COLOR
+		bet_style.border_color = Color(0.95, 0.72, 0.3)
+		bet_style.set_border_width_all(2)
+		bet_style.set_corner_radius_all(10)
+		bet_style.shadow_size = 5
+		bet_style.shadow_color = Color(0.3, 0.1, 0.03, 0.75)
+		btn.add_theme_stylebox_override("normal", bet_style)
+		var bet_pressed_style: StyleBoxFlat = StyleBoxFlat.new()
+		bet_pressed_style.bg_color = BUTTON_ACTIVE_COLOR
+		bet_pressed_style.border_color = Color(0.9, 0.45, 0.16)
+		bet_pressed_style.set_border_width_all(2)
+		bet_pressed_style.set_corner_radius_all(10)
+		bet_pressed_style.shadow_size = 5
+		bet_pressed_style.shadow_color = Color(0.85, 0.5, 0.18, 0.8)
+		btn.add_theme_stylebox_override("pressed", bet_pressed_style)
+		btn.add_theme_font_override("font", COWBOY_FONT)
+		btn.add_theme_color_override("font_color", Color(0.08, 0.02, 0))
+		btn.add_theme_font_size_override("font_size", 18)
 		btn.pressed.connect(_on_display_bet_pressed.bind(amount))
 		bet_buttons[amount] = btn
 		bet_buttons_container.add_child(btn)
@@ -149,6 +224,9 @@ func set_display_bet(amount: int) -> void:
 		var btn: Button = bet_buttons[option]
 		btn.set_pressed(option == amount)
 	var ratio: float = float(amount) / float(base_bet_value)
+	if bet_info_label:
+		var ratio_text: String = "%0.1f" % ratio
+		bet_info_label.text = "Current Bet: %d (%sx base)" % [amount, ratio_text]
 	_refresh_payouts()
 
 func _refresh_payouts() -> void:
