@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://c1s2ns5hmuels"]
 
-[ext_resource type="Script" uid="uid://c84yoaidq7n6y" path="res://Ian/Bonus/Plinko/mapa_plinko.gd" id="1_20qta"]
+[ext_resource type="Script" uid="uid://c84yoaidq7n6y" path="res://Ian/Bonus/Plinko/Main.gd" id="1_20qta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_njcir"]
 size = Vector2(1002.5, 78)
 
-[node name="Node2D" type="Node2D" unique_id=95835559]
+[node name="Main" type="Node2D" unique_id=95835559]
 script = ExtResource("1_20qta")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=378622838]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1503165805]
-position = Vector2(0, 200)
+position = Vector2(575, 567)
 shape = SubResource("RectangleShape2D_njcir")
 debug_color = Color(0.537465, 0.52514577, 0.5992384, 0.41960785)
