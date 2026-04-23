@@ -21,13 +21,13 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	Symbol.C, Symbol.C, Symbol.C,
-	Symbol.D, Symbol.D, Symbol.D,
-	Symbol.E, Symbol.E,
-	Symbol.G,
-	Symbol.Wild
+	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
+	Symbol.E, Symbol.E, Symbol.E, Symbol.E,
+	Symbol.G, Symbol.G, Symbol.G,
+	Symbol.Wild, Symbol.Wild
 ]
 
 # Base symbol values
@@ -38,7 +38,7 @@ const SYMBOL_VALUES: Dictionary[int, int] = {
 	Symbol.D: 9,
 	Symbol.E: 12,
 	Symbol.G: 30,
-	Symbol.Wild: 20
+	Symbol.Wild: 39
 }
 
 # Symbol textures
@@ -133,7 +133,12 @@ func _ready() -> void:
 func spin() -> void:
 	if is_spinning:
 		return
-
+	
+#Restar credits just despres de clicar spin
+	credits -= bet
+	_update_display_grid()
+	_update_ui()
+	
 	is_spinning = true
 	spin_button.disabled = true
 	_set_bet_buttons_disabled(true)
@@ -169,6 +174,8 @@ func _on_bet_button_pressed(amount: int) -> void:
 # Called when spin animation finishes
 func _on_spin_completed() -> void:
 	
+
+	
 	var win_result: Dictionary = _evaluate_wins()
 
 	var base_win: int = win_result.get("total_win", 0) as int
@@ -181,12 +188,18 @@ func _on_spin_completed() -> void:
 	last_win = scaled_win
 
 	# Apply credits
-	credits -= bet
+	
 	credits += scaled_win
 	
 	if credits <= 0:
 		credits = 4
 		
+	if credits < 30:
+		bet = 16
+	if credits < 16:
+		bet = 8
+	if credits < 8:
+		bet = 4
 
 	_update_display_grid()
 	_animate_winning_cells(winning_lines)
@@ -411,6 +424,8 @@ func _process(delta: float) -> void:
 	bet_8_button.disabled = credits < 8
 	bet_16_button.disabled = credits < 16
 	bet_30_button.disabled = credits < 30
+
+	
 
 # Debug print grid
 func _debug_grid() -> void:
