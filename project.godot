@@ -15,6 +15,10 @@ run/main_scene="res://Goti/scenes/SlotMachine.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Script_slot="*uid://bsccwr4lssfix"
+
 [input]
 
 esquerra={

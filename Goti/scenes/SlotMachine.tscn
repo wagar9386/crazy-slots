@@ -1,9 +1,6 @@
 [gd_scene format=3 uid="uid://d1l22hjvdfsbb"]
 
 [ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
-[ext_resource type="Texture2D" uid="uid://cdu7qsjberl6j" path="res://Goti/symbols/cherries.png" id="2_5t3yw"]
-[ext_resource type="Texture2D" uid="uid://cfkiw3t0ywfyj" path="res://Goti/symbols/grapes.png" id="4_y4kgl"]
-[ext_resource type="Texture2D" uid="uid://bwgaolem1jlgb" path="res://Goti/symbols/lemon.png" id="5_1gho0"]
 [ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="6_so65n"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
 [ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://Goti/symbols/wild.png" id="8_3dira"]
@@ -29,7 +26,6 @@ grow_vertical = 2
 metadata/_edit_lock_ = true
 
 [node name="BackgroundPattern" type="TextureRect" parent="UILayer/SlotsUI" unique_id=1991111111]
-modulate = Color(1, 0.86, 0.78, 0.6)
 z_index = -2
 layout_mode = 1
 anchors_preset = 15
@@ -38,7 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_lrutk")
-stretch_mode = 1
+stretch_mode = 4
 
 [node name="BoardGlow" type="ColorRect" parent="UILayer/SlotsUI" unique_id=1168645796]
 layout_mode = 1
@@ -51,21 +47,8 @@ offset_left = -141.23999
 offset_top = -33.4
 offset_right = 140.23999
 offset_bottom = 42.880005
-color = Color(0.85, 0.58, 0.05, 0.38)
+color = Color(0.8509804, 0.5803922, 0.050980393, 0)
 metadata/_edit_lock_ = true
-
-[node name="MachineBoard" type="ColorRect" parent="UILayer/SlotsUI" unique_id=312538190]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.042000003
-anchor_top = 0.095000006
-anchor_right = 0.95800006
-anchor_bottom = 0.98700005
-offset_left = 0.48199463
-offset_top = -0.12500763
-offset_right = 0.51794434
-offset_bottom = -0.22503662
-color = Color(0.04, 0.01, 0.01, 1)
 
 [node name="TitlePanel" type="ColorRect" parent="UILayer/SlotsUI" unique_id=212222333]
 layout_mode = 1
@@ -77,14 +60,18 @@ anchor_bottom = 0.17
 color = Color(0.07, 0.02, 0.01, 0.85)
 
 [node name="TitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=672498583]
-layout_mode = 0
-anchor_left = 0.22
-anchor_top = 0.095
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.22100002
+anchor_top = 0.081
 anchor_right = 0.78
-anchor_bottom = 0.15
+anchor_bottom = 0.16000001
+offset_left = -0.559021
+offset_top = 0.32500076
+offset_right = 0.6199951
 theme_override_colors/font_color = Color(0.95, 0.93, 1, 1)
 theme_override_font_sizes/font_size = 38
-text = "CRAZY SLOTS"
+text = "COWGIRL SLOT"
 horizontal_alignment = 1
 
 [node name="MarqueeLabel" type="Label" parent="UILayer/SlotsUI" unique_id=333444555]
@@ -95,7 +82,7 @@ anchor_right = 0.75
 anchor_bottom = 0.195
 theme_override_colors/font_color = Color(0.98, 0.68, 0.18, 1)
 theme_override_font_sizes/font_size = 18
-text = "MEGA JACKPOT REELS"
+text = "HIGH NOON JACKPOT REELS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -107,18 +94,8 @@ anchor_top = 0.21
 anchor_right = 0.7
 anchor_bottom = 0.26
 theme_override_font_sizes/font_size = 18
-text = "High Roller 4x5 Reels"
+text = "WESTERN HIGH ROLLER 4X5 REELS"
 horizontal_alignment = 1
-
-[node name="ReelBackdrop" type="ColorRect" parent="UILayer/SlotsUI" unique_id=212345678]
-z_index = -1
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.205
-anchor_right = 0.83
-anchor_bottom = 0.785
-color = Color(0.12, 0.04, 0.02, 0.92)
 
 [node name="ReelGrid" type="GridContainer" parent="UILayer/SlotsUI" unique_id=637675004]
 custom_minimum_size = Vector2(760, 430)
@@ -149,7 +126,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -189,7 +165,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -209,7 +184,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -289,7 +263,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -329,7 +302,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -349,7 +321,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -429,7 +400,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_5t3yw")
 expand_mode = 1
 stretch_mode = 5
 
@@ -469,7 +439,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("4_y4kgl")
 expand_mode = 1
 stretch_mode = 5
 
@@ -489,7 +458,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("5_1gho0")
 expand_mode = 1
 stretch_mode = 5
 
@@ -572,7 +540,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.92, 0.94, 1, 1)
 theme_override_font_sizes/font_size = 22
-text = "Credits: 100"
+text = "CREDITS: 100"
 vertical_alignment = 1
 
 [node name="Spacer3" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=210867269]
@@ -584,7 +552,7 @@ custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
 theme_override_font_sizes/font_size = 20
-text = "Win: 4"
+text = "WIN: 4"
 vertical_alignment = 1
 
 [node name="BetButtons" type="HBoxContainer" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=1975489356]
@@ -636,7 +604,7 @@ custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
 theme_override_font_sizes/font_size = 20
-text = "Bet: 4"
+text = "BET: 4"
 vertical_alignment = 1
 
 [node name="Spacer2" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls" unique_id=587625110]

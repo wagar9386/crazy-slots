@@ -8,18 +8,20 @@ class_name PaytablePopup
 @onready var close_button: Button = $Panel/CloseButton
 
 const SYMBOL_NAMES: Dictionary[int, String] = {
-	0: "Cherries",
-	1: "Orange",
-	2: "Grapes",
-	3: "Lemon",
-	4: "Diamond",
-	5: "Seven",
-	6: "Wild"
+	0: "COWBOY BOOTS",
+	1: "DYNAMITE",
+	2: "REVOLVER",
+	3: "STETSON HAT",
+	4: "MONEY BAG",
+	5: "LUCKY SEVEN",
+	6: "WILD"
 }
 const WILD_SYMBOL_ID: int = 6
 const MAX_SYMBOL_ICON_SIZE: int = 18
 const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
-const COWBOY_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
+const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
+const COWBOY_OUTLAW_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw.otf")
+const COWBOY_OUTLAW_TEXTURED_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw Textured.otf")
 const PAYTABLE_PANEL_COLOR: Color = Color(0.07, 0.02, 0.01, 0.95)
 const CARD_BG_COLOR: Color = Color(0.1, 0.04, 0.02, 0.82)
 const CARD_BORDER_COLOR: Color = Color(0.96, 0.74, 0.28, 0.95)
@@ -47,22 +49,24 @@ func _ready() -> void:
 			glint.modulate = Color(1, 0.85, 0.6, 0.4)
 	var title_label: Label = get_node("Panel/Title") as Label
 	if title_label:
-		title_label.add_theme_font_override("font", COWBOY_FONT)
+		title_label.text = "COWBOY & COWGIRL PAYTABLE"
+		title_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
 		title_label.add_theme_font_size_override("font_size", 26)
 		title_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 		title_label.add_theme_constant_override("outline_size", 5)
 		title_label.add_theme_color_override("font_outline_color", Color(0.16, 0.04, 0.01))
-	bet_info_label.add_theme_font_override("font", COWBOY_FONT)
+	bet_info_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 	bet_info_label.add_theme_font_size_override("font_size", 18)
 	bet_info_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
 	var selection_label: Label = get_node("Panel/BetSelection/Label") as Label
 	if selection_label:
-		selection_label.add_theme_font_override("font", COWBOY_FONT)
+		selection_label.add_theme_font_override("font", COWBOY_OUTLAW_TEXTURED_FONT)
 		selection_label.add_theme_font_size_override("font_size", 20)
 		selection_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
-	close_button.add_theme_font_override("font", COWBOY_FONT)
+	close_button.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 	close_button.add_theme_font_size_override("font_size", 20)
 	close_button.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
+	close_button.text = close_button.text.to_upper()
 	close_button.pressed.connect(_on_close_pressed)
 	payout_list.columns = 2
 	payout_list.set("custom_constants/hseparation", 14)
@@ -82,7 +86,6 @@ func _create_background_texture() -> void:
 	background_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	background_image.z_index = -2
 	add_child(background_image)
-	background_image.move_to_back()
 
 func setup(symbol_textures: Dictionary[int, Texture2D], symbol_values: Dictionary[int, int], bet_options: Array[int], current_bet: int, base_bet: int) -> void:
 	symbol_entry_data.clear()
@@ -149,15 +152,16 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		text_column.set("custom_constants/separation", 3)
 
 		var name_label: Label = Label.new()
-		name_label.text = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id)
-		name_label.add_theme_font_override("font", COWBOY_FONT)
+		var symbol_name: String = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id).to_upper()
+		name_label.text = symbol_name
+		name_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 		name_label.add_theme_font_size_override("font_size", 18)
 		name_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 		text_column.add_child(name_label)
 
 		var payout_label: Label = Label.new()
 		payout_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		payout_label.add_theme_font_override("font", COWBOY_FONT)
+		payout_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 		payout_label.add_theme_font_size_override("font_size", 16)
 		payout_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
 		text_column.add_child(payout_label)
@@ -190,7 +194,8 @@ func _build_bet_buttons(bet_options: Array[int]) -> void:
 		if amount <= 0:
 			continue
 		var btn: Button = Button.new()
-		btn.text = "Bet %d" % amount
+		btn.text = "BET %d" % amount
+		btn.text = btn.text.to_upper()
 		btn.toggle_mode = true
 		btn.custom_minimum_size = Vector2(64, 36)
 		var bet_style: StyleBoxFlat = StyleBoxFlat.new()
@@ -209,7 +214,7 @@ func _build_bet_buttons(bet_options: Array[int]) -> void:
 		bet_pressed_style.shadow_size = 5
 		bet_pressed_style.shadow_color = Color(0.85, 0.5, 0.18, 0.8)
 		btn.add_theme_stylebox_override("pressed", bet_pressed_style)
-		btn.add_theme_font_override("font", COWBOY_FONT)
+		btn.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 		btn.add_theme_color_override("font_color", Color(0.08, 0.02, 0))
 		btn.add_theme_font_size_override("font_size", 18)
 		btn.pressed.connect(_on_display_bet_pressed.bind(amount))
@@ -226,7 +231,7 @@ func set_display_bet(amount: int) -> void:
 	var ratio: float = float(amount) / float(base_bet_value)
 	if bet_info_label:
 		var ratio_text: String = "%0.1f" % ratio
-		bet_info_label.text = "Current Bet: %d (%sx base)" % [amount, ratio_text]
+		bet_info_label.text = "CURRENT BET: %d (%sX BASE)" % [amount, ratio_text]
 	_refresh_payouts()
 
 func _refresh_payouts() -> void:
@@ -245,7 +250,7 @@ func _refresh_payouts() -> void:
 			var payouts: Array[int] = []
 			for multiplier in multipliers:
 				payouts.append(_scaled_payout(base_value, multiplier))
-			payout_label.text = "3x: %d\n4x: %d\n5x: %d" % [payouts[0], payouts[1], payouts[2]]
+			payout_label.text = "3X: %d\n4X: %d\n5X: %d" % [payouts[0], payouts[1], payouts[2]]
 
 func _scaled_payout(base_value: int, multiplier: int) -> int:
 	var raw_value: int = base_value * multiplier

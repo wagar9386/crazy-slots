@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bat58nx3o4o"
-path="res://.godot/imported/orange.png-b88e1aab63a9d0ad79f0225c46688027.ctex"
+uid="uid://bn16duv6yfyvv"
+path="res://.godot/imported/western_icon_hat_01.png-2fcaf3e818d24c202108d5132aeef66c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Goti/symbols/orange.png"
-dest_files=["res://.godot/imported/orange.png-b88e1aab63a9d0ad79f0225c46688027.ctex"]
+source_file="res://Goti/symbols/western_icon_hat_01.png"
+dest_files=["res://.godot/imported/western_icon_hat_01.png-2fcaf3e818d24c202108d5132aeef66c.ctex"]
 
 [params]
 

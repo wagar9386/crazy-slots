@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdu7qsjberl6j"
-path="res://.godot/imported/cherries.png-59396e69e3f051107f22581c1a61d67b.ctex"
+uid="uid://boe261lor7nue"
+path="res://.godot/imported/wester_icon_dynamite_01.png-fbfdf29b6c8e392582e4f5a1df8d59ae.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Goti/symbols/cherries.png"
-dest_files=["res://.godot/imported/cherries.png-59396e69e3f051107f22581c1a61d67b.ctex"]
+source_file="res://Goti/symbols/wester_icon_dynamite_01.png"
+dest_files=["res://.godot/imported/wester_icon_dynamite_01.png-fbfdf29b6c8e392582e4f5a1df8d59ae.ctex"]
 
 [params]
 
