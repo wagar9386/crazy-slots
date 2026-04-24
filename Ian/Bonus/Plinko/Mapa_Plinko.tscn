@@ -2,15 +2,39 @@
 
 [ext_resource type="Script" uid="uid://c84yoaidq7n6y" path="res://Ian/Bonus/Plinko/Main.gd" id="1_20qta"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_njcir"]
-size = Vector2(1002.5, 78)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_20qta"]
+a = Vector2(182, -296)
+b = Vector2(-57, 170)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_xt1kn"]
+a = Vector2(31, -10)
+b = Vector2(266, 464)
 
 [node name="Main" type="Node2D" unique_id=95835559]
 script = ExtResource("1_20qta")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=378622838]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=781238583]
+position = Vector2(300, 320)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1503165805]
-position = Vector2(575, 567)
-shape = SubResource("RectangleShape2D_njcir")
-debug_color = Color(0.537465, 0.52514577, 0.5992384, 0.41960785)
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1494670054]
+z_index = -1
+scale = Vector2(2.4778337, 20.923088)
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D2" unique_id=32141271]
+offset_left = -458.0614
+offset_top = -34.172775
+offset_right = 747.9386
+offset_bottom = 612.8272
+color = Color(0.02024119, 1.9107909e-05, 0.098174624, 1)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=499340726]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1090938068]
+position = Vector2(73, 403)
+shape = SubResource("SegmentShape2D_20qta")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="." unique_id=238208194]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=711280891]
+position = Vector2(329, 114)
+shape = SubResource("SegmentShape2D_xt1kn")

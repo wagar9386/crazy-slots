@@ -1,19 +1,25 @@
 [gd_scene format=3 uid="uid://0kk60w4mcfrv"]
 
+[ext_resource type="Script" uid="uid://c88a50mib632n" path="res://Ian/Bonus/Plinko/ball.gd" id="1_eaxm0"]
 [ext_resource type="Texture2D" uid="uid://ceq5isfcuq45a" path="res://Ian/Bonus/Plinko/Sprites/Ball.png" id="1_s7118"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_22ksv"]
-bounce = 0.6
+bounce = 0.4
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_s7118"]
-radius = 7.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_eaxm0"]
+radius = 6.0
 
 [node name="Ball" type="RigidBody2D" unique_id=1024531767]
+collision_layer = 2
+collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_22ksv")
+continuous_cd = 2
+script = ExtResource("1_eaxm0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=816036238]
+self_modulate = Color(1, 0.34219137, 0.2758705, 0.78431374)
+scale = Vector2(0.37499997, 0.37499997)
+texture = ExtResource("1_s7118")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=158651622]
-shape = SubResource("CircleShape2D_s7118")
-
-[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D" unique_id=816036238]
-scale = Vector2(0.4375, 0.4375)
-texture = ExtResource("1_s7118")
+shape = SubResource("CircleShape2D_eaxm0")

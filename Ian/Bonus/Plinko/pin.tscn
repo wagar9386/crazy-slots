@@ -1,8 +1,17 @@
 [gd_scene format=3 uid="uid://cag25ntls6xhx"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_sd2hg"]
+[ext_resource type="Texture2D" uid="uid://ceq5isfcuq45a" path="res://Ian/Bonus/Plinko/Sprites/Ball.png" id="1_h0h8s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h0h8s"]
+radius = 3.0
 
 [node name="Pin" type="StaticBody2D" unique_id=991568222]
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2077899296]
-shape = SubResource("CircleShape2D_sd2hg")
+shape = SubResource("CircleShape2D_h0h8s")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1530184282]
+self_modulate = Color(1, 1, 1, 0.78431374)
+scale = Vector2(0.18749999, 0.18749999)
+texture = ExtResource("1_h0h8s")
