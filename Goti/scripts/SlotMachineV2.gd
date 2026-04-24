@@ -96,25 +96,26 @@ var paytable_overlay: PaytablePopup
 # UI references
 @onready var reel_grid: GridContainer = get_node_or_null("UILayer/SlotsUI/ReelGrid") as GridContainer
 @onready var hud_controls: HBoxContainer = get_node_or_null("UILayer/SlotsUI/HUD/HUDControls") as HBoxContainer
-@onready var credits_label: Label = hud_controls.get_node_or_null("CreditsLabel") as Label
-@onready var win_label: Label = hud_controls.get_node_or_null("WinLabel") as Label
-@onready var spin_button: Button = hud_controls.get_node_or_null("SpinButton") as Button
-@onready var paytable_button: Button = hud_controls.get_node_or_null("PaytableButton") as Button
+@onready var credits_label: Label = null
+@onready var win_label: Label = null
+@onready var spin_button: Button = null
+@onready var paytable_button: Button = null
 @onready var ui_root: Control = get_node_or_null("UILayer/SlotsUI") as Control
 @onready var title_panel: ColorRect = get_node_or_null("UILayer/SlotsUI/TitlePanel") as ColorRect
 @onready var marquee_label: Label = get_node_or_null("UILayer/SlotsUI/MarqueeLabel") as Label
 @onready var reel_backdrop: ColorRect = get_node_or_null("UILayer/SlotsUI/ReelBackdrop") as ColorRect
 @onready var background_pattern: TextureRect = get_node_or_null("UILayer/SlotsUI/BackgroundPattern") as TextureRect
 
-@onready var bet_buttons_container: HBoxContainer = hud_controls.get_node_or_null("BetButtons") as HBoxContainer
-@onready var bet_label: Label = bet_buttons_container.get_node_or_null("BetLabel") as Label
-@onready var bet_4_button: Button = bet_buttons_container.get_node_or_null("Bet4Button") as Button
-@onready var bet_8_button: Button = bet_buttons_container.get_node_or_null("Bet8Button") as Button
-@onready var bet_16_button: Button = bet_buttons_container.get_node_or_null("Bet16Button") as Button
-@onready var bet_30_button: Button = bet_buttons_container.get_node_or_null("Bet30Button") as Button
+@onready var bet_buttons_container: HBoxContainer = null
+@onready var bet_label: Label = null
+@onready var bet_4_button: Button = null
+@onready var bet_8_button: Button = null
+@onready var bet_16_button: Button = null
+@onready var bet_30_button: Button = null
 
 func _ready() -> void:
 	randomize()
+	_cache_ui_nodes()
 
 	if not _validate_ui_nodes():
 		push_warning("SlotMachineV2: Missing UI nodes, slot setup aborted.")
@@ -357,18 +358,59 @@ func _clear_cell_highlights() -> void:
 
 # Update UI
 func _update_ui() -> void:
-	credits_label.text = "CREDITS: %d" % credits
-	bet_label.text = "BET: %d" % bet
-	win_label.text = "WIN: %d" % last_win
-	
+	if credits_label:
+		credits_label.text = "CREDITS: %d" % credits
+	if bet_label:
+		bet_label.text = "BET: %d" % bet
+	if win_label:
+		win_label.text = "WIN: %d" % last_win
 
-	
-	bet_4_button.button_pressed = bet == 4
-	bet_8_button.button_pressed = bet == 8
-	bet_16_button.button_pressed = bet == 16
-	bet_30_button.button_pressed = bet == 30
+	if bet_4_button:
+		bet_4_button.button_pressed = bet == 4
+	if bet_8_button:
+		bet_8_button.button_pressed = bet == 8
+	if bet_16_button:
+		bet_16_button.button_pressed = bet == 16
+	if bet_30_button:
+		bet_30_button.button_pressed = bet == 30
 	if paytable_overlay:
 		paytable_overlay.set_display_bet(bet)
+
+
+	if bet_4_button:
+		bet_4_button.button_pressed = bet == 4
+	if bet_8_button:
+		bet_8_button.button_pressed = bet == 8
+	if bet_16_button:
+		bet_16_button.button_pressed = bet == 16
+	if bet_30_button:
+		bet_30_button.button_pressed = bet == 30
+
+	if paytable_overlay:
+		paytable_overlay.set_display_bet(bet)
+
+func _cache_ui_nodes() -> void:
+	if hud_controls:
+		credits_label = hud_controls.get_node_or_null("CreditsLabel") as Label
+		win_label = hud_controls.get_node_or_null("WinLabel") as Label
+		spin_button = hud_controls.get_node_or_null("SpinButton") as Button
+		paytable_button = hud_controls.get_node_or_null("PaytableButton") as Button
+		bet_buttons_container = hud_controls.get_node_or_null("BetButtons") as HBoxContainer
+	else:
+		bet_buttons_container = null
+	
+	if bet_buttons_container:
+		bet_label = bet_buttons_container.get_node_or_null("BetLabel") as Label
+		bet_4_button = bet_buttons_container.get_node_or_null("Bet4Button") as Button
+		bet_8_button = bet_buttons_container.get_node_or_null("Bet8Button") as Button
+		bet_16_button = bet_buttons_container.get_node_or_null("Bet16Button") as Button
+		bet_30_button = bet_buttons_container.get_node_or_null("Bet30Button") as Button
+	else:
+		bet_label = null
+		bet_4_button = null
+		bet_8_button = null
+		bet_16_button = null
+		bet_30_button = null
 
 func _validate_ui_nodes() -> bool:
 	var mapping: Dictionary[String, Node] = {
@@ -390,7 +432,7 @@ func _validate_ui_nodes() -> bool:
 		if not mapping[name]:
 			missing.append(name)
 	if missing.size() > 0:
-		push_warning("SlotMachineV2: Missing UI nodes (%s)." % missing.join(", "))
+		push_warning("SlotMachineV2: Missing UI nodes (%s)." % String(", ").join(missing))
 		return false
 	return true
 
@@ -519,6 +561,8 @@ func _apply_visual_polish() -> void:
 		bet_label.add_theme_color_override("font_color", Color(0.97, 0.85, 0.35))
 
 	for btn in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
+		if not btn:
+			continue
 		var bstyle: StyleBoxFlat = StyleBoxFlat.new()
 		bstyle.bg_color = Color(0.16, 0.06, 0.02)
 		bstyle.border_color = Color(0.95, 0.78, 0.3)
@@ -566,24 +610,26 @@ func _apply_visual_polish() -> void:
 		paytable_button.add_theme_stylebox_override("pressed", paytable_pressed)
 # Enable/disable bet buttons
 func _set_bet_buttons_disabled(disabled: bool) -> void:
-	bet_4_button.disabled = disabled
-	bet_8_button.disabled = disabled
-	bet_16_button.disabled = disabled
-	bet_30_button.disabled = disabled
+	for button in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
+		if button:
+			button.disabled = disabled
 
 func broke_mf(disabled: bool) -> void:
-	bet_8_button.disabled = disabled
-	bet_16_button.disabled = disabled
-	bet_30_button.disabled = disabled
+	for button in [bet_8_button, bet_16_button, bet_30_button]:
+		if button:
+			button.disabled = disabled
 
 func _process(_delta: float) -> void:
 	if is_spinning:
 		return  # don’t run logic while spinning
 
 	# runs every frame when NOT spinning
-	bet_8_button.disabled = credits < 8
-	bet_16_button.disabled = credits < 16
-	bet_30_button.disabled = credits < 30
+	if bet_8_button:
+		bet_8_button.disabled = credits < 8
+	if bet_16_button:
+		bet_16_button.disabled = credits < 16
+	if bet_30_button:
+		bet_30_button.disabled = credits < 30
 
 	
 
