@@ -64,14 +64,6 @@ const GLOW_HALO_COLOR: Color = Color(0.94, 0.62, 0.2, 0.55)
 const STONE_EDGE_COLOR: Color = Color(0.85, 0.55, 0.2, 0.6)
 const BURNISHED_BRASS_COLOR: Color = Color(0.93, 0.79, 0.47, 1)
 const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
-const GRID_ALIGNMENT: Dictionary[String, float] = {
-	"left": 0.095,
-	"top": 0.205,
-	"right": 0.905,
-	"bottom": 0.785
-}
-const GRID_SEPARATION: int = 2
-const GRID_MIN_SIZE: Vector2 = Vector2(960, 520)
 
 # Grid data
 var grid: Array = []
@@ -94,8 +86,8 @@ var animator: SlotSpinAnimatorV2
 var paytable_overlay: PaytablePopup
 
 # UI references
-@onready var reel_grid: GridContainer = get_node_or_null("UILayer/SlotsUI/ReelGrid") as GridContainer
-@onready var hud_controls: HBoxContainer = get_node_or_null("UILayer/SlotsUI/HUD/HUDControls") as HBoxContainer
+var reel_grid: GridContainer = null
+var hud_controls: HBoxContainer = null
 @onready var credits_label: Label = null
 @onready var win_label: Label = null
 @onready var spin_button: Button = null
@@ -377,19 +369,10 @@ func _update_ui() -> void:
 		paytable_overlay.set_display_bet(bet)
 
 
-	if bet_4_button:
-		bet_4_button.button_pressed = bet == 4
-	if bet_8_button:
-		bet_8_button.button_pressed = bet == 8
-	if bet_16_button:
-		bet_16_button.button_pressed = bet == 16
-	if bet_30_button:
-		bet_30_button.button_pressed = bet == 30
-
-	if paytable_overlay:
-		paytable_overlay.set_display_bet(bet)
-
 func _cache_ui_nodes() -> void:
+	reel_grid = get_node_or_null("UILayer/SlotsUI/ReelGrid") as GridContainer
+	hud_controls = get_node_or_null("UILayer/SlotsUI/HUD/HUDControls") as HBoxContainer
+
 	if hud_controls:
 		credits_label = hud_controls.get_node_or_null("CreditsLabel") as Label
 		win_label = hud_controls.get_node_or_null("WinLabel") as Label
@@ -397,8 +380,12 @@ func _cache_ui_nodes() -> void:
 		paytable_button = hud_controls.get_node_or_null("PaytableButton") as Button
 		bet_buttons_container = hud_controls.get_node_or_null("BetButtons") as HBoxContainer
 	else:
+		credits_label = null
+		win_label = null
+		spin_button = null
+		paytable_button = null
 		bet_buttons_container = null
-	
+
 	if bet_buttons_container:
 		bet_label = bet_buttons_container.get_node_or_null("BetLabel") as Label
 		bet_4_button = bet_buttons_container.get_node_or_null("Bet4Button") as Button
@@ -435,22 +422,6 @@ func _validate_ui_nodes() -> bool:
 		push_warning("SlotMachineV2: Missing UI nodes (%s)." % String(", ").join(missing))
 		return false
 	return true
-
-func _align_reel_grid() -> void:
-	if not reel_grid:
-		return
-	reel_grid.anchor_left = GRID_ALIGNMENT["left"]
-	reel_grid.anchor_top = GRID_ALIGNMENT["top"]
-	reel_grid.anchor_right = GRID_ALIGNMENT["right"]
-	reel_grid.anchor_bottom = GRID_ALIGNMENT["bottom"]
-	reel_grid.offset_left = 0
-	reel_grid.offset_top = 0
-	reel_grid.offset_right = 0
-	reel_grid.offset_bottom = 0
-	reel_grid.custom_minimum_size = GRID_MIN_SIZE
-	reel_grid.set("custom_constants/hseparation", GRID_SEPARATION)
-	reel_grid.set("custom_constants/vseparation", GRID_SEPARATION)
-	_clear_symbol_backgrounds()
 
 func _clear_symbol_backgrounds() -> void:
 	if not reel_grid:
@@ -489,13 +460,13 @@ func _apply_visual_polish() -> void:
 		hud_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	if reel_grid:
-		_align_reel_grid()
+		_clear_symbol_backgrounds()
 
 	var title: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel") as Label
 	if title:
-		title.text = "COWBOY & COWGIRL REELS"
+		title.text = "COWGIRL SLOTS"
 		title.add_theme_font_override("font", COWBOY_MOVIE_FONT)
-		title.add_theme_font_size_override("font_size", 48)
+		title.add_theme_font_size_override("font_size", 69)
 		title.add_theme_color_override("font_color", GOLDEN_METAL)
 		title.add_theme_constant_override("outline_size", 12)
 		title.add_theme_color_override("font_outline_color", Color(0.18, 0.05, 0))
