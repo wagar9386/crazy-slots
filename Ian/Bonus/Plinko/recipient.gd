@@ -4,5 +4,6 @@ extends Area2D
 
 func _on_body_entered(body):
 	if body.name == "Ball":
-		Script_slot.apply_win(multiplier)
+		var win = Script_slot.bet * multiplier
+		Script_slot.credits += win
 		body.queue_free()

@@ -4,6 +4,9 @@ var pin_scene = preload("res://Ian/Bonus/Plinko/pin.tscn")
 var ball_scene = preload("res://Ian/Bonus/Plinko/ball.tscn")
 var slot_scene = preload("res://Ian/Bonus/Plinko/recipient.tscn")
 
+@onready var label = $CanvasLayer/Label
+
+
 var rows = 16
 var spacing_x = 32
 var spacing_y = 32
@@ -21,34 +24,38 @@ func create_pins():
 		for x in range(3 + y):
 			var pin = pin_scene.instantiate()
 			add_child(pin)
-			
+
 			pin.position = Vector2(
 				start_x + (x - (3 + y - 1) / 2.0) * spacing_x,
 				start_y + y * spacing_y
 			)
 
 func create_slots():
-	var y_pos = start_y + rows * spacing_y + -15
-	
+	var y_pos = start_y + rows * spacing_y + 40
+
 	for i in range(rows + 1):
 		var slot = slot_scene.instantiate()
 		add_child(slot)
-		
+
 		slot.position = Vector2(
 			start_x + (i - rows / 2.0) * spacing_x,
 			y_pos
 		)
-		
-		# Assignar multiplicador
-		if i < multipliers.size():
-			slot.multiplier = multipliers[i]
+
+		slot.multiplier = multipliers[i]
 
 func spawn_ball():
 	var ball = ball_scene.instantiate()
 	add_child(ball)
-	
+
 	ball.position = Vector2(start_x, 50)
 
 func _input(event):
 	if event.is_pressed():
 		spawn_ball()
+
+func _process(delta):
+	label.text = "Coins: " + str(Script_slot.credits)
+	
+func _process(delta):
+	label.text = "Coins: " + str(Script_slot.credits)

@@ -48,7 +48,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=711280891]
-position = Vector2(329, 114)
+position = Vector2(324, 114)
 shape = SubResource("SegmentShape2D_xt1kn")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=677509868]
