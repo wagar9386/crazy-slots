@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c84yoaidq7n6y" path="res://Ian/Bonus/Plinko/Main.gd" id="1_20qta"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_20qta"]
+radius = 4.4403906
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_20qta"]
 a = Vector2(182, -296)
