@@ -13,10 +13,9 @@ var spacing_y = 32
 var start_x = 300
 var start_y = 100
 
-var multipliers = [0, 0, 1, 2, 5, 10, 20, 50, 100, 50, 20, 10, 5, 2, 1, 0, 0]
+var multipliers = [50, 10, 5, 1, 0, -1, -2, -5, -10, -5, -2, -1, 0, 1, 5, 10, 50]
 
 func _ready():
-	print(get_node(".").get_children())
 	create_pins()
 	create_slots()
 
@@ -32,7 +31,7 @@ func create_pins():
 			)
 
 func create_slots():
-	var y_pos = start_y + rows * spacing_y + 40
+	var y_pos = start_y + rows * spacing_y + -10
 
 	for i in range(rows + 1):
 		var slot = slot_scene.instantiate()
@@ -44,6 +43,7 @@ func create_slots():
 		)
 
 		slot.multiplier = multipliers[i]
+		slot.update_label()
 
 func spawn_ball():
 	var ball = ball_scene.instantiate()
