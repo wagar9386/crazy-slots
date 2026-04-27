@@ -16,6 +16,7 @@ var start_y = 100
 var multipliers = [0, 0, 1, 2, 5, 10, 20, 50, 100, 50, 20, 10, 5, 2, 1, 0, 0]
 
 func _ready():
+	print(get_node(".").get_children())
 	create_pins()
 	create_slots()
 
@@ -54,8 +55,5 @@ func _input(event):
 	if event.is_pressed():
 		spawn_ball()
 
-func _process(delta):
-	label.text = "Coins: " + str(Script_slot.credits)
-	
 func _process(delta):
 	label.text = "Coins: " + str(Script_slot.credits)
