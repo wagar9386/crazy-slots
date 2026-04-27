@@ -17,10 +17,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -11.0
-offset_top = -10.0
-offset_right = 16.0
-offset_bottom = 17.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
@@ -64,73 +60,44 @@ color = Color(0.07, 0.02, 0.01, 0.85)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.22100002
-anchor_top = 0.059000004
+anchor_top = -0.09200001
 anchor_right = 0.78000003
-anchor_bottom = 0.13800001
-offset_left = -1.559021
-offset_top = 0.17499542
-offset_right = -0.38006592
-offset_bottom = -0.15000153
+anchor_bottom = -0.015000001
+offset_left = -17.59201
+offset_top = 84.616005
+offset_right = -16.413086
+offset_bottom = 87.72
+rotation = -0.05235988
 theme_override_colors/font_color = Color(0.95, 0.93, 1, 1)
 theme_override_font_sizes/font_size = 38
 text = "COWGIRL SLOT"
 horizontal_alignment = 1
-
-[node name="MarqueeLabel" type="Label" parent="UILayer/SlotsUI" unique_id=333444555]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.25
-anchor_top = 0.13000001
-anchor_right = 0.754
-anchor_bottom = 0.18
-offset_left = 5.25
-offset_top = 0.24999237
-offset_right = 0.5339966
-offset_bottom = 0.24999237
-theme_override_colors/font_color = Color(0.98, 0.68, 0.18, 1)
-theme_override_font_sizes/font_size = 18
-text = "HIGH NOON JACKPOT REELS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SubtitleLabel" type="Label" parent="UILayer/SlotsUI" unique_id=1709872831]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.3
-anchor_top = 0.21
-anchor_right = 0.7
-anchor_bottom = 0.26
-offset_left = 26.779999
-offset_top = -20.75
-offset_right = 26.779968
-offset_bottom = -20.75
-theme_override_font_sizes/font_size = 18
-text = "WESTERN HIGH ROLLER 4X5 REELS"
-horizontal_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="ReelGrid" type="GridContainer" parent="UILayer/SlotsUI" unique_id=637675004]
-custom_minimum_size = Vector2(620, 360)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.28
-anchor_top = 0.27
-anchor_right = 0.72
-anchor_bottom = 0.72
-offset_left = -36.119995
-offset_top = -42.25
-offset_right = 65.119995
-offset_bottom = 13.9999695
+anchor_left = 0.21800001
+anchor_top = 0.18100001
+anchor_right = 0.808
+anchor_bottom = 0.71500003
+offset_left = -3.1360168
+offset_top = -9.28801
+offset_right = -22.81604
+offset_bottom = -9.710999
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 5
+metadata/_edit_lock_ = true
 
 [node name="Cell1" type="ColorRect" parent="UILayer/SlotsUI/ReelGrid" unique_id=651131245]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell1" unique_id=701160625]
 layout_mode = 0
@@ -150,6 +117,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell2" unique_id=1515636901]
 layout_mode = 0
@@ -170,11 +138,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell3" unique_id=322351703]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Symbol" type="TextureRect" parent="UILayer/SlotsUI/ReelGrid/Cell3/Center" unique_id=1371000058]
 custom_minimum_size = Vector2(88, 88)
@@ -189,6 +161,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell4" unique_id=242494012]
 layout_mode = 0
@@ -208,6 +181,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell5" unique_id=1821876951]
 layout_mode = 0
@@ -228,6 +202,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell6" unique_id=103764120]
 layout_mode = 0
@@ -248,6 +223,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell7" unique_id=1463396442]
 layout_mode = 0
@@ -268,6 +244,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell8" unique_id=600511505]
 layout_mode = 0
@@ -287,6 +264,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell9" unique_id=2008589197]
 layout_mode = 0
@@ -307,6 +285,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell10" unique_id=1525738258]
 layout_mode = 0
@@ -326,6 +305,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell11" unique_id=2129178639]
 layout_mode = 0
@@ -345,6 +325,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell12" unique_id=667758502]
 layout_mode = 0
@@ -365,6 +346,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell13" unique_id=1776343430]
 layout_mode = 0
@@ -385,6 +367,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell14" unique_id=488284012]
 layout_mode = 0
@@ -405,6 +388,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell15" unique_id=1893433778]
 layout_mode = 0
@@ -424,6 +408,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell16" unique_id=1287836327]
 layout_mode = 0
@@ -444,6 +429,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell17" unique_id=505235123]
 layout_mode = 0
@@ -463,6 +449,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell18" unique_id=1800758665]
 layout_mode = 0
@@ -482,6 +469,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell19" unique_id=248438446]
 layout_mode = 0
@@ -502,11 +490,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
+metadata/_edit_lock_ = true
 
 [node name="Center" type="CenterContainer" parent="UILayer/SlotsUI/ReelGrid/Cell20" unique_id=1961319338]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Symbol" type="TextureRect" parent="UILayer/SlotsUI/ReelGrid/Cell20/Center" unique_id=327477463]
 custom_minimum_size = Vector2(88, 88)

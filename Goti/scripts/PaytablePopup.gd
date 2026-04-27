@@ -17,7 +17,13 @@ const SYMBOL_NAMES: Dictionary[int, String] = {
 	6: "WILD"
 }
 const WILD_SYMBOL_ID: int = 6
-const MAX_SYMBOL_ICON_SIZE: int = 18
+const SYMBOL_COLUMNS: int = 4
+const SYMBOL_CARD_MIN_WIDTH: int = 160
+const SYMBOL_CARD_MIN_HEIGHT: int = 108
+const SYMBOL_CARD_SEPARATION_H: int = 12
+const SYMBOL_CARD_SEPARATION_V: int = 10
+const SYMBOL_ICON_TARGET_SIZE: Vector2 = Vector2(64, 64)
+const MAX_SYMBOL_ICON_SIZE: int = 64
 const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
 const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
 const COWBOY_OUTLAW_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw.otf")
@@ -68,9 +74,9 @@ func _ready() -> void:
 	close_button.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 	close_button.text = close_button.text.to_upper()
 	close_button.pressed.connect(_on_close_pressed)
-	payout_list.columns = 2
-	payout_list.set("custom_constants/hseparation", 14)
-	payout_list.set("custom_constants/vseparation", 10)
+	payout_list.columns = SYMBOL_COLUMNS
+	payout_list.set("custom_constants/hseparation", SYMBOL_CARD_SEPARATION_H)
+	payout_list.set("custom_constants/vseparation", SYMBOL_CARD_SEPARATION_V)
 	hide()
 
 func _create_background_texture() -> void:
@@ -111,8 +117,8 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var card: PanelContainer = PanelContainer.new()
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.size_flags_vertical = Control.SIZE_FILL
-		card.custom_minimum_size = Vector2(0, 80)
-		card.set("custom_constants/separation", 6)
+		card.custom_minimum_size = Vector2(SYMBOL_CARD_MIN_WIDTH, SYMBOL_CARD_MIN_HEIGHT)
+		card.set("custom_constants/separation", 10)
 		var card_style: StyleBoxFlat = StyleBoxFlat.new()
 		card_style.bg_color = CARD_BG_COLOR
 		card_style.border_color = CARD_BORDER_COLOR

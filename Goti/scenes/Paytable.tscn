@@ -36,21 +36,16 @@ grow_vertical = 2
 color = Color(0.06, 0.02, 0.01, 1)
 
 [node name="PanelGlint" type="TextureRect" parent="Panel" unique_id=2134567890]
+modulate = Color(1, 0.86, 0.75, 0.45)
+z_index = -1
 layout_mode = 1
 anchors_preset = 15
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-texture = null
-stretch_mode = 1
-modulate = Color(1, 0.86, 0.75, 0.45)
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 0
-z_index = -1
+stretch_mode = 1
 
 [node name="Title" type="Label" parent="Panel" unique_id=1052970781]
 layout_mode = 1

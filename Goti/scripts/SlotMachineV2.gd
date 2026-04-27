@@ -6,8 +6,11 @@ extends Node2D
 enum Symbol { A, B, C, D, E, G, Wild }
 
 # Grid settings
-const GRID_ROWS: int = 4
-const GRID_COLS: int = 5
+const DEFAULT_GRID_ROWS: int = 4
+const DEFAULT_GRID_COLS: int = 5
+
+var grid_rows: int = DEFAULT_GRID_ROWS
+var grid_cols: int = DEFAULT_GRID_COLS
 
 # Betting
 const MIN_BET: int = 4
@@ -64,6 +67,7 @@ const GLOW_HALO_COLOR: Color = Color(0.94, 0.62, 0.2, 0.55)
 const STONE_EDGE_COLOR: Color = Color(0.85, 0.55, 0.2, 0.6)
 const BURNISHED_BRASS_COLOR: Color = Color(0.93, 0.79, 0.47, 1)
 const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
+const FULL_EXPAND_FLAGS: Control.SizeFlags = Control.SIZE_FILL | Control.SIZE_EXPAND
 
 # Grid data
 var grid: Array = []
@@ -94,6 +98,7 @@ var hud_controls: HBoxContainer = null
 @onready var paytable_button: Button = null
 @onready var ui_root: Control = get_node_or_null("UILayer/SlotsUI") as Control
 @onready var title_panel: ColorRect = get_node_or_null("UILayer/SlotsUI/TitlePanel") as ColorRect
+@onready var title_label: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel") as Label
 @onready var marquee_label: Label = get_node_or_null("UILayer/SlotsUI/MarqueeLabel") as Label
 @onready var reel_backdrop: ColorRect = get_node_or_null("UILayer/SlotsUI/ReelBackdrop") as ColorRect
 @onready var background_pattern: TextureRect = get_node_or_null("UILayer/SlotsUI/BackgroundPattern") as TextureRect
@@ -124,8 +129,7 @@ func _ready() -> void:
 		
 
 	# Setup grid visuals
-	_gather_grid_nodes()
-	_set_symbol_pivots()
+	_apply_grid_configuration()
 
 	# Setup animator
 	animator = ANIMATOR_SCRIPT.new()
@@ -145,9 +149,7 @@ func _ready() -> void:
 	paytable_overlay.call_deferred("setup", SYMBOL_TEXTURES, SYMBOL_VALUES, BET_OPTIONS, bet, MIN_BET)
 
 	# Initial state
-	_generate_grid()
-	_update_display_grid()
-	_clear_cell_highlights()
+	_refresh_grid_content()
 	_update_ui()
 
 # Start spin
@@ -237,7 +239,7 @@ func _evaluate_wins() -> Dictionary:
 	var total_win: int = 0
 	var line_results: Array = []
 
-	for row in range(GRID_ROWS):
+	for row in range(grid_rows):
 		var row_result: Dictionary = _evaluate_row(row)
 
 		var row_win: int = row_result.get("win", 0) as int
@@ -254,7 +256,7 @@ func _evaluate_row(row: int) -> Dictionary:
 	# --- WILD CLUSTER (only from left side) ---
 	var wild_cluster_count: int = 0
 
-	for column in range(GRID_COLS):
+	for column in range(grid_cols):
 		if (grid[column][row] as int) == Symbol.Wild:
 			wild_cluster_count += 1
 		else:
@@ -278,7 +280,7 @@ func _evaluate_row(row: int) -> Dictionary:
 
 	var target_symbol: int = -1
 
-	for column in range(GRID_COLS):
+	for column in range(grid_cols):
 		if (grid[column][row] as int) != Symbol.Wild:
 			target_symbol = grid[column][row] as int
 			break
@@ -289,7 +291,7 @@ func _evaluate_row(row: int) -> Dictionary:
 	if target_symbol != -1:
 
 		# Count consecutive matches (wilds substitute)
-		for column in range(GRID_COLS):
+		for column in range(grid_cols):
 			var current: int = grid[column][row] as int
 
 			if current == target_symbol or current == Symbol.Wild:
@@ -302,7 +304,7 @@ func _evaluate_row(row: int) -> Dictionary:
 
 	else:
 		# All wilds case
-		sub_count = GRID_COLS
+		sub_count = grid_cols
 		sub_win_amount = _calculate_payout(Symbol.Wild, sub_count)
 		target_symbol = Symbol.Wild
 
@@ -342,11 +344,66 @@ func _animate_winning_cells(line_results: Array) -> void:
 
 # Reset highlights
 func _clear_cell_highlights() -> void:
-	for row in range(GRID_ROWS):
-		for column in range(GRID_COLS):
+	for row in range(grid_rows):
+		for column in range(grid_cols):
 			var cell: ColorRect = cell_nodes[row][column]
 			if cell:
 				cell.color = BASE_CELL_COLOR
+
+func set_grid_width(new_width: int) -> void:
+	if new_width <= 0:
+		push_warning("SlotMachineV2: Grid width must be positive.")
+		return
+	grid_cols = new_width
+	_on_grid_dimensions_changed()
+
+func set_grid_height(new_height: int) -> void:
+	if new_height <= 0:
+		push_warning("SlotMachineV2: Grid height must be positive.")
+		return
+	grid_rows = new_height
+	_on_grid_dimensions_changed()
+
+func set_grid_size(new_rows: int, new_columns: int) -> void:
+	if new_rows <= 0 or new_columns <= 0:
+		push_warning("SlotMachineV2: Grid size values must be positive.")
+		return
+	grid_rows = new_rows
+	grid_cols = new_columns
+	_on_grid_dimensions_changed()
+
+func _on_grid_dimensions_changed() -> void:
+	_apply_grid_configuration()
+	_refresh_grid_content()
+
+func _apply_grid_configuration() -> void:
+	if reel_grid:
+		reel_grid.columns = grid_cols
+		_apply_cell_visibility()
+	_gather_grid_nodes()
+	_set_symbol_pivots()
+	if animator:
+		animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES)
+
+func _apply_cell_visibility() -> void:
+	if not reel_grid:
+		return
+	var total_cells: int = reel_grid.get_child_count()
+	var visible_count: int = grid_rows * grid_cols
+	for index in range(total_cells):
+		var cell: CanvasItem = reel_grid.get_child(index) as CanvasItem
+		if cell:
+			cell.visible = index < visible_count
+
+func _refresh_grid_content() -> void:
+	_generate_grid()
+	_update_display_grid()
+	_clear_cell_highlights()
+
+func set_title_rotation(angle_degrees: float) -> void:
+	if not title_label:
+		return
+	title_label.rotation_degrees = angle_degrees
 
 # Update UI
 func _update_ui() -> void:
@@ -415,9 +472,9 @@ func _validate_ui_nodes() -> bool:
 		"Bet30Button": bet_30_button
 	}
 	var missing: Array[String] = []
-	for name in mapping.keys():
-		if not mapping[name]:
-			missing.append(name)
+	for node_name in mapping.keys():
+		if not mapping[node_name]:
+			missing.append(node_name)
 	if missing.size() > 0:
 		push_warning("SlotMachineV2: Missing UI nodes (%s)." % String(", ").join(missing))
 		return false
@@ -435,9 +492,9 @@ func _clear_symbol_backgrounds() -> void:
 func _apply_visual_polish() -> void:
 	if background_pattern:
 		background_pattern.texture = BACKGROUND_TEXTURE
-		background_pattern.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 		background_pattern.modulate = Color(1, 1, 1, 1)
 		background_pattern.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_stretch_background_to_fullscreen()
 
 	if title_panel:
 		title_panel.visible = false
@@ -462,15 +519,14 @@ func _apply_visual_polish() -> void:
 	if reel_grid:
 		_clear_symbol_backgrounds()
 
-	var title: Label = get_node_or_null("UILayer/SlotsUI/TitleLabel") as Label
-	if title:
-		title.text = "COWGIRL SLOTS"
-		title.add_theme_font_override("font", COWBOY_MOVIE_FONT)
-		title.add_theme_font_size_override("font_size", 69)
-		title.add_theme_color_override("font_color", GOLDEN_METAL)
-		title.add_theme_constant_override("outline_size", 12)
-		title.add_theme_color_override("font_outline_color", Color(0.18, 0.05, 0))
-		title.horizontal_alignment = 1
+	if title_label:
+		title_label.text = "COWGIRL SLOTS"
+		title_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
+		title_label.add_theme_font_size_override("font_size", 69)
+		title_label.add_theme_color_override("font_color", GOLDEN_METAL)
+		title_label.add_theme_constant_override("outline_size", 12)
+		title_label.add_theme_color_override("font_outline_color", Color(0.18, 0.05, 0))
+		title_label.horizontal_alignment = 1
 
 	if marquee_label:
 		marquee_label.text = "HIGH NOON JACKPOT REELS"
@@ -579,6 +635,21 @@ func _apply_visual_polish() -> void:
 		paytable_pressed.shadow_size = 6
 		paytable_pressed.shadow_color = Color(0.85, 0.45, 0.12, 0.5)
 		paytable_button.add_theme_stylebox_override("pressed", paytable_pressed)
+
+func _stretch_background_to_fullscreen() -> void:
+	if not background_pattern:
+		return
+	background_pattern.set_anchors_preset(Control.PRESET_FULL_RECT, false)
+	background_pattern.offset_left = 0
+	background_pattern.offset_top = 0
+	background_pattern.offset_right = 0
+	background_pattern.offset_bottom = 0
+	background_pattern.size_flags_horizontal = FULL_EXPAND_FLAGS
+	background_pattern.size_flags_vertical = FULL_EXPAND_FLAGS
+	background_pattern.stretch_mode = TextureRect.STRETCH_SCALE
+	background_pattern.custom_minimum_size = Vector2.ZERO
+	background_pattern.position = Vector2.ZERO
+
 # Enable/disable bet buttons
 func _set_bet_buttons_disabled(disabled: bool) -> void:
 	for button in [bet_4_button, bet_8_button, bet_16_button, bet_30_button]:
@@ -606,9 +677,9 @@ func _process(_delta: float) -> void:
 
 # Debug print grid
 func _debug_grid() -> void:
-	for row in range(GRID_ROWS):
+	for row in range(grid_rows):
 		var line := ""
-		for column in range(GRID_COLS):
+		for column in range(grid_cols):
 			line += "%s " % _symbol_to_label(grid[column][row])
 		print(line)
 
@@ -631,12 +702,12 @@ func _gather_grid_nodes() -> void:
 
 	var cells: Array = reel_grid.get_children()
 
-	for row in range(GRID_ROWS):
+	for row in range(grid_rows):
 		var row_symbols := []
 		var row_cells := []
 
-		for column in range(GRID_COLS):
-			var index: int = (row * GRID_COLS) + column
+		for column in range(grid_cols):
+			var index: int = (row * grid_cols) + column
 			var symbol_node: TextureRect = null
 			var cell: ColorRect = null
 
@@ -657,26 +728,27 @@ func _gather_grid_nodes() -> void:
 
 # Center pivot for scaling animations
 func _set_symbol_pivots() -> void:
-	for row in range(GRID_ROWS):
-		for column in range(GRID_COLS):
+	for row in range(grid_rows):
+		for column in range(grid_cols):
 			var symbol: TextureRect = symbol_nodes[row][column]
 			if symbol:
 				symbol.pivot_offset = symbol.custom_minimum_size * 0.5
 
 # Generate random grid
 func _generate_grid() -> void:
-	grid.resize(GRID_COLS)
+	grid.clear()
+	grid.resize(grid_cols)
 
-	for column in range(GRID_COLS):
+	for column in range(grid_cols):
 		grid[column] = []
 
-		for row in range(GRID_ROWS):
+		for row in range(grid_rows):
 			grid[column].append(get_random_symbol())
 
 # Update visuals
 func _update_display_grid() -> void:
-	for row in range(GRID_ROWS):
-		for column in range(GRID_COLS):
+	for row in range(grid_rows):
+		for column in range(grid_cols):
 			var symbol: int = grid[column][row]
 			var node: TextureRect = symbol_nodes[row][column]
 
