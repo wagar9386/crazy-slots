@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://55tw027vsgoq"
-path="res://.godot/imported/wild.png-38fdb518d1be0789050bff222ed7459b.ctex"
+uid="uid://cmlvktnmbadmi"
+path="res://.godot/imported/wilder.png-88700eff6cad4fe99552db7bd3853a0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Goti/symbols/wild.png"
-dest_files=["res://.godot/imported/wild.png-38fdb518d1be0789050bff222ed7459b.ctex"]
+source_file="res://Goti/symbols/wilder.png"
+dest_files=["res://.godot/imported/wilder.png-88700eff6cad4fe99552db7bd3853a0f.ctex"]
 
 [params]
 

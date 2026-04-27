@@ -3,7 +3,7 @@ class_name SlotMachineV2
 extends Node2D
 
 # Symbol enum
-enum Symbol { A, B, C, D, E, G, Wild }
+enum Symbol { A, B, C, D, E, G, Wild, Bonus }
 
 # Grid settings
 const DEFAULT_GRID_ROWS: int = 4
@@ -30,7 +30,8 @@ const WEIGHTED_SYMBOLS: Array[int] = [
 	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
 	Symbol.E, Symbol.E, Symbol.E, Symbol.E,
 	Symbol.G, Symbol.G, Symbol.G,
-	Symbol.Wild, Symbol.Wild
+	Symbol.Wild, Symbol.Wild,
+	Symbol.Bonus
 ]
 
 # Base symbol values
@@ -41,7 +42,8 @@ const SYMBOL_VALUES: Dictionary[int, int] = {
 	Symbol.D: 9,
 	Symbol.E: 12,
 	Symbol.G: 30,
-	Symbol.Wild: 39
+	Symbol.Wild: 39,
+	Symbol.Bonus: 69
 }
 
 # Symbol textures
@@ -52,7 +54,8 @@ const SYMBOL_TEXTURES: Dictionary[int, Texture2D] = {
 	Symbol.D: preload("res://Goti/symbols/western_icon_hat_01.png"),
 	Symbol.E: preload("res://Goti/symbols/western_icon_moneybag_01.png"),
 	Symbol.G: preload("res://Goti/symbols/seven.png"),
-	Symbol.Wild: preload("res://Goti/symbols/wild.png")
+	Symbol.Wild: preload("res://Goti/symbols/wilder.png"),
+	Symbol.Bonus: preload("res://Goti/symbols/bonus.png")
 }
 const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
 const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
@@ -72,6 +75,7 @@ const WIN_TIER_1_COLOR: Color = Color(0.2, 0.8, 1.0, 0.6) # 0 - 100
 const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
 const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
 const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
+const BONUS_SCENE: PackedScene = preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn")
 
 # Grid data
 var grid: Array = []
@@ -156,6 +160,16 @@ func _ready() -> void:
 	_refresh_grid_content()
 	_update_ui()
 
+func _trigger_bonus_game() -> void:
+	is_spinning = false
+
+	var bonus_scene = BONUS_SCENE.instantiate()
+	get_tree().root.add_child(bonus_scene)
+
+	# optional: pass data
+	bonus_scene.set("triggering_symbol", Symbol.Bonus)
+	bonus_scene.set("bet", bet)
+
 # Start spin
 func spin() -> void:
 	if is_spinning:
@@ -204,6 +218,7 @@ func _on_spin_completed() -> void:
 
 	
 	var win_result: Dictionary = _evaluate_wins()
+	var bonus_result: Dictionary = _evaluate_bonus_trigger()
 
 	var base_win: int = win_result.get("total_win", 0) as int
 	var scaled_win: int = _scale_win_by_bet(base_win)
@@ -218,6 +233,9 @@ func _on_spin_completed() -> void:
 	# Apply credits
 	
 	credits += scaled_win
+	
+	if bonus_result.count >= 3:
+		_trigger_bonus_game()
 	
 	if credits <= 0:
 		credits = 4
@@ -502,6 +520,23 @@ func _cache_ui_nodes() -> void:
 		bet_8_button = null
 		bet_16_button = null
 		bet_30_button = null
+
+##BONUS LOGIC
+func _evaluate_bonus_trigger() -> Dictionary:
+	var count := 0
+	var positions: Array = []
+
+	for column in range(grid_cols):
+		for row in range(grid_rows):
+			if grid[column][row] == Symbol.Bonus:
+				count += 1
+				positions.append({"row": row, "col": column})
+
+	return {
+		"count": count,
+		"positions": positions
+	}
+
 
 func _validate_ui_nodes() -> bool:
 	var mapping: Dictionary[String, Node] = {

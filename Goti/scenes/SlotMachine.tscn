@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
 [ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="6_so65n"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
-[ext_resource type="Texture2D" uid="uid://55tw027vsgoq" path="res://Goti/symbols/wild.png" id="8_3dira"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lrutk"]
 
@@ -235,7 +234,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("8_3dira")
 expand_mode = 1
 stretch_mode = 5
 
@@ -379,7 +377,6 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("8_3dira")
 expand_mode = 1
 stretch_mode = 5
 
