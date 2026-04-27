@@ -131,11 +131,11 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var row: HBoxContainer = HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.size_flags_vertical = Control.SIZE_FILL
-		row.custom_minimum_size = Vector2(0, 64)
-		row.set("custom_constants/separation", 18)
+		row.custom_minimum_size = Vector2(0, SYMBOL_CARD_MIN_HEIGHT - 12)
+		row.set("custom_constants/separation", 14)
 
 		var icon_wrapper: CenterContainer = CenterContainer.new()
-		icon_wrapper.custom_minimum_size = Vector2(48, 48)
+		icon_wrapper.custom_minimum_size = SYMBOL_ICON_TARGET_SIZE
 		icon_wrapper.size_flags_horizontal = Control.SIZE_FILL
 		icon_wrapper.size_flags_vertical = Control.SIZE_FILL
 
@@ -143,7 +143,7 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		texture_rect.size_flags_horizontal = Control.SIZE_FILL
 		texture_rect.size_flags_vertical = Control.SIZE_FILL
 		texture_rect.expand = true
-		texture_rect.custom_minimum_size = Vector2(32, 32)
+		texture_rect.custom_minimum_size = SYMBOL_ICON_TARGET_SIZE
 		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		var symbol_texture: Texture2D = symbol_textures.get(symbol_id) as Texture2D
 		if symbol_texture:
