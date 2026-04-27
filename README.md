@@ -5,7 +5,7 @@ Brief description of your project.
 
 ## Description
 
-A detailed description of what this project does and who it's for. Explain the problem it solves and why it's useful.
+Tragaperras amb bonuses dinamics i tematica del oest.
 
 ## Table of Contents
 
@@ -18,13 +18,13 @@ A detailed description of what this project does and who it's for. Explain the p
 
 ## Screenshots
 
-### Main Interface
+### Slots 
 ![Main Interface](https://via.placeholder.com/800x400?text=Main+Interface)
 
-### Settings Panel
+### Ruleta Bonuses
 ![Settings](https://via.placeholder.com/800x400?text=Settings+Panel)
 
-### Mobile View
+### Plinko
 ![Mobile](https://via.placeholder.com/400x600?text=Mobile+View)
 
 ## Features
@@ -43,28 +43,23 @@ A detailed description of what this project does and who it's for. Explain the p
 <table>
   <tr>
     <td align="center">
-      <img src="https://github.com/username1.png" width="100px" alt=""/><br />
-      <b>John Doe</b><br />
-      <i>Lead Developer</i><br />
-      <a href="https://github.com/username1">GitHub</a>
+      <img src="https://github.com/wagar9386.png" width="100px" alt=""/><br />
+      <b>Goti</b><br />
+      <i>Slots Principals</i><br />
+      <a href="https://github.com/wagar9386">GitHub</a>
     </td>
     <td align="center">
-      <img src="https://github.com/username2.png" width="100px" alt=""/><br />
-      <b>Jane Smith</b><br />
-      <i>UI/UX Designer</i><br />
-      <a href="https://github.com/username2">GitHub</a>
+      <img src="https://github.com/Racuzan-fem.png" width="100px" alt=""/><br />
+      <b>Ian</b><br />
+      <i>Bonuses</i><br />
+      <a href="https://github.com/Racuzan-fem">GitHub</a>
     </td>
   </tr>
 </table>
-
-### Contributors
-
-Thanks to all the amazing contributors who have helped make this project better!
 
 [![Contributors](https://contrib.rocks/image?repo=username/repo)](https://github.com/username/repo/graphs/contributors)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)]()
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Downloads](https://img.shields.io/npm/dm/package-name.svg)]()
 

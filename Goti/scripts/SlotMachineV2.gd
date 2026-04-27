@@ -68,6 +68,10 @@ const STONE_EDGE_COLOR: Color = Color(0.85, 0.55, 0.2, 0.6)
 const BURNISHED_BRASS_COLOR: Color = Color(0.93, 0.79, 0.47, 1)
 const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
 const FULL_EXPAND_FLAGS: Control.SizeFlags = Control.SIZE_FILL | Control.SIZE_EXPAND
+const WIN_TIER_1_COLOR: Color = Color(0.2, 0.8, 1.0, 0.6) # 0 - 100
+const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
+const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
+const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
 
 # Grid data
 var grid: Array = []
@@ -209,6 +213,7 @@ func _on_spin_completed() -> void:
 
 	# ✅ FIX #1: save win globally for UI
 	last_win = scaled_win
+	_apply_win_visuals(scaled_win, winning_lines)
 
 	# Apply credits
 	
@@ -225,7 +230,6 @@ func _on_spin_completed() -> void:
 		bet = 4
 
 	_update_display_grid()
-	_animate_winning_cells(winning_lines)
 	_debug_grid()
 
 	_update_ui()
@@ -331,17 +335,6 @@ func _calculate_payout(symbol: int, count: int) -> int:
 func _scale_win_by_bet(base_win: int) -> int:
 	return int(round(float(base_win) * (float(bet) / float(MIN_BET))))
 
-# Animate winning cells
-func _animate_winning_cells(line_results: Array) -> void:
-	for line in line_results:
-		var row: int = line.get("row", 0) as int
-		var count: int = line.get("count", 0) as int
-
-		for column in range(count):
-			var cell: ColorRect = cell_nodes[row][column]
-			if cell:
-				cell.color = Color(0.4, 1.0, 0.5, 0.65)
-
 # Reset highlights
 func _clear_cell_highlights() -> void:
 	for row in range(grid_rows):
@@ -349,6 +342,60 @@ func _clear_cell_highlights() -> void:
 			var cell: ColorRect = cell_nodes[row][column]
 			if cell:
 				cell.color = BASE_CELL_COLOR
+
+func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
+	if win_amount <= 0:
+		return
+
+	var color: Color = WIN_TIER_1_COLOR
+	var mega: bool = false
+
+	if win_amount >= 1000:
+		color = WIN_TIER_MEGA_COLOR
+		mega = true
+	elif win_amount >= 600:
+		color = WIN_TIER_3_COLOR
+	elif win_amount >= 100:
+		color = WIN_TIER_2_COLOR
+
+	for line in winning_lines:
+		var row: int = line.get("row", 0) as int
+		var count: int = line.get("count", 0) as int
+
+		if row < 0 or row >= cell_nodes.size():
+			continue
+
+		var row_cells: Array = cell_nodes[row]
+
+		for column in range(count):
+			if column < 0 or column >= row_cells.size():
+				continue
+			var cell: ColorRect = row_cells[column]
+			if cell:
+				cell.color = color
+
+	if mega:
+		_start_flash_effect()
+
+func _start_flash_effect() -> void:
+	var tween: Tween = create_tween()
+	for _i in range(6):
+		tween.tween_callback(_flash_all_cells_on)
+		tween.tween_interval(0.12)
+		tween.tween_callback(_flash_all_cells_off)
+		tween.tween_interval(0.12)
+
+func _flash_all_cells_on() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(1, 1, 1, 2)
+
+func _flash_all_cells_off() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(1, 1, 1, 1)
 
 func set_grid_width(new_width: int) -> void:
 	if new_width <= 0:
