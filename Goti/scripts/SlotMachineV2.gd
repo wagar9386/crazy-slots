@@ -92,8 +92,14 @@ var symbol_nodes: Array = []
 var cell_nodes: Array = []
 
 # Player state
-var credits: int = 100
-@export var bet: int = MIN_BET
+var credits: int:
+	get: return GameState.credits
+	set(value): GameState.credits = value
+
+var bet: int:
+	get: return GameState.bet
+	set(value): GameState.bet = value
+	
 var is_spinning: bool = false
 
 # ✅ FIX #1: store last win globally so UI can access it

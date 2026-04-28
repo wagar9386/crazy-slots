@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Script_slot="*uid://bsccwr4lssfix"
+GameState="*uid://y7w4oucevabd"
 
 [input]
 
