@@ -13,7 +13,7 @@ var spacing_y = 32
 var start_x = 300
 var start_y = 100
 
-var multipliers = [50, 10, 5, 1, 0, -1, -2, -5, -10, -5, -2, -1, 0, 1, 5, 10, 50]
+var multipliers = [50, 30, 20, 10, 5, 3, 2, 1, 0, 1, 2, 3, 5, 10, 20, 30, 50]
 
 func _ready():
 	create_pins()
@@ -56,4 +56,4 @@ func _input(event):
 		spawn_ball()
 
 func _process(delta):
-	label.text = "Coins: " + str(Script_slot.credits)
+	label.text = "Credits: " + str(Script_slot.credits)

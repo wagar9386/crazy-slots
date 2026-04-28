@@ -2,13 +2,15 @@
 
 [ext_resource type="Script" uid="uid://c84yoaidq7n6y" path="res://Ian/Bonus/Plinko/Main.gd" id="1_20qta"]
 [ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="2_xt1kn"]
+[ext_resource type="Texture2D" uid="uid://bopuex833no4u" path="res://Ian/Bonus/Plinko/Sprites/1 (4).jpg" id="3_ur7va"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ur7va"]
 font = ExtResource("2_xt1kn")
 font_size = 50
+font_color = Color(0.98039216, 0.92156863, 0.69803923, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_20qta"]
-radius = 4.4403906
+radius = 0.0
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_20qta"]
 a = Vector2(182, -296)
@@ -36,7 +38,7 @@ offset_bottom = -0.06400299
 label_settings = SubResource("LabelSettings_ur7va")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=781238583]
-position = Vector2(300, 320)
+position = Vector2(300, 349.435)
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1494670054]
 z_index = -1
@@ -44,12 +46,20 @@ scale = Vector2(2.4778337, 20.923088)
 collision_layer = 0
 collision_mask = 0
 
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1366402425]
+self_modulate = Color(0.65, 0.65, 0.65, 1)
+show_behind_parent = true
+position = Vector2(120.26635, 16.656242)
+scale = Vector2(0.76759017, 0.07734167)
+texture = ExtResource("3_ur7va")
+
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D2" unique_id=32141271]
+visible = false
 offset_left = -637.65375
 offset_top = -40.05145
-offset_right = 568.34625
-offset_bottom = 606.94855
-color = Color(0.02024119, 1.9107909e-05, 0.098174624, 1)
+offset_right = 856.7967
+offset_bottom = 85.02568
+color = Color(0.019607844, 0, 0.09803922, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=2012251302]
 shape = SubResource("CircleShape2D_20qta")

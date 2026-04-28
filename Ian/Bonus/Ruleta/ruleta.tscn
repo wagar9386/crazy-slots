@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cbipwq5qfr7jb"]
+
+[ext_resource type="Script" uid="uid://cavdwhr0016eq" path="res://ruleta.gd" id="1_nvqu0"]
+[ext_resource type="Texture2D" uid="uid://di6qe8j1uu0r2" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_av1sqsav1sqsav1s (1).png" id="2_vn7i3"]
+
+[node name="Ruleta" type="Node2D" unique_id=1486690756]
+script = ExtResource("1_nvqu0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1147392110]
+position = Vector2(579.5, 326.5)
+scale = Vector2(0.8231534, 0.83984363)
+texture = ExtResource("2_vn7i3")
+
+[node name="Button" type="Button" parent="." unique_id=808354086]
+offset_left = 163.0
+offset_top = 417.0
+offset_right = 257.0
+offset_bottom = 494.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
