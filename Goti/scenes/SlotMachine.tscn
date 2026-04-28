@@ -590,7 +590,7 @@ custom_minimum_size = Vector2(56, 40)
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 toggle_mode = true
-text = "30"
+text = "32"
 
 [node name="Spacer" type="Control" parent="UILayer/SlotsUI/HUD/HUDControls/BetButtons" unique_id=1525314733]
 layout_mode = 2

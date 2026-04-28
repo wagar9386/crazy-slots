@@ -14,7 +14,7 @@ var grid_cols: int = DEFAULT_GRID_COLS
 
 # Betting
 const MIN_BET: int = 4
-const BET_OPTIONS: Array[int] = [4, 8, 16, 30]
+const BET_OPTIONS: Array[int] = [4, 8, 16, 32]
 
 # Default cell color
 const BASE_CELL_COLOR: Color = Color(0, 0, 0, 0)
@@ -76,6 +76,13 @@ const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
 const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
 const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
 const BONUS_SCENE: PackedScene = preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn")
+
+
+###BONUS SYSTEM 
+var spin_pool: Array[int] = []
+var bonus_hits_in_spin: int = 0
+
+
 
 # Grid data
 var grid: Array = []
@@ -150,7 +157,7 @@ func _ready() -> void:
 	bet_4_button.pressed.connect(_on_bet_button_pressed.bind(4))
 	bet_8_button.pressed.connect(_on_bet_button_pressed.bind(8))
 	bet_16_button.pressed.connect(_on_bet_button_pressed.bind(16))
-	bet_30_button.pressed.connect(_on_bet_button_pressed.bind(30))
+	bet_30_button.pressed.connect(_on_bet_button_pressed.bind(32))
 	paytable_button.pressed.connect(_on_paytable_pressed)
 	paytable_overlay = PAYTABLE_SCENE.instantiate() as PaytablePopup
 	ui_root.add_child(paytable_overlay)
@@ -161,14 +168,9 @@ func _ready() -> void:
 	_update_ui()
 
 func _trigger_bonus_game() -> void:
-	is_spinning = false
+	print("🔥 SWITCHING TO BONUS SCENE")
 
-	var bonus_scene = BONUS_SCENE.instantiate()
-	get_tree().root.add_child(bonus_scene)
-
-	# optional: pass data
-	bonus_scene.set("triggering_symbol", Symbol.Bonus)
-	bonus_scene.set("bet", bet)
+	get_tree().change_scene_to_packed(BONUS_SCENE)
 
 # Start spin
 func spin() -> void:
@@ -223,10 +225,10 @@ func _on_spin_completed() -> void:
 	var base_win: int = win_result.get("total_win", 0) as int
 	var scaled_win: int = _scale_win_by_bet(base_win)
 
-	# ✅ FIX (typing): cast to Array to avoid Variant error
+	# FIX (typing): cast to Array to avoid Variant error
 	var winning_lines: Array = win_result.get("lines", []) as Array
 
-	# ✅ FIX #1: save win globally for UI
+	# FIX #1: save win globally for UI
 	last_win = scaled_win
 	_apply_win_visuals(scaled_win, winning_lines)
 
@@ -240,7 +242,7 @@ func _on_spin_completed() -> void:
 	if credits <= 0:
 		credits = 4
 		
-	if credits < 30:
+	if credits < 32:
 		bet = 16
 	if credits < 16:
 		bet = 8
@@ -486,7 +488,7 @@ func _update_ui() -> void:
 	if bet_16_button:
 		bet_16_button.button_pressed = bet == 16
 	if bet_30_button:
-		bet_30_button.button_pressed = bet == 30
+		bet_30_button.button_pressed = bet == 32
 	if paytable_overlay:
 		paytable_overlay.set_display_bet(bet)
 
@@ -753,7 +755,7 @@ func _process(_delta: float) -> void:
 	if bet_16_button:
 		bet_16_button.disabled = credits < 16
 	if bet_30_button:
-		bet_30_button.disabled = credits < 30
+		bet_30_button.disabled = credits < 32
 
 	
 
@@ -821,11 +823,32 @@ func _generate_grid() -> void:
 	grid.clear()
 	grid.resize(grid_cols)
 
+	# reset per spin
+	bonus_hits_in_spin = 0
+	
+	# copy your ORIGINAL weighted pool (unchanged)
+	spin_pool = WEIGHTED_SYMBOLS.duplicate()
+
 	for column in range(grid_cols):
 		grid[column] = []
 
 		for row in range(grid_rows):
-			grid[column].append(get_random_symbol())
+			var symbol: int = spin_pool[randi() % spin_pool.size()]
+			grid[column].append(symbol)
+
+			# if bonus appears → boost chances for remaining cells
+			if symbol == Symbol.Bonus:
+				_on_bonus_hit()
+				
+func _on_bonus_hit() -> void:
+	bonus_hits_in_spin += 1
+
+	# add more bonus entries (3x each time)
+	var extra := 2 + bonus_hits_in_spin
+
+	for i in range(extra):
+		spin_pool.append(Symbol.Bonus)
+
 
 # Update visuals
 func _update_display_grid() -> void:
