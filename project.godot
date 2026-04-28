@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameState="res://Goti/scripts/GameState.gd"
+GameState="*res://Goti/scripts/GameState.gd"
 
 [input]
 
