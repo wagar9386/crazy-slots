@@ -1,11 +1,11 @@
 extends Control
 class_name PaytablePopup
 
-@onready var background: ColorRect = $Background
 @onready var payout_list: GridContainer = $Panel/SymbolGrid
 @onready var bet_info_label: Label = $Panel/BetInfo
 @onready var bet_buttons_container: HBoxContainer = $Panel/BetSelection/BetButtons
 @onready var close_button: Button = $Panel/CloseButton
+@onready var bg_image: TextureRect = get_node_or_null("Panel/BackgroundImage")
 
 const SYMBOL_NAMES: Dictionary[int, String] = {
 	0: "COWBOY BOOTS",
@@ -36,6 +36,7 @@ const BUTTON_BG_COLOR: Color = Color(0.18, 0.07, 0.03, 0.96)
 const BUTTON_ACTIVE_COLOR: Color = Color(0.98, 0.72, 0.25, 1)
 const TEXT_GOLD_COLOR: Color = Color(0.99, 0.86, 0.52, 1)
 const TEXT_LIGHT_COLOR: Color = Color(1, 0.95, 0.85, 1)
+const PAYTABLE_BG: Texture2D = preload("res://Goti/assets/paytable-background.png")
 
 var symbol_entry_data: Dictionary[int, Dictionary] = {}
 var bet_buttons: Dictionary[int, Button] = {}
@@ -44,10 +45,16 @@ var base_bet_value: int = 1
 var background_image: TextureRect = null
 
 func _ready() -> void:
+	bg_image.texture = PAYTABLE_BG
+	bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg_image.anchor_left = 0
+	bg_image.anchor_top = 0
+	bg_image.anchor_right = 1
+	bg_image.anchor_bottom = 1
+	bg_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bg_image.z_index = -10
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	background.mouse_filter = Control.MOUSE_FILTER_STOP
 	_create_background_texture()
-	background.color = Color(0, 0, 0, 0.72)
 	var panel: ColorRect = get_node("Panel") as ColorRect
 	panel.custom_minimum_size = Vector2(1100, 613)
 	if panel:
@@ -95,8 +102,8 @@ func _create_background_texture() -> void:
 	background_image.anchor_right = 1
 	background_image.anchor_bottom = 1
 	background_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	background_image.z_index = -2
-	add_child(background_image)
+	background_image.z_index = -100
+	$Panel.add_child(background_image)
 
 func setup(symbol_textures: Dictionary[int, Texture2D], symbol_values: Dictionary[int, int], bet_options: Array[int], current_bet: int, base_bet: int) -> void:
 	symbol_entry_data.clear()
