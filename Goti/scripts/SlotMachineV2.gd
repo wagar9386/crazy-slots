@@ -43,7 +43,7 @@ const SYMBOL_VALUES: Dictionary[int, int] = {
 	Symbol.E: 12,
 	Symbol.G: 30,
 	Symbol.Wild: 39,
-	Symbol.Bonus: 69
+	Symbol.Bonus: 333
 }
 
 # Symbol textures

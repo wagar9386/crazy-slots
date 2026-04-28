@@ -13,8 +13,9 @@ const SYMBOL_NAMES: Dictionary[int, String] = {
 	2: "REVOLVER",
 	3: "STETSON HAT",
 	4: "MONEY BAG",
-	5: "LUCKY SEVEN",
-	6: "WILD"
+	5: "HORSE SHOE",
+	6: "WILD",
+	7: "BONUS"
 }
 const WILD_SYMBOL_ID: int = 6
 const SYMBOL_COLUMNS: int = 4
@@ -170,8 +171,17 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		payout_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 		payout_label.add_theme_font_size_override("font_size", 16)
 		payout_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
-		text_column.add_child(payout_label)
 
+		var special_label: Label = Label.new()
+		special_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		special_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
+		special_label.add_theme_font_size_override("font_size", 14)
+		special_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
+		special_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+		text_column.add_child(payout_label)
+		text_column.add_child(special_label)
+		
 		row.add_child(text_column)
 		card.add_child(row)
 		payout_list.add_child(card)
@@ -185,12 +195,13 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 
 		symbol_entry_data[symbol_id] = {
 			"payout_label": payout_label,
+			"special_label": special_label,
 			"icon": texture_rect,
 			"texture": symbol_texture,
 			"base_value": base_value,
 			"multipliers": multipliers,
 			"name": name_label.text
-		}
+}
 
 func _build_bet_buttons(bet_options: Array[int]) -> void:
 	var sorted_options: Array[int] = bet_options.duplicate()
@@ -257,6 +268,18 @@ func _refresh_payouts() -> void:
 			for multiplier in multipliers:
 				payouts.append(_scaled_payout(base_value, multiplier))
 			payout_label.text = "3X: %d\n4X: %d\n5X: %d" % [payouts[0], payouts[1], payouts[2]]
+			
+		var special_label: Label = entry.get("special_label") as Label
+		var symbol_name: String = entry.get("name", "")
+		special_label.add_theme_color_override("font_color", Color(1, 0.8, 0.2))
+
+		if special_label:
+			if symbol_name.find("WILD") != -1:
+				special_label.text = "REPLACES ANY SYMBOL"
+			elif symbol_name.find("BONUS") != -1:
+				special_label.text = "TRIGGERS BONUS SCENE"
+			else:
+				special_label.text = ""
 
 func _scaled_payout(base_value: int, multiplier: int) -> int:
 	var raw_value: int = base_value * multiplier
