@@ -1,7 +1,4 @@
-# Project Title
-
-Cowgirl Slots
-
+# Cowgirl Slots
 ## Description
 
 Tragaperras amb bonuses dinamics i tematica del oest.
