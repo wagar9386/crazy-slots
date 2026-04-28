@@ -5,28 +5,31 @@ extends Node2D
 var spinning = false
 var speed = 0.0
 var target_rotation = 0.0
-
 var sections = 8
 
-# Multiplicadors (mateix nombre que sections)
-var multipliers = [0, 1, 2, 5, 10, 5, 2, 1]
+var multipliers = [5, 10, 100, 50, 20, 10, 5, 2]
+
+var final_result = 0
+
+# 🔥 OFFSET IMPORTANT
+var angle_offset = -110
 
 func spin():
-	print("SPIN CRIDAT")
-	
 	if spinning:
 		return
 	
 	spinning = true
 	
-	# resultat random
-	var result = randi() % sections
+	final_result = randi() % sections
 	
-	# angle per secció
 	var angle_per_section = 360.0 / sections
 	
-	# fem que giri varies voltes + resultat final
-	target_rotation = wheel.rotation_degrees + (360 * 5) + (result * angle_per_section)
+	var current_rotation = fmod(wheel.rotation_degrees, 360.0)
+	var final_angle = (final_result * angle_per_section) + angle_per_section / 2.0
+	
+	var delta = fmod((final_angle - current_rotation + 360.0), 360.0)
+	
+	target_rotation = wheel.rotation_degrees + delta + (360 * 5)
 	
 	speed = 20.0
 
@@ -35,21 +38,21 @@ func _process(delta):
 	if spinning:
 		wheel.rotation_degrees += speed
 		
-		# frenar poc a poc
-		speed = lerp(speed, 0.0, 0.01)
+		speed = lerp(speed, 0.0, 0.02)
 		
-		if wheel.rotation_degrees >= target_rotation:
+		var remaining = target_rotation - wheel.rotation_degrees
+		
+		if remaining <= 0.5 or speed < 0.05:
 			spinning = false
-			wheel.rotation_degrees = target_rotation
 			
 			var result = get_result()
-			print("Resultat:", result)
+			print("Resultat real:", result)
 			
 			apply_result(result)
 
 
 func get_result():
-	var angle = fmod(wheel.rotation_degrees, 360.0)
+	var angle = fmod(wheel.rotation_degrees + angle_offset + 360.0, 360.0)
 	var angle_per_section = 360.0 / sections
 	
 	return int(angle / angle_per_section)
@@ -72,7 +75,6 @@ func show_win_effect(win):
 	popup.text = "+" + str(win)
 	add_child(popup)
 
-	# POSICIÓ (ajusta si vols)
 	popup.position = Vector2(300, 200)
 	popup.scale = Vector2(1.5, 1.5)
 	popup.z_index = 10
@@ -84,4 +86,4 @@ func show_win_effect(win):
 
 
 func _on_button_pressed() -> void:
-	spin()
+	spin() 

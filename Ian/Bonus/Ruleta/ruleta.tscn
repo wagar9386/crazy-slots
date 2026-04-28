@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cavdwhr0016eq" path="res://Ian/Bonus/Ruleta/ruleta.gd" id="1_nvqu0"]
 [ext_resource type="Texture2D" uid="uid://dgew3tnfa7gfr" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_d09muld09muld09m (1).png" id="2_nvqu0"]
 [ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="3_l0308"]
+[ext_resource type="Texture2D" uid="uid://1ond4eps8o1y" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_6g0rfx6g0rfx6g0r-removebg-preview.png" id="4_vn7i3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vn7i3"]
 font = ExtResource("3_l0308")
@@ -36,5 +37,11 @@ offset_top = 0.08799744
 offset_right = 0.063964844
 offset_bottom = -0.06400299
 label_settings = SubResource("LabelSettings_vn7i3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1422965245]
+position = Vector2(874, 311.00003)
+rotation = -2.6179938
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_vn7i3")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
