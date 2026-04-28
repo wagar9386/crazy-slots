@@ -11,20 +11,20 @@ const SYMBOL_NAMES: Dictionary[int, String] = {
 	0: "COWBOY BOOTS",
 	1: "DYNAMITE",
 	2: "REVOLVER",
-	3: "STETSON HAT",
+	3: "HAT",
 	4: "MONEY BAG",
-	5: "HORSE SHOE",
+	5: "HORSESHOE",
 	6: "WILD",
 	7: "BONUS"
 }
 const WILD_SYMBOL_ID: int = 6
 const SYMBOL_COLUMNS: int = 4
-const SYMBOL_CARD_MIN_WIDTH: int = 160
-const SYMBOL_CARD_MIN_HEIGHT: int = 108
+const SYMBOL_CARD_MIN_WIDTH: int = 240
+const SYMBOL_CARD_MIN_HEIGHT: int = 160
 const SYMBOL_CARD_SEPARATION_H: int = 12
 const SYMBOL_CARD_SEPARATION_V: int = 10
-const SYMBOL_ICON_TARGET_SIZE: Vector2 = Vector2(64, 64)
-const MAX_SYMBOL_ICON_SIZE: int = 64
+const SYMBOL_ICON_TARGET_SIZE: Vector2 = Vector2(96, 96)
+const MAX_SYMBOL_ICON_SIZE: int = 96
 const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.webp")
 const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
 const COWBOY_OUTLAW_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw.otf")
@@ -49,35 +49,39 @@ func _ready() -> void:
 	_create_background_texture()
 	background.color = Color(0, 0, 0, 0.72)
 	var panel: ColorRect = get_node("Panel") as ColorRect
+	panel.custom_minimum_size = Vector2(1100, 613)
 	if panel:
 		panel.color = PAYTABLE_PANEL_COLOR
 		var glint: TextureRect = panel.get_node("PanelGlint") as TextureRect
 		if glint:
-			glint.modulate = Color(1, 0.85, 0.6, 0.4)
+			glint.modulate = Color(1, 0.92, 0.75, 0.12)
 	var title_label: Label = get_node("Panel/Title") as Label
+	
 	if title_label:
-		title_label.text = "COWBOY & COWGIRL PAYTABLE"
+		title_label.add_theme_constant_override("margin_top", 10)
+		title_label.add_theme_constant_override("margin_bottom", 25)
+		title_label.text = "PAYTABLE"
 		title_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
-		title_label.add_theme_font_size_override("font_size", 26)
+		title_label.add_theme_font_size_override("font_size", 78)
 		title_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
-		title_label.add_theme_constant_override("outline_size", 5)
+		title_label.add_theme_constant_override("outline_size", 9)
 		title_label.add_theme_color_override("font_outline_color", Color(0.16, 0.04, 0.01))
 	bet_info_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
-	bet_info_label.add_theme_font_size_override("font_size", 18)
+	bet_info_label.add_theme_font_size_override("font_size", 23)
 	bet_info_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
 	var selection_label: Label = get_node("Panel/BetSelection/Label") as Label
 	if selection_label:
 		selection_label.add_theme_font_override("font", COWBOY_OUTLAW_TEXTURED_FONT)
-		selection_label.add_theme_font_size_override("font_size", 20)
+		selection_label.add_theme_font_size_override("font_size", 33)
 		selection_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 	close_button.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
-	close_button.add_theme_font_size_override("font_size", 20)
+	close_button.add_theme_font_size_override("font_size", 33)
 	close_button.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 	close_button.text = close_button.text.to_upper()
 	close_button.pressed.connect(_on_close_pressed)
 	payout_list.columns = SYMBOL_COLUMNS
-	payout_list.set("custom_constants/hseparation", SYMBOL_CARD_SEPARATION_H)
-	payout_list.set("custom_constants/vseparation", SYMBOL_CARD_SEPARATION_V)
+	payout_list.add_theme_constant_override("h_separation", 24)
+	payout_list.add_theme_constant_override("v_separation", 20)
 	hide()
 
 func _create_background_texture() -> void:
@@ -132,7 +136,7 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var row: HBoxContainer = HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.size_flags_vertical = Control.SIZE_FILL
-		row.custom_minimum_size = Vector2(0, SYMBOL_CARD_MIN_HEIGHT - 12)
+		row.custom_minimum_size = Vector2(0, SYMBOL_CARD_MIN_HEIGHT)
 		row.set("custom_constants/separation", 14)
 
 		var icon_wrapper: CenterContainer = CenterContainer.new()
@@ -162,20 +166,20 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		var symbol_name: String = SYMBOL_NAMES.get(symbol_id, "Symbol %d" % symbol_id).to_upper()
 		name_label.text = symbol_name
 		name_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
-		name_label.add_theme_font_size_override("font_size", 18)
+		name_label.add_theme_font_size_override("font_size", 29)
 		name_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 		text_column.add_child(name_label)
 
 		var payout_label: Label = Label.new()
 		payout_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		payout_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
-		payout_label.add_theme_font_size_override("font_size", 16)
+		payout_label.add_theme_font_size_override("font_size", 20)
 		payout_label.add_theme_color_override("font_color", TEXT_LIGHT_COLOR)
 
 		var special_label: Label = Label.new()
 		special_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		special_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
-		special_label.add_theme_font_size_override("font_size", 14)
+		special_label.add_theme_font_size_override("font_size", 23)
 		special_label.add_theme_color_override("font_color", TEXT_GOLD_COLOR)
 		special_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
