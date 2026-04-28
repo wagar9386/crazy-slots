@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cbipwq5qfr7jb"]
 
-[ext_resource type="Script" uid="uid://cavdwhr0016eq" path="res://ruleta.gd" id="1_nvqu0"]
+[ext_resource type="Script" uid="uid://cavdwhr0016eq" path="res://Ian/Bonus/Ruleta/ruleta.gd" id="1_nvqu0"]
 [ext_resource type="Texture2D" uid="uid://f83irocow3io" path="res://Ian/Bonus/Ruleta/Sprites/ChatGPT Image 28 d’abr. del 2026, 17_28_58.png" id="2_nvqu0"]
 
 [node name="Ruleta" type="Node2D" unique_id=1486690756]
