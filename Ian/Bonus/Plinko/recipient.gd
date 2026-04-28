@@ -17,8 +17,8 @@ func _on_body_entered(body):
 
 	body.set_meta("scored", true)
 
-	var win = Script_slot.bet * multiplier
-	Script_slot.credits += win
+	var win = GameState.bet * multiplier
+	GameState.credits += win
 
 	show_win_effect(win)
 

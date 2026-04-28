@@ -56,4 +56,4 @@ func _input(event):
 		spawn_ball()
 
 func _process(delta):
-	label.text = "Credits: " + str(Script_slot.credits)
+	label.text = "Credits: " + str(GameState.credits)
