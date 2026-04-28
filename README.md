@@ -1,7 +1,6 @@
 # Project Title
 
-Brief description of your project.
-
+Cowgirl Slots
 
 ## Description
 
@@ -9,12 +8,9 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
+- [Screenshots](#screenshots)
 - [Features](#features)
-- [API Reference](#api-reference)
-- [Contributing](#contributing)
-- [License](#license)
+- [Team](#team)
 
 ## Screenshots
 
@@ -29,12 +25,11 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 
 ## Features
 
-- ✨ **Feature 1** - Description of feature 1
-- 🚀 **Performance** - Lightning fast performance
-- 🎯 **Easy to Use** - Simple and intuitive API
-- 💎 **Lightweight** - Minimal dependencies
-- 🔧 **Configurable** - Highly customizable
-- 📱 **Responsive** - Works on all devices
+- **Slots** - Slots 4x5 amb sistema de apostes i wins
+- **Wilds** - Simbol que substitueix cualsevol altre simbol
+- **Bonus** - Simbol que et porta a un bonus un cop a la taula
+- **Animacions** - Sistema de animacions per wins i bonuses
+- **Adictiu** - Configurat per ser el maxim adictiu possible
 
 ## Team
 
