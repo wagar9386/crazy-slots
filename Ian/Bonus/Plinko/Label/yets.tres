@@ -6,3 +6,5 @@
 font = ExtResource("1_owquy")
 font_size = 50
 font_color = Color(0.98039216, 0.92156863, 0.69803923, 1)
+outline_size = 6
+outline_color = Color(0.105882354, 0.08235294, 0.007843138, 1)

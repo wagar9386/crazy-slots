@@ -4,8 +4,9 @@ var pin_scene = preload("res://Ian/Bonus/Plinko/pin.tscn")
 var ball_scene = preload("res://Ian/Bonus/Plinko/ball.tscn")
 var slot_scene = preload("res://Ian/Bonus/Plinko/recipient.tscn")
 
-@onready var label = $CanvasLayer/Label
+@onready var label = $CanvasLayer/CreditsLabel
 @onready var win_label = $CanvasLayer/WinLabel
+@onready var bet_label = $CanvasLayer/BetLabel
 
 var rows = 16
 var spacing_x = 32
@@ -113,3 +114,4 @@ func change_font_size(value, lbl):
 
 func _process(delta):
 	label.text = "Credits: " + str(GameState.credits)
+	bet_label.text = "Bet: " + str(GameState.bet)

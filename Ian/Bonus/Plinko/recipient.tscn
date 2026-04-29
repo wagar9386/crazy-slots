@@ -8,6 +8,8 @@ size = Vector2(30, 35)
 [sub_resource type="LabelSettings" id="LabelSettings_e61sb"]
 font_size = 14
 font_color = Color(0.98039216, 0.92156863, 0.69803923, 1)
+outline_size = 2
+outline_color = Color(0.105882354, 0.08235294, 0.007843138, 1)
 
 [node name="Area2D" type="Area2D" unique_id=1485609170]
 collision_layer = 15

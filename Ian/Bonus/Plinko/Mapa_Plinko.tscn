@@ -4,6 +4,7 @@
 [ext_resource type="LabelSettings" uid="uid://kq0qk0l0cvih" path="res://Ian/Bonus/Plinko/Label/yets.tres" id="2_ur7va"]
 [ext_resource type="Texture2D" uid="uid://0fi34swbiswh" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_fdfftofdfftofdff.png" id="3_ur7va"]
 [ext_resource type="LabelSettings" uid="uid://c43xq6nsi4j62" path="res://Ian/Bonus/Plinko/Label/yets2.tres" id="4_rgu2i"]
+[ext_resource type="LabelSettings" uid="uid://dhof0lp1r2s8d" path="res://Ian/Bonus/Plinko/Label/yets3.tres" id="4_xnh8j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_20qta"]
 radius = 0.0
@@ -21,7 +22,7 @@ script = ExtResource("1_20qta")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=25487356]
 
-[node name="Label" type="Label" parent="CanvasLayer" unique_id=838413473]
+[node name="CreditsLabel" type="Label" parent="CanvasLayer" unique_id=838413473]
 anchors_preset = -1
 anchor_left = 0.734
 anchor_top = 0.094000004
@@ -41,6 +42,19 @@ offset_bottom = 433.36014
 label_settings = ExtResource("4_rgu2i")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BetLabel" type="Label" parent="CanvasLayer" unique_id=1975129705]
+anchors_preset = -1
+anchor_left = 0.734
+anchor_top = 0.094000004
+anchor_right = 0.74300003
+anchor_bottom = 0.193
+offset_left = 149.43195
+offset_top = 65.762
+offset_right = 149.06396
+offset_bottom = 65.61013
+label_settings = ExtResource("4_xnh8j")
+horizontal_alignment = 2
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=781238583]
 position = Vector2(300, 349.435)
