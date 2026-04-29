@@ -24,25 +24,25 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
-	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
-	Symbol.E, Symbol.E, Symbol.E, Symbol.E,
-	Symbol.G, Symbol.G, Symbol.G,
-	Symbol.Wild, Symbol.Wild,
-	Symbol.Bonus
+	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
+	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
+	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
+	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
+	Symbol.Bonus,
 ]
 
 # Base symbol values
 const SYMBOL_VALUES: Dictionary[int, int] = {
-	Symbol.A: 3,
-	Symbol.B: 6,
-	Symbol.C: 9,
-	Symbol.D: 9,
+	Symbol.A: 2,
+	Symbol.B: 3,
+	Symbol.C: 5,
+	Symbol.D: 7,
 	Symbol.E: 12,
 	Symbol.G: 30,
-	Symbol.Wild: 39,
+	Symbol.Wild: 33,
 	Symbol.Bonus: 333
 }
 
@@ -102,7 +102,7 @@ var bet: int:
 	
 var is_spinning: bool = false
 
-# ✅ FIX #1: store last win globally so UI can access it
+#FIX #1: store last win globally so UI can access it
 var last_win: int = 0
 
 # Animator
@@ -174,7 +174,7 @@ func _ready() -> void:
 	_update_ui()
 
 func _trigger_bonus_game() -> void:
-	print("🔥 SWITCHING TO BONUS SCENE")
+	print("SWITCHING TO BONUS SCENE")
 
 	get_tree().change_scene_to_packed(BONUS_SCENE)
 
@@ -352,7 +352,7 @@ func _calculate_payout(symbol: int, count: int) -> int:
 
 	match count:
 		3: return base_value * 2
-		4: return base_value * 5
+		4: return base_value * 6
 		5: return base_value * 12
 
 	return 0
@@ -850,7 +850,7 @@ func _on_bonus_hit() -> void:
 	bonus_hits_in_spin += 1
 
 	# add more bonus entries (3x each time)
-	var extra := 2 + bonus_hits_in_spin
+	var extra := 3 + bonus_hits_in_spin
 
 	for i in range(extra):
 		spin_pool.append(Symbol.Bonus)

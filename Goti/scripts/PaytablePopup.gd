@@ -54,7 +54,6 @@ func _ready() -> void:
 	bg_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bg_image.z_index = -10
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	_create_background_texture()
 	var panel: ColorRect = get_node("Panel") as ColorRect
 	panel.custom_minimum_size = Vector2(1100, 613)
 	if panel:
@@ -202,7 +201,7 @@ func _build_symbol_rows(symbol_textures: Dictionary[int, Texture2D], symbol_valu
 		if symbol_id == WILD_SYMBOL_ID:
 			multipliers = [10, 25, 60]
 		else:
-			multipliers = [2, 5, 12]
+			multipliers = [2, 6, 12]
 
 		symbol_entry_data[symbol_id] = {
 			"payout_label": payout_label,

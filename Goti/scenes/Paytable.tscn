@@ -28,12 +28,14 @@ grow_vertical = 2
 color = Color(0.06, 0.02, 0.01, 1)
 
 [node name="BackgroundImage" type="TextureRect" parent="Panel" unique_id=1719514221]
-layout_mode = 0
-offset_left = -44.0
-offset_top = -13.0
-offset_right = 944.0
-offset_bottom = 613.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("2_hj1cb")
+stretch_mode = 2
 
 [node name="PanelGlint" type="TextureRect" parent="Panel" unique_id=2134567890]
 modulate = Color(1, 0.86, 0.75, 0.45)
