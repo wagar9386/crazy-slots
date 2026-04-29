@@ -42,6 +42,8 @@ func show_win_effect(win):
 	tween.tween_property(popup, "position", popup.position + Vector2(0, -60), 1.0)
 	tween.parallel().tween_property(popup, "modulate", Color(1,1,1,0), 1.0)
 	tween.tween_callback(popup.queue_free)
+	
+	get_tree().current_scene.register_ball_result(win)
 
 func _free_ball(body):
 	if is_instance_valid(body):

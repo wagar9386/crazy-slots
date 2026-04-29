@@ -1,0 +1,11 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://c43xq6nsi4j62"]
+
+[ext_resource type="FontFile" uid="uid://gf744jkbaj8v" path="res://Goti/assets/Cowboy Movie.ttf" id="1_ehmb7"]
+
+[resource]
+font = ExtResource("1_ehmb7")
+font_size = 100
+font_color = Color(1, 0.16078432, 0.16078432, 1)
+outline_size = 7
+shadow_size = 13
+shadow_color = Color(0, 0, 0, 0.53333336)

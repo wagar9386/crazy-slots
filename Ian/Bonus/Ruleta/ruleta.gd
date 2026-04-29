@@ -6,13 +6,10 @@ var spinning = false
 var speed = 0.0
 var target_rotation = 0.0
 var sections = 8
-
 var multipliers = [5, 10, 100, 50, 20, 10, 5, 2]
-
 var final_result = 0
-
-# 🔥 OFFSET IMPORTANT
 var angle_offset = -110
+@onready var label = $CanvasLayer/Label
 
 func spin():
 	if spinning:
@@ -29,20 +26,21 @@ func spin():
 	
 	var delta = fmod((final_angle - current_rotation + 360.0), 360.0)
 	
-	target_rotation = wheel.rotation_degrees + delta + (360 * 5)
+	target_rotation = wheel.rotation_degrees + delta + (360 * 8)
 	
-	speed = 20.0
+	speed = 30.0
 
 
 func _process(delta):
+	label.text = "Coins: " + str(GameState.credits)
 	if spinning:
 		wheel.rotation_degrees += speed
 		
-		speed = lerp(speed, 0.0, 0.02)
+		speed = lerp(speed, 0.0, 0.01)
 		
 		var remaining = target_rotation - wheel.rotation_degrees
 		
-		if remaining <= 0.5 or speed < 0.05:
+		if remaining <= 0.5 or speed < 0.01:
 			spinning = false
 			
 			var result = get_result()
