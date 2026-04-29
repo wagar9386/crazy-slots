@@ -2,14 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cavdwhr0016eq" path="res://Ian/Bonus/Ruleta/ruleta.gd" id="1_nvqu0"]
 [ext_resource type="Texture2D" uid="uid://dgew3tnfa7gfr" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_d09muld09muld09m (1).png" id="2_nvqu0"]
-[ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="3_l0308"]
+[ext_resource type="LabelSettings" uid="uid://kq0qk0l0cvih" path="res://Ian/Bonus/Plinko/Label/yets.tres" id="4_240x5"]
+[ext_resource type="LabelSettings" uid="uid://dhof0lp1r2s8d" path="res://Ian/Bonus/Plinko/Label/yets3.tres" id="4_jmjic"]
 [ext_resource type="Texture2D" uid="uid://1ond4eps8o1y" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_6g0rfx6g0rfx6g0r-removebg-preview.png" id="4_vn7i3"]
 [ext_resource type="Texture2D" uid="uid://cyhlrodua10va" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_yxlznbyxlznbyxlz.png" id="5_n8rl8"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_vn7i3"]
-font = ExtResource("3_l0308")
-font_size = 50
-font_color = Color(0.98039216, 0.92156863, 0.69803923, 1)
 
 [node name="Ruleta" type="Node2D" unique_id=1486690756]
 script = ExtResource("1_nvqu0")
@@ -28,18 +24,30 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1800646557]
 
-[node name="Label" type="Label" parent="CanvasLayer" unique_id=1753251589]
+[node name="BetLabel" type="Label" parent="CanvasLayer" unique_id=192262911]
 anchors_preset = -1
 anchor_left = 0.734
 anchor_top = 0.094000004
 anchor_right = 0.74300003
 anchor_bottom = 0.193
-offset_left = 0.4319458
+offset_left = 149.43195
+offset_top = 65.762
+offset_right = 149.06396
+offset_bottom = 65.61013
+label_settings = ExtResource("4_jmjic")
+horizontal_alignment = 2
+
+[node name="CreditsLabel" type="Label" parent="CanvasLayer" unique_id=336413448]
+anchors_preset = -1
+anchor_left = 0.734
+anchor_top = 0.094000004
+anchor_right = 0.74300003
+anchor_bottom = 0.193
+offset_left = 34.431946
 offset_top = 0.08799744
-offset_right = 0.063964844
+offset_right = 34.063965
 offset_bottom = -0.06400299
-label_settings = SubResource("LabelSettings_vn7i3")
-metadata/_edit_use_anchors_ = true
+label_settings = ExtResource("4_240x5")
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1422965245]
 position = Vector2(874, 311.00003)

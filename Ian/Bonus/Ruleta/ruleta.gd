@@ -9,7 +9,9 @@ var sections = 8
 var multipliers = [5, 10, 100, 50, 20, 10, 5, 2]
 var final_result = 0
 var angle_offset = -110
-@onready var label = $CanvasLayer/Label
+@onready var label = $CanvasLayer/CreditsLabel
+@onready var bet_label = $CanvasLayer/BetLabel
+
 
 func spin():
 	if spinning:
@@ -33,6 +35,7 @@ func spin():
 
 func _process(delta):
 	label.text = "Coins: " + str(GameState.credits)
+	bet_label.text = "Bet: " + str(GameState.bet)
 	if spinning:
 		wheel.rotation_degrees += speed
 		
