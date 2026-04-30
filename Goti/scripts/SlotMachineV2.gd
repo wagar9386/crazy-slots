@@ -221,6 +221,53 @@ func _on_bet_button_pressed(amount: int) -> void:
 		bet = amount
 		_update_ui()
 
+
+#####BONUS SEQUENCE#######################
+func _start_bonus_sequence() -> void:
+	if not ui_root:
+		return
+
+	# Create center text
+	var label := Label.new()
+	label.text = "BONUS TRIGGERED!"
+	label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
+	label.add_theme_font_size_override("font_size", 72)
+	label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
+	label.add_theme_constant_override("outline_size", 10)
+	label.add_theme_color_override("font_outline_color", Color(0.1, 0.03, 0.0))
+
+	label.anchor_left = 0.5
+	label.anchor_top = 0.5
+	label.anchor_right = 0.5
+	label.anchor_bottom = 0.5
+	label.pivot_offset = Vector2(300, 50)
+	label.position = ui_root.size * 0.5
+	label.scale = Vector2(0.2, 0.2)
+	label.modulate = Color(1, 1, 1, 0)
+
+	label.z_index = 999
+	ui_root.add_child(label)
+
+	# Pop-in animation
+	var tween := create_tween()
+	tween.tween_property(label, "scale", Vector2(1.2, 1.2), 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(label, "modulate", Color(1,1,1,1), 0.2)
+
+	# Hold for dramatic effect (3.3s total delay)
+	tween.tween_interval(3.3)
+
+	# Fade out
+	tween.tween_property(label, "modulate", Color(1,1,1,0), 0.4)
+	tween.tween_callback(label.queue_free)
+
+	# After delay → go bonus
+	tween.tween_callback(_trigger_bonus_game)
+	
+	################
+
+
+
+
 # Called when spin animation finishes
 func _on_spin_completed() -> void:
 	
@@ -244,7 +291,7 @@ func _on_spin_completed() -> void:
 	
 	
 	if bonus_result.count >= 3:
-		_trigger_bonus_game()
+		_start_bonus_sequence()
 	
 	if credits <= 0:
 		credits = 4
