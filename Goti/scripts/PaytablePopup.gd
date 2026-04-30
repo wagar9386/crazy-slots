@@ -5,7 +5,7 @@ class_name PaytablePopup
 @onready var bet_info_label: Label = $Panel/BetInfo
 @onready var bet_buttons_container: HBoxContainer = $Panel/BetSelection/BetButtons
 @onready var close_button: Button = $Panel/CloseButton
-@onready var bg_image: TextureRect = get_node_or_null("Panel/BackgroundImage")
+
 
 const SYMBOL_NAMES: Dictionary[int, String] = {
 	0: "COWBOY BOOTS",
@@ -29,7 +29,7 @@ const BACKGROUND_TEXTURE: Texture2D = preload("res://Goti/assets/background_2.we
 const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
 const COWBOY_OUTLAW_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw.otf")
 const COWBOY_OUTLAW_TEXTURED_FONT: Font = preload("res://Goti/assets/Cowboy Outlaw Textured.otf")
-const PAYTABLE_PANEL_COLOR: Color = Color(0.07, 0.02, 0.01, 0.95)
+const PAYTABLE_PANEL_COLOR: Color = Color(0.07, 0.02, 0.01, 0.75)
 const CARD_BG_COLOR: Color = Color(0.1, 0.04, 0.02, 0.82)
 const CARD_BORDER_COLOR: Color = Color(0.96, 0.74, 0.28, 0.95)
 const BUTTON_BG_COLOR: Color = Color(0.18, 0.07, 0.03, 0.96)
@@ -42,19 +42,76 @@ var symbol_entry_data: Dictionary[int, Dictionary] = {}
 var bet_buttons: Dictionary[int, Button] = {}
 var active_display_bet: int = 0
 var base_bet_value: int = 1
-var background_image: TextureRect = null
+
+func _create_vignette_texture() -> ImageTexture:
+	var w: int = 128
+	var h: int = 80
+	var img: Image = Image.create(w, h, false, Image.FORMAT_RGBA8)
+	for y in range(h):
+		for x in range(w):
+			var dx: float = (float(x) / float(w)) * 2.0 - 1.0
+			var dy: float = (float(y) / float(h)) * 2.0 - 1.0
+			var dist: float = sqrt(dx * dx + dy * dy)
+			var alpha: float = clamp((dist - 0.4) * 1.12, 0.0, 1.0)
+			alpha = alpha * alpha
+			img.set_pixel(x, y, Color(0.04, 0.01, 0.0, alpha))
+	return ImageTexture.create_from_image(img)
+
 
 func _ready() -> void:
-	bg_image.texture = PAYTABLE_BG
-	bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	bg_image.anchor_left = 0
-	bg_image.anchor_top = 0
-	bg_image.anchor_right = 1
-	bg_image.anchor_bottom = 1
-	bg_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bg_image.z_index = -10
-	mouse_filter = Control.MOUSE_FILTER_STOP
 	var panel: ColorRect = get_node("Panel") as ColorRect
+	panel.custom_minimum_size = Vector2(1100, 613)
+	if panel:
+		panel.color = Color(0, 0, 0, 0)  # Make Panel fully transparent
+
+		var bg_rect: TextureRect = TextureRect.new()
+		bg_rect.name = "BackgroundImage"
+		bg_rect.texture = PAYTABLE_BG
+		bg_rect.stretch_mode = TextureRect.STRETCH_SCALE
+		bg_rect.size_flags_horizontal = Control.SIZE_FILL
+		bg_rect.size_flags_vertical = Control.SIZE_FILL
+		bg_rect.anchor_left = 0
+		bg_rect.anchor_top = 0
+		bg_rect.anchor_right = 1
+		bg_rect.anchor_bottom = 1
+		bg_rect.offset_left = 0
+		bg_rect.offset_top = 0
+		bg_rect.offset_right = 0
+		bg_rect.offset_bottom = 0
+		bg_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		panel.add_child(bg_rect)
+		panel.move_child(bg_rect, 0)
+	# Brown tint overlay
+		var tint: ColorRect = ColorRect.new()
+		tint.color = Color(0.12, 0.05, 0.01, 0.52)
+		tint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tint.anchor_left = 0
+		tint.anchor_top = 0
+		tint.anchor_right = 1
+		tint.anchor_bottom = 1
+		tint.offset_left = 0
+		tint.offset_top = 0
+		tint.offset_right = 0
+		tint.offset_bottom = 0
+		panel.add_child(tint)
+		panel.move_child(tint, 1)
+
+		# Vignette
+		var vignette: TextureRect = TextureRect.new()
+		vignette.texture = _create_vignette_texture()
+		vignette.stretch_mode = TextureRect.STRETCH_SCALE
+		vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vignette.anchor_left = 0
+		vignette.anchor_top = 0
+		vignette.anchor_right = 1
+		vignette.anchor_bottom = 1
+		vignette.offset_left = 0
+		vignette.offset_top = 0
+		vignette.offset_right = 0
+		vignette.offset_bottom = 0
+		panel.add_child(vignette)
+		panel.move_child(vignette, 2)
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	panel.custom_minimum_size = Vector2(1100, 613)
 	if panel:
 		panel.color = PAYTABLE_PANEL_COLOR
@@ -89,20 +146,6 @@ func _ready() -> void:
 	payout_list.add_theme_constant_override("h_separation", 24)
 	payout_list.add_theme_constant_override("v_separation", 20)
 	hide()
-
-func _create_background_texture() -> void:
-	if background_image:
-		return
-	background_image = TextureRect.new()
-	background_image.texture = BACKGROUND_TEXTURE
-	background_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	background_image.anchor_left = 0
-	background_image.anchor_top = 0
-	background_image.anchor_right = 1
-	background_image.anchor_bottom = 1
-	background_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	background_image.z_index = -100
-	$Panel.add_child(background_image)
 
 func setup(symbol_textures: Dictionary[int, Texture2D], symbol_values: Dictionary[int, int], bet_options: Array[int], current_bet: int, base_bet: int) -> void:
 	symbol_entry_data.clear()
