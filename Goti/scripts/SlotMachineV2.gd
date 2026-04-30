@@ -236,12 +236,10 @@ func _start_bonus_sequence() -> void:
 	label.add_theme_constant_override("outline_size", 10)
 	label.add_theme_color_override("font_outline_color", Color(0.1, 0.03, 0.0))
 
-	label.anchor_left = 0.5
-	label.anchor_top = 0.5
-	label.anchor_right = 0.5
-	label.anchor_bottom = 0.5
-	label.pivot_offset = Vector2(300, 50)
-	label.position = ui_root.size * 0.5
+	label.set_anchors_preset(Control.PRESET_CENTER)
+	label.set_offsets_preset(Control.PRESET_CENTER)
+	label.pivot_offset = label.size * 0.5
+	
 	label.scale = Vector2(0.2, 0.2)
 	label.modulate = Color(1, 1, 1, 0)
 
