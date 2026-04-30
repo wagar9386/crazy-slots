@@ -240,7 +240,7 @@ func _on_spin_completed() -> void:
 
 	# Apply credits
 	
-	credits += scaled_win
+	
 	
 	if bonus_result.count >= 3:
 		_trigger_bonus_game()
@@ -257,7 +257,10 @@ func _on_spin_completed() -> void:
 
 	_update_display_grid()
 	_debug_grid()
-
+	var previous_credits: int = credits
+	credits += scaled_win
+	_animate_win_countup(previous_credits, credits)
+	_dopamine_burst(scaled_win)
 	_update_ui()
 
 	is_spinning = false
@@ -746,10 +749,6 @@ func _set_bet_buttons_disabled(disabled: bool) -> void:
 		if button:
 			button.disabled = disabled
 
-func broke_mf(disabled: bool) -> void:
-	for button in [bet_8_button, bet_16_button, bet_30_button]:
-		if button:
-			button.disabled = disabled
 
 func _process(_delta: float) -> void:
 	if is_spinning:
@@ -763,7 +762,211 @@ func _process(_delta: float) -> void:
 	if bet_30_button:
 		bet_30_button.disabled = credits < 32
 
-	
+
+####DOPAMINE###################
+func _animate_win_countup(from: int, to: int) -> void:
+	if to <= 0:
+		return
+	var duration: float = clamp(float(to - from) * 0.012, 2.0, 6.0)
+	var tween: Tween = create_tween()
+	tween.tween_method(_set_credits_display, float(from), float(to), duration).set_ease(Tween.EASE_OUT)
+
+func _set_credits_display(value: float) -> void:
+	if credits_label:
+		credits_label.text = "CREDITS: %d" % int(value)
+		
+func _dopamine_burst(win_amount: int) -> void:
+	if win_amount <= 0 or not win_label:
+		return
+
+	win_label.text = "WIN: %d" % win_amount
+	win_label.pivot_offset = win_label.size * 0.5
+	var pop: Tween = create_tween()
+	pop.tween_property(win_label, "scale", Vector2(1.55, 1.55), 0.1).set_ease(Tween.EASE_OUT)
+	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.18).set_ease(Tween.EASE_IN)
+
+	var color_tween: Tween = create_tween().set_loops(4)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.2, 1), 0.15)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.4, 0.1, 1), 0.15)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 1.0, 1.0, 1), 0.15)
+
+	if win_amount >= 100 and reel_grid:
+		var origin: Vector2 = reel_grid.position
+		var shake: Tween = create_tween()
+		for _i in range(8):
+			shake.tween_property(reel_grid, "position", origin + Vector2(randf_range(-6, 6), randf_range(-5, 5)), 0.05)
+		shake.tween_property(reel_grid, "position", origin, 0.05)
+
+	_show_win_celebration(win_amount)
+
+func _show_win_celebration(win_amount: int) -> void:
+	if win_amount < 100:
+		return
+
+	var tier_text: String = ""
+	var tier_color: Color = Color.WHITE
+	var do_flash: bool = false
+	var do_fireworks: bool = false
+
+	if win_amount >= 5000:
+		tier_text = "ULTRA MEGA HUGE WIN"
+		tier_color = Color(0.9, 0.2, 1.0, 1)
+		do_flash = true
+		do_fireworks = true
+	elif win_amount >= 3000:
+		tier_text = "MEGA HUGE WIN"
+		tier_color = Color(1.0, 0.35, 0.08, 1)
+		do_flash = true
+		do_fireworks = true
+	elif win_amount >= 2000:
+		tier_text = "MEGA WIN"
+		tier_color = Color(1.0, 1.0, 0.1, 1)
+		do_flash = true
+		do_fireworks = true
+	elif win_amount >= 1000:
+		tier_text = "HUGE WIN"
+		tier_color = Color(1.0, 0.55, 0.1, 1)
+		do_flash = true
+	elif win_amount >= 500:
+		tier_text = "BIG WIN"
+		tier_color = Color(0.35, 1.0, 0.45, 1)
+
+	_show_big_credits_overlay(win_amount)
+
+	if tier_text != "":
+		_show_tier_label(tier_text, tier_color)
+
+	if do_flash:
+		_start_flash_effect()
+
+	if do_fireworks:
+		_launch_fireworks()
+
+func _show_big_credits_overlay(win_amount: int) -> void:
+	if not reel_grid or not ui_root:
+		return
+
+	var big_label: Label = Label.new()
+	big_label.text = "+%d" % win_amount
+	big_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
+	big_label.add_theme_font_size_override("font_size", 104)
+	big_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1))
+	big_label.add_theme_constant_override("outline_size", 12)
+	big_label.add_theme_color_override("font_outline_color", Color(0.12, 0.03, 0.0))
+	big_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	big_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	big_label.size = Vector2(700, 220)
+	big_label.z_index = 100
+	big_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var reel_center: Vector2 = reel_grid.global_position + reel_grid.size * 0.5
+	var local_pos: Vector2 = ui_root.to_local(reel_center)
+	big_label.position = local_pos - big_label.size * 0.5
+	big_label.pivot_offset = big_label.size * 0.5
+	big_label.scale = Vector2(0.2, 0.2)
+	big_label.modulate = Color(1, 1, 1, 0)
+	ui_root.add_child(big_label)
+
+	var tween: Tween = create_tween()
+	tween.tween_property(big_label, "scale", Vector2(1.25, 1.25), 0.22).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.parallel().tween_property(big_label, "modulate", Color(1, 1, 1, 1), 0.18)
+	tween.tween_property(big_label, "scale", Vector2(1.0, 1.0), 0.12).set_ease(Tween.EASE_IN)
+	tween.tween_interval(1.6)
+	tween.tween_property(big_label, "modulate", Color(1, 1, 1, 0), 0.55)
+	tween.tween_callback(big_label.queue_free)
+
+func _show_tier_label(tier_text: String, tier_color: Color) -> void:
+	if not ui_root:
+		return
+
+	var label: Label = Label.new()
+	label.text = tier_text
+	label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
+	label.add_theme_font_size_override("font_size", 88)
+	label.add_theme_color_override("font_color", tier_color)
+	label.add_theme_constant_override("outline_size", 14)
+	label.add_theme_color_override("font_outline_color", Color(0.08, 0.01, 0.0))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.size = Vector2(ui_root.size.x, 160)
+	label.position = Vector2(0, 40)
+	label.pivot_offset = Vector2(ui_root.size.x * 0.5, 80)
+	label.scale = Vector2(0.1, 0.1)
+	label.modulate = Color(1, 1, 1, 0)
+	label.z_index = 101
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui_root.add_child(label)
+
+	# Slam in, pulse, then fade
+	var tween: Tween = create_tween()
+	tween.tween_property(label, "scale", Vector2(1.15, 1.15), 0.28).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 1), 0.2)
+	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.14).set_ease(Tween.EASE_IN)
+
+	# Pulse glow loop
+	var pulse: Tween = create_tween().set_loops(5)
+	pulse.tween_property(label, "modulate", Color(tier_color.r, tier_color.g, tier_color.b, 0.7), 0.25)
+	pulse.tween_property(label, "modulate", Color(1, 1, 1, 1), 0.25)
+
+	# Fade out after delay
+	var fade: Tween = create_tween()
+	fade.tween_interval(3.0)
+	fade.tween_property(label, "modulate", Color(1, 1, 1, 0), 0.6)
+	fade.tween_callback(label.queue_free)
+
+func _launch_fireworks() -> void:
+	if not ui_root:
+		return
+
+	var screen_size: Vector2 = ui_root.size
+	var colors: Array[Color] = [
+		Color(1.0, 0.2, 0.2),
+		Color(1.0, 0.85, 0.1),
+		Color(0.2, 0.8, 1.0),
+		Color(0.9, 0.2, 1.0),
+		Color(0.2, 1.0, 0.4),
+		Color(1.0, 0.5, 0.1),
+	]
+
+	# Fire several bursts with slight delays
+	for burst in range(7):
+		var delay: float = burst * 0.32
+		var burst_pos: Vector2 = Vector2(
+			randf_range(screen_size.x * 0.15, screen_size.x * 0.85),
+			randf_range(screen_size.y * 0.05, screen_size.y * 0.55)
+		)
+		var burst_color: Color = colors[randi() % colors.size()]
+
+		var timer: SceneTreeTimer = get_tree().create_timer(delay)
+		timer.timeout.connect(_spawn_burst.bind(burst_pos, burst_color))
+
+func _spawn_burst(origin: Vector2, burst_color: Color) -> void:
+	if not ui_root:
+		return
+
+	var particle_count: int = 18
+
+	for i in range(particle_count):
+		var angle: float = (TAU / particle_count) * i + randf_range(-0.15, 0.15)
+		var speed: float = randf_range(110.0, 260.0)
+		var velocity: Vector2 = Vector2(cos(angle), sin(angle)) * speed
+
+		var dot: ColorRect = ColorRect.new()
+		var size_val: float = randf_range(5, 11)
+		dot.size = Vector2(size_val, size_val)
+		dot.color = burst_color.lightened(randf_range(0.0, 0.3))
+		dot.position = origin
+		dot.z_index = 200
+		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ui_root.add_child(dot)
+
+		var duration: float = randf_range(0.55, 1.1)
+		var end_pos: Vector2 = origin + velocity * duration + Vector2(0, 140.0 * duration * duration)
+
+		var tween: Tween = create_tween()
+		tween.tween_property(dot, "position", end_pos, duration).set_ease(Tween.EASE_OUT)
+		tween.parallel().tween_property(dot, "color", Color(dot.color.r, dot.color.g, dot.color.b, 0.0), duration).set_ease(Tween.EASE_IN)
+		tween.tween_callback(dot.queue_free)
+######################################################################
 
 # Debug print grid
 func _debug_grid() -> void:
