@@ -14,7 +14,7 @@ var spacing_y = 32
 var start_x = 300
 var start_y = 100
 
-var multipliers = [50, 30, 20, 10, 5, 3, 2, 1, 0, 1, 2, 3, 5, 10, 20, 30, 50]
+var multipliers = [50, 30, 20, 10, 5, 2, 1, 0, -5, 0, 1, 2, 5, 10, 20, 30, 50]
 
 var total_balls = 5
 var finished_balls = 0
