@@ -174,10 +174,60 @@ func _ready() -> void:
 	
 	_update_ui()
 	
-func _trigger_bonus_game() -> void:
-	print("SWITCHING TO BONUS SCENE")
 
-	get_tree().change_scene_to_packed(BONUS_SCENE)
+#####PULSE GLOW#########
+func _start_icon_glow_pulse() -> void:
+	for row in symbol_nodes:
+		for icon in row:
+			if not icon:
+				continue
+
+			# reset in case previous tween exists
+			icon.modulate = Color(1, 1, 1, 1)
+
+			var tween := create_tween()
+			tween.set_loops() # infinite loop while spin state lasts
+
+			# glow "pulse up"
+			tween.tween_property(icon, "modulate", Color(1.6, 1.3, 0.4, 1), 0.35)\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_IN_OUT)
+
+			# back to normal
+			tween.tween_property(icon, "modulate", Color(1, 1, 1, 1), 0.35)\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_IN_OUT)
+####################
+
+
+func _trigger_bonus_game() -> void:
+	
+	if not ui_root:
+		get_tree().change_scene_to_packed(BONUS_SCENE)
+		return
+
+	var fade := ColorRect.new()
+	fade.color = Color(0, 0, 0, 0)
+	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fade.z_index = 9999
+	ui_root.add_child(fade)
+
+	# 🎭 soft UI fade at same time
+	var ui_tween := create_tween()
+	ui_tween.parallel().tween_property(ui_root, "modulate", Color(1,1,1,0.2), 0.35)
+	ui_tween.parallel().tween_property(reel_grid, "modulate", Color(1,1,1,0.1), 0.35)
+
+	var tween := create_tween()
+	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 0.55)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN)
+
+	tween.tween_interval(0.1)
+
+	tween.tween_callback(func():
+		get_tree().change_scene_to_packed(BONUS_SCENE)
+	)
 
 # Start spin
 func spin() -> void:
@@ -237,8 +287,16 @@ func _start_bonus_sequence() -> void:
 	label.add_theme_color_override("font_outline_color", Color(0.1, 0.03, 0.0))
 
 	label.set_anchors_preset(Control.PRESET_CENTER)
-	label.set_offsets_preset(Control.PRESET_CENTER)
+	label.position = Vector2.ZERO
+	label.pivot_offset = Vector2.ZERO
+	
+	ui_root.add_child(label)
+	
+
+	await get_tree().process_frame
 	label.pivot_offset = label.size * 0.5
+	label.position = ui_root.size * 0.5
+	label.position -= label.size * 0.5
 	
 	label.scale = Vector2(0.2, 0.2)
 	label.modulate = Color(1, 1, 1, 0)
@@ -352,7 +410,7 @@ func _evaluate_row(row: int) -> Dictionary:
 			5: wild_win_amount = base_val * 60
 
 	# --- SUBSTITUTION LOGIC ---
-	# ✅ FIX #3 (COMMENT ONLY): 
+	# FIX #3 (COMMENT ONLY): 
 	# This finds the FIRST non-wild symbol from the LEFT.
 	# All wilds before it will act as that symbol.
 	# Only LEFT-TO-RIGHT matches count (classic slots behavior).
@@ -426,12 +484,14 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 	var mega: bool = false
 
 	if win_amount >= 1000:
+		_start_icon_glow_pulse()
 		color = WIN_TIER_MEGA_COLOR
 		mega = true
 	elif win_amount >= 600:
 		color = WIN_TIER_3_COLOR
 	elif win_amount >= 100:
 		color = WIN_TIER_2_COLOR
+	
 
 	for line in winning_lines:
 		var row: int = line.get("row", 0) as int
@@ -471,6 +531,12 @@ func _flash_all_cells_off() -> void:
 		for cell in row_cells:
 			if cell:
 				cell.modulate = Color(1, 1, 1, 1)
+
+func _clear_icon_glow() -> void:
+	for row in symbol_nodes:
+		for icon in row:
+			if icon:
+				icon.modulate = Color(1, 1, 1, 1)
 
 func set_grid_width(new_width: int) -> void:
 	if new_width <= 0:
