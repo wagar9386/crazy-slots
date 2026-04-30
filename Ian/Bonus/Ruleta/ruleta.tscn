@@ -5,7 +5,7 @@
 [ext_resource type="LabelSettings" uid="uid://kq0qk0l0cvih" path="res://Ian/Bonus/Plinko/Label/yets.tres" id="4_240x5"]
 [ext_resource type="LabelSettings" uid="uid://dhof0lp1r2s8d" path="res://Ian/Bonus/Plinko/Label/yets3.tres" id="4_jmjic"]
 [ext_resource type="Texture2D" uid="uid://1ond4eps8o1y" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_6g0rfx6g0rfx6g0r-removebg-preview.png" id="4_vn7i3"]
-[ext_resource type="Texture2D" uid="uid://cyhlrodua10va" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_yxlznbyxlznbyxlz.png" id="5_n8rl8"]
+[ext_resource type="Texture2D" uid="uid://jxx6p3a7tuny" path="res://Ian/Bonus/Ruleta/Sprites/wmremove-transformed.png" id="6_jmjic"]
 
 [node name="Ruleta" type="Node2D" unique_id=1486690756]
 script = ExtResource("1_nvqu0")
@@ -59,6 +59,6 @@ texture = ExtResource("4_vn7i3")
 z_index = -1
 position = Vector2(581, 324)
 scale = Vector2(0.84, 0.84)
-texture = ExtResource("5_n8rl8")
+texture = ExtResource("6_jmjic")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
