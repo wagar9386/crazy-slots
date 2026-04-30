@@ -5,6 +5,7 @@
 [ext_resource type="LabelSettings" uid="uid://kq0qk0l0cvih" path="res://Ian/Bonus/Plinko/Label/yets.tres" id="4_240x5"]
 [ext_resource type="LabelSettings" uid="uid://dhof0lp1r2s8d" path="res://Ian/Bonus/Plinko/Label/yets3.tres" id="4_jmjic"]
 [ext_resource type="Texture2D" uid="uid://1ond4eps8o1y" path="res://Ian/Bonus/Ruleta/Sprites/Gemini_Generated_Image_6g0rfx6g0rfx6g0r-removebg-preview.png" id="4_vn7i3"]
+[ext_resource type="LabelSettings" uid="uid://c43xq6nsi4j62" path="res://Ian/Bonus/Plinko/Label/yets2.tres" id="5_240x5"]
 [ext_resource type="Texture2D" uid="uid://jxx6p3a7tuny" path="res://Ian/Bonus/Ruleta/Sprites/wmremove-transformed.png" id="6_jmjic"]
 
 [node name="Ruleta" type="Node2D" unique_id=1486690756]
@@ -41,6 +42,15 @@ offset_top = 0.08799744
 offset_right = 34.063965
 offset_bottom = -0.06400299
 label_settings = ExtResource("4_240x5")
+
+[node name="WinLabel" type="Label" parent="CanvasLayer" unique_id=1849463623]
+offset_left = 457.0
+offset_top = 270.0
+offset_right = 500.99988
+offset_bottom = 433.36014
+label_settings = ExtResource("5_240x5")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1422965245]
 position = Vector2(874, 311.00003)
