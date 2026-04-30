@@ -157,7 +157,7 @@ func _ready() -> void:
 	add_child(animator)
 	animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES)
 	animator.spin_completed.connect(_on_spin_completed)
-
+	
 	# Connect UI
 	spin_button.pressed.connect(_on_spin_pressed)
 	bet_4_button.pressed.connect(_on_bet_button_pressed.bind(4))
@@ -168,11 +168,12 @@ func _ready() -> void:
 	paytable_overlay = PAYTABLE_SCENE.instantiate() as PaytablePopup
 	ui_root.add_child(paytable_overlay)
 	paytable_overlay.call_deferred("setup", SYMBOL_TEXTURES, SYMBOL_VALUES, BET_OPTIONS, bet, MIN_BET)
-
+	
 	# Initial state
 	_refresh_grid_content()
+	
 	_update_ui()
-
+	
 func _trigger_bonus_game() -> void:
 	print("SWITCHING TO BONUS SCENE")
 
@@ -785,7 +786,8 @@ func _dopamine_burst(win_amount: int) -> void:
 	pop.tween_property(win_label, "scale", Vector2(1.55, 1.55), 0.1).set_ease(Tween.EASE_OUT)
 	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.18).set_ease(Tween.EASE_IN)
 
-	var color_tween: Tween = create_tween().set_loops(4)
+	var color_tween: Tween = create_tween()
+	color_tween.set_loops(2)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.2, 1), 0.15)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.4, 0.1, 1), 0.15)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 1.0, 1.0, 1), 0.15)
@@ -800,6 +802,8 @@ func _dopamine_burst(win_amount: int) -> void:
 	_show_win_celebration(win_amount)
 
 func _show_win_celebration(win_amount: int) -> void:
+	if not ui_root or not reel_grid:
+		return
 	if win_amount < 100:
 		return
 
@@ -860,7 +864,7 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 	big_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var reel_center: Vector2 = reel_grid.global_position + reel_grid.size * 0.5
-	var local_pos: Vector2 = ui_root.to_local(reel_center)
+	var local_pos: Vector2 = ui_root.get_global_transform().affine_inverse() * reel_center
 	big_label.position = local_pos - big_label.size * 0.5
 	big_label.pivot_offset = big_label.size * 0.5
 	big_label.scale = Vector2(0.2, 0.2)
@@ -914,6 +918,8 @@ func _show_tier_label(tier_text: String, tier_color: Color) -> void:
 	fade.tween_callback(label.queue_free)
 
 func _launch_fireworks() -> void:
+	if ui_root.get_child_count() > 200:
+		return
 	if not ui_root:
 		return
 
@@ -928,7 +934,7 @@ func _launch_fireworks() -> void:
 	]
 
 	# Fire several bursts with slight delays
-	for burst in range(7):
+	for burst in range(4):
 		var delay: float = burst * 0.32
 		var burst_pos: Vector2 = Vector2(
 			randf_range(screen_size.x * 0.15, screen_size.x * 0.85),
@@ -943,7 +949,7 @@ func _spawn_burst(origin: Vector2, burst_color: Color) -> void:
 	if not ui_root:
 		return
 
-	var particle_count: int = 18
+	var particle_count: int = 10
 
 	for i in range(particle_count):
 		var angle: float = (TAU / particle_count) * i + randf_range(-0.15, 0.15)
