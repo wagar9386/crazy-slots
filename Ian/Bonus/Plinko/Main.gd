@@ -104,6 +104,7 @@ func show_final_result():
 	tween.tween_callback(func():
 		win_label.visible = false
 		win_label.modulate = Color(1,1,1,1)
+		get_tree().change_scene_to_file("res://SlotMachine.tscn")
 	)
 
 
