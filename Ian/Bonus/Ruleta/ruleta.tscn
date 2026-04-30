@@ -15,13 +15,6 @@ position = Vector2(579.49994, 320)
 scale = Vector2(0.84, 0.84)
 texture = ExtResource("2_nvqu0")
 
-[node name="Button" type="Button" parent="." unique_id=808354086]
-offset_left = 163.0
-offset_top = 417.0
-offset_right = 257.0
-offset_bottom = 494.0
-metadata/_edit_use_anchors_ = true
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1800646557]
 
 [node name="BetLabel" type="Label" parent="CanvasLayer" unique_id=192262911]
@@ -60,5 +53,3 @@ z_index = -1
 position = Vector2(581, 324)
 scale = Vector2(0.84, 0.84)
 texture = ExtResource("6_jmjic")
-
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

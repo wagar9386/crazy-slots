@@ -13,12 +13,14 @@ var final_result = 0
 
 var rng = RandomNumberGenerator.new()
 
-# 🔧 AJUSTA ESTO SEGÚN TU FLECHA
+# 🔧 Ajusta según tu flecha
 var angle_offset = 110
 
 
 func _ready():
 	rng.randomize()
+	await get_tree().create_timer(1.0).timeout
+	spin()
 
 
 func spin():
@@ -34,16 +36,12 @@ func spin():
 	# 🎯 Ángulo final EXACTO
 	var final_angle = (final_result * angle_per_section) + angle_per_section / 2.0 + angle_offset
 	
-	# Rotación actual
 	var current_rotation = wheel.rotation_degrees
 	
-	# Queremos girar varias vueltas + llegar al resultado
 	var target_rotation = current_rotation + 360 * 8
 	
-	# Ajustamos para que termine EXACTO en final_angle
 	target_rotation = target_rotation - fmod(target_rotation, 360) + final_angle
 	
-	# 🎬 ANIMACIÓN REAL (SIN ERRORES)
 	var tween = create_tween()
 	tween.tween_property(wheel, "rotation_degrees", target_rotation, 15.0)\
 		.set_trans(Tween.TRANS_CUBIC)\
@@ -85,7 +83,3 @@ func show_win_effect(win):
 	tween.tween_property(popup, "position", popup.position + Vector2(0, -80), 1.0)
 	tween.parallel().tween_property(popup, "modulate", Color(1,1,1,0), 1.0)
 	tween.tween_callback(popup.queue_free)
-
-
-func _on_button_pressed() -> void:
-	spin()
