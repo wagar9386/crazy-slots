@@ -13,7 +13,6 @@ var final_result = 0
 
 var rng = RandomNumberGenerator.new()
 
-# 🔧 Ajusta según tu flecha
 var angle_offset = 110
 
 
@@ -33,7 +32,6 @@ func spin():
 	
 	var angle_per_section = 360.0 / sections
 	
-	# 🎯 Ángulo final EXACTO
 	var final_angle = (final_result * angle_per_section) + angle_per_section / 2.0 + angle_offset
 	
 	var current_rotation = wheel.rotation_degrees
@@ -69,6 +67,9 @@ func apply_result(result):
 	print("Ganancia:", win)
 	
 	show_win_effect(win)
+	
+	await get_tree().create_timer(1.5).timeout
+	get_tree().change_scene_to_file("res://Goti/scenes/SlotMachine.tscn")
 
 
 func show_win_effect(win):
