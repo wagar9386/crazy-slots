@@ -786,8 +786,7 @@ func _dopamine_burst(win_amount: int) -> void:
 	pop.tween_property(win_label, "scale", Vector2(1.55, 1.55), 0.1).set_ease(Tween.EASE_OUT)
 	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.18).set_ease(Tween.EASE_IN)
 
-	var color_tween: Tween = create_tween()
-	color_tween.set_loops(2)
+	var color_tween: Tween = create_tween().set_loops(4)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.2, 1), 0.15)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.4, 0.1, 1), 0.15)
 	color_tween.tween_property(win_label, "modulate", Color(1.0, 1.0, 1.0, 1), 0.15)
@@ -934,7 +933,7 @@ func _launch_fireworks() -> void:
 	]
 
 	# Fire several bursts with slight delays
-	for burst in range(4):
+	for burst in range(7):
 		var delay: float = burst * 0.32
 		var burst_pos: Vector2 = Vector2(
 			randf_range(screen_size.x * 0.15, screen_size.x * 0.85),
@@ -949,7 +948,7 @@ func _spawn_burst(origin: Vector2, burst_color: Color) -> void:
 	if not ui_root:
 		return
 
-	var particle_count: int = 10
+	var particle_count: int = 18
 
 	for i in range(particle_count):
 		var angle: float = (TAU / particle_count) * i + randf_range(-0.15, 0.15)
@@ -1058,8 +1057,8 @@ func _generate_grid() -> void:
 func _on_bonus_hit() -> void:
 	bonus_hits_in_spin += 1
 
-	# add more bonus entries (3x each time)
-	var extra := 3 + bonus_hits_in_spin
+
+	var extra := 2 + bonus_hits_in_spin
 
 	for i in range(extra):
 		spin_pool.append(Symbol.Bonus)
