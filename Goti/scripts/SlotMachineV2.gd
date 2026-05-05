@@ -75,13 +75,15 @@ const WIN_TIER_1_COLOR: Color = Color(0.2, 0.8, 1.0, 0.6) # 0 - 100
 const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
 const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
 const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
-const BONUS_SCENES: Array[PackedScene] = [
-	preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn"),
-	preload("res://Ian/Bonus/Ruleta/ruleta.tscn"),
-	#preload("res://Ian/Bonus/Pick/Bonus_Pick.tscn"),
-	#preload("res://Ian/Bonus/Ladder/Bonus_Ladder.tscn"),
-	#preload("res://Ian/Bonus/Mine/Bonus_Mine.tscn"),
-	#preload("res://Ian/Bonus/Scratch/Bonus_Scratch.tscn"),
+const BONUS_SCENES: Array = [
+	{
+		"scene": preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn"),
+		"name": "PLINKO"
+	},
+	{
+		"scene": preload("res://Ian/Bonus/Ruleta/ruleta.tscn"),
+		"name": "RULETA"
+	}
 ]
 
 var selected_bonus_scene: PackedScene = null
@@ -286,8 +288,9 @@ func _start_bonus_sequence() -> void:
 		return
 
 	# Pick random bonus
-	selected_bonus_scene = BONUS_SCENES[randi() % BONUS_SCENES.size()]
-	var bonus_name: String = selected_bonus_scene.resource_path.get_file().trim_suffix(".tscn").to_upper()
+	var bonus_data = BONUS_SCENES[randi() % BONUS_SCENES.size()]
+	selected_bonus_scene = bonus_data["scene"]
+	var bonus_name: String = bonus_data["name"]
 
 	var label := Label.new()
 	label.text = "BONUS TRIGGERED!\n%s" % bonus_name
