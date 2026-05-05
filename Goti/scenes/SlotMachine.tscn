@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://d1l22hjvdfsbb"]
 
 [ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
-[ext_resource type="Texture2D" uid="uid://b5gl282dxxtj8" path="res://Goti/symbols/diamond.png" id="6_so65n"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lrutk"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3k5ds"]
+load_path = "res://.godot/imported/diamond.png-2a61af8029aa81ae1ee7ca0d74d1b966.ctex"
 
 [node name="SlotMachine" type="Node2D" unique_id=1648049221]
 script = ExtResource("1_gsijy")
@@ -128,7 +130,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
@@ -192,7 +194,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
@@ -274,7 +276,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
@@ -335,7 +337,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
@@ -417,7 +419,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
@@ -478,7 +480,7 @@ custom_minimum_size = Vector2(88, 88)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("6_so65n")
+texture = SubResource("CompressedTexture2D_3k5ds")
 expand_mode = 1
 stretch_mode = 5
 
