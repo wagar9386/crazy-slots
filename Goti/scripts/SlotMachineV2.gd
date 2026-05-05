@@ -927,12 +927,6 @@ func _dopamine_burst(win_amount: int) -> void:
 			shake.tween_property(reel_grid, "position", origin + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)), 0.04)
 		shake.tween_property(reel_grid, "position", origin, 0.04)
 
-	# SPIN EFFECT on big wins
-	if win_amount >= 500 and reel_grid:
-		var spin: Tween = create_tween()
-		spin.tween_property(reel_grid, "rotation", TAU, 0.6).set_ease(Tween.EASE_IN_OUT)
-		spin.tween_property(reel_grid, "rotation", 0.0, 0.0)
-
 	_show_win_celebration(win_amount)
 
 func _show_win_celebration(win_amount: int) -> void:
