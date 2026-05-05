@@ -223,7 +223,7 @@ func _trigger_bonus_game() -> void:
 	fade.z_index = 9999
 	ui_root.add_child(fade)
 
-	# 🎭 soft UI fade at same time
+	# soft UI fade at same time
 	var ui_tween := create_tween()
 	ui_tween.parallel().tween_property(ui_root, "modulate", Color(1,1,1,0.2), 0.35)
 	ui_tween.parallel().tween_property(reel_grid, "modulate", Color(1,1,1,0.1), 0.35)
@@ -243,7 +243,7 @@ func _trigger_bonus_game() -> void:
 func spin() -> void:
 	if is_spinning:
 		return
-	
+
 #Restar credits just despres de clicar spin
 	credits -= bet
 	_update_display_grid()
@@ -371,7 +371,6 @@ func _on_spin_completed() -> void:
 		bet = 4
 
 	_update_display_grid()
-	_debug_grid()
 	var previous_credits: int = credits
 	credits += scaled_win
 	_animate_win_countup(previous_credits, credits)
@@ -1011,16 +1010,33 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 
 	var big_label: Label = Label.new()
 	var tween_value: float = 0.0
+	var tween := create_tween()
 
-	var count_tween: Tween = create_tween()
-	count_tween.tween_method(
+	# --- POP IN ---
+	tween.tween_property(big_label, "scale", Vector2(1.25, 1.25), 0.22)\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_BACK)
+
+	tween.parallel().tween_property(big_label, "modulate", Color(1, 1, 1, 1), 0.18)
+
+	tween.tween_property(big_label, "scale", Vector2(1.0, 1.0), 0.12)
+
+	# --- COUNT UP (NOW INSIDE SAME FLOW) ---
+	tween.tween_method(
 		func(v):
-			tween_value = v
 			big_label.text = "+%d" % int(v),
 		0.0,
 		float(win_amount),
-		1.3
+		3.3
 	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+# --- HOLD AFTER FINISH ---
+	tween.tween_interval(0.4)
+
+	# --- FADE OUT (ONLY AFTER COUNT FINISHES) ---
+	tween.tween_property(big_label, "modulate", Color(1, 1, 1, 0), 0.55)
+
+	tween.tween_callback(big_label.queue_free)
 	big_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
 	big_label.add_theme_font_size_override("font_size", 104)
 	big_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1))
@@ -1040,7 +1056,6 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 	big_label.modulate = Color(1, 1, 1, 0)
 	ui_root.add_child(big_label)
 
-	var tween: Tween = create_tween()
 	tween.tween_property(big_label, "scale", Vector2(1.25, 1.25), 0.22).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.parallel().tween_property(big_label, "modulate", Color(1, 1, 1, 1), 0.18)
 	tween.tween_property(big_label, "scale", Vector2(1.0, 1.0), 0.12).set_ease(Tween.EASE_IN)
@@ -1143,25 +1158,6 @@ func _spawn_burst(origin: Vector2, burst_color: Color) -> void:
 		tween.tween_callback(dot.queue_free)
 ######################################################################
 
-# Debug print grid
-func _debug_grid() -> void:
-	for row in range(grid_rows):
-		var line := ""
-		for column in range(grid_cols):
-			line += "%s " % _symbol_to_label(grid[column][row])
-		print(line)
-
-# Convert symbol to text
-func _symbol_to_label(symbol: int) -> String:
-	match symbol:
-		Symbol.A: return "A"
-		Symbol.B: return "B"
-		Symbol.C: return "C"
-		Symbol.D: return "D"
-		Symbol.E: return "E"
-		Symbol.G: return "G"
-		Symbol.Wild: return "W"
-	return "?"
 
 # Gather grid nodes from scene
 func _gather_grid_nodes() -> void:
@@ -1244,9 +1240,3 @@ func _update_display_grid() -> void:
 			if node:
 				node.texture = SYMBOL_TEXTURES.get(symbol)
 				node.self_modulate = Color.WHITE
-
-func apply_win(multiplier):
-	var win = bet * multiplier
-	credits += win
-	print("Has guanyat:", win)
-	print("Saldo:", credits)
