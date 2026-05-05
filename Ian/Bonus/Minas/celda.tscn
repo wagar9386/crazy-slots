@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://choucyarms70k"]
+
+[ext_resource type="Script" uid="uid://bohq4t4xpcsr7" path="res://Ian/Bonus/Minas/celda.gd" id="1_ldc8s"]
+[ext_resource type="Texture2D" uid="uid://bejxymeriiswa" path="res://Ian/Bonus/Plinko/Sprites/1 (1).jpg" id="1_tnqeq"]
+
+[node name="TextureButton" type="TextureButton" unique_id=2017161597]
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_tnqeq")
+script = ExtResource("1_ldc8s")

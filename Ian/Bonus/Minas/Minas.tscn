@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://ci6yno66e2brk"]
+
+[ext_resource type="Script" uid="uid://mxvfipfl2gfx" path="res://Ian/Bonus/Minas/minas.gd" id="1_3ey2x"]
+[ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="2_8indr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3ey2x"]
+font = ExtResource("2_8indr")
+font_size = 50
+
+[node name="Node2D" type="Node2D" unique_id=1782783506]
+script = ExtResource("1_3ey2x")
+
+[node name="Control" type="Control" parent="." unique_id=1167559042]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="Control" unique_id=2084246456]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+columns = 5
+
+[node name="Button" type="Button" parent="Control" unique_id=653502272]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = 192.0
+offset_right = 100.0
+offset_bottom = 272.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_8indr")
+theme_override_font_sizes/font_size = 50
+text = "Retirar"
+
+[node name="Label_Multiplier" type="Label" parent="Control" unique_id=439420133]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_top = -280.0
+offset_right = 50.0
+offset_bottom = -205.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_3ey2x")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label_Status" type="Label" parent="Control" unique_id=462931670]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -225.0
+offset_right = 20.0
+offset_bottom = -202.0
+grow_horizontal = 2
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1916918139]
+
+[connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
