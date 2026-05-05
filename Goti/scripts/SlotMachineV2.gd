@@ -1010,7 +1010,17 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 		return
 
 	var big_label: Label = Label.new()
-	big_label.text = "+%d" % win_amount
+	var tween_value: float = 0.0
+
+	var count_tween: Tween = create_tween()
+	count_tween.tween_method(
+		func(v):
+			tween_value = v
+			big_label.text = "+%d" % int(v),
+		0.0,
+		float(win_amount),
+		1.3
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	big_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
 	big_label.add_theme_font_size_override("font_size", 104)
 	big_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1))
