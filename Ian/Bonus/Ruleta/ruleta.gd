@@ -79,16 +79,16 @@ func show_final_animation(win):
 
 	var tween = create_tween()
 
-	# 💥 aparece grande desde pequeño
+	#  aparece grande desde pequeño
 	tween.tween_method(change_font_size.bind(win_label), 10, 110, 0.5)\
 		.set_trans(Tween.TRANS_BACK)\
 		.set_ease(Tween.EASE_OUT)
 
-	# 🔥 rebote
+	#  rebote
 	tween.tween_method(change_font_size.bind(win_label), 110, 90, 0.2)
 	tween.tween_method(change_font_size.bind(win_label), 90, 100, 0.2)
 
-	# 💨 fade out
+	#  fade out
 	tween.tween_property(win_label, "modulate", Color(1,1,1,0), 1.5)\
 		.set_delay(1.0)
 
