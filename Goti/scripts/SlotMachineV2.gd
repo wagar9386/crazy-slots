@@ -75,8 +75,16 @@ const WIN_TIER_1_COLOR: Color = Color(0.2, 0.8, 1.0, 0.6) # 0 - 100
 const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
 const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
 const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
-const BONUS_SCENE: PackedScene = preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn")
+const BONUS_SCENES: Array[PackedScene] = [
+	preload("res://Ian/Bonus/Plinko/Mapa_Plinko.tscn"),
+	preload("res://Ian/Bonus/Ruleta/ruleta.tscn"),
+	#preload("res://Ian/Bonus/Pick/Bonus_Pick.tscn"),
+	#preload("res://Ian/Bonus/Ladder/Bonus_Ladder.tscn"),
+	#preload("res://Ian/Bonus/Mine/Bonus_Mine.tscn"),
+	#preload("res://Ian/Bonus/Scratch/Bonus_Scratch.tscn"),
+]
 
+var selected_bonus_scene: PackedScene = null
 
 ###BONUS SYSTEM 
 var spin_pool: Array[int] = []
@@ -201,9 +209,9 @@ func _start_icon_glow_pulse() -> void:
 
 
 func _trigger_bonus_game() -> void:
-	
 	if not ui_root:
-		get_tree().change_scene_to_packed(BONUS_SCENE)
+		if selected_bonus_scene:
+			get_tree().change_scene_to_packed(selected_bonus_scene)
 		return
 
 	var fade := ColorRect.new()
@@ -226,9 +234,9 @@ func _trigger_bonus_game() -> void:
 	tween.tween_interval(0.1)
 
 	tween.tween_callback(func():
-		get_tree().change_scene_to_packed(BONUS_SCENE)
+		if selected_bonus_scene:
+			get_tree().change_scene_to_packed(selected_bonus_scene)
 	)
-
 # Start spin
 func spin() -> void:
 	if is_spinning:
@@ -277,9 +285,12 @@ func _start_bonus_sequence() -> void:
 	if not ui_root:
 		return
 
-	# Create center text
+	# Pick random bonus
+	selected_bonus_scene = BONUS_SCENES[randi() % BONUS_SCENES.size()]
+	var bonus_name: String = selected_bonus_scene.resource_path.get_file().trim_suffix(".tscn").to_upper()
+
 	var label := Label.new()
-	label.text = "BONUS TRIGGERED!"
+	label.text = "BONUS TRIGGERED!\n%s" % bonus_name
 	label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
 	label.add_theme_font_size_override("font_size", 72)
 	label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2))
@@ -290,8 +301,8 @@ func _start_bonus_sequence() -> void:
 	label.position = Vector2.ZERO
 	label.pivot_offset = Vector2.ZERO
 	
+	label.z_index = 999
 	ui_root.add_child(label)
-	
 
 	await get_tree().process_frame
 	label.pivot_offset = label.size * 0.5
@@ -301,16 +312,18 @@ func _start_bonus_sequence() -> void:
 	label.scale = Vector2(0.2, 0.2)
 	label.modulate = Color(1, 1, 1, 0)
 
-	label.z_index = 999
-	ui_root.add_child(label)
-
 	# Pop-in animation
 	var tween := create_tween()
-	tween.tween_property(label, "scale", Vector2(1.2, 1.2), 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(label, "modulate", Color(1,1,1,1), 0.2)
+	tween.tween_property(label, "scale", Vector2(1.3, 1.3), 0.28).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(label, "modulate", Color(1,1,1,1), 0.22)
 
-	# Hold for dramatic effect (3.3s total delay)
-	tween.tween_interval(3.3)
+	# Pulse effect
+	var pulse: Tween = create_tween().set_loops(4)
+	pulse.tween_property(label, "scale", Vector2(1.35, 1.35), 0.18)
+	pulse.tween_property(label, "scale", Vector2(1.25, 1.25), 0.18)
+
+	# Hold for dramatic effect
+	tween.tween_interval(3.0)
 
 	# Fade out
 	tween.tween_property(label, "modulate", Color(1,1,1,0), 0.4)
@@ -318,11 +331,6 @@ func _start_bonus_sequence() -> void:
 
 	# After delay → go bonus
 	tween.tween_callback(_trigger_bonus_game)
-	
-	################
-
-
-
 
 # Called when spin animation finishes
 func _on_spin_completed() -> void:
@@ -893,21 +901,35 @@ func _dopamine_burst(win_amount: int) -> void:
 
 	win_label.text = "WIN: %d" % win_amount
 	win_label.pivot_offset = win_label.size * 0.5
+	
+	# MORE AGGRESSIVE POP
 	var pop: Tween = create_tween()
-	pop.tween_property(win_label, "scale", Vector2(1.55, 1.55), 0.1).set_ease(Tween.EASE_OUT)
-	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.18).set_ease(Tween.EASE_IN)
+	pop.tween_property(win_label, "scale", Vector2(1.8, 1.8), 0.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	pop.parallel().tween_property(win_label, "modulate", Color(1.0, 0.95, 0.1, 1), 0.08)
+	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_IN)
 
-	var color_tween: Tween = create_tween().set_loops(4)
-	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.2, 1), 0.15)
-	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.4, 0.1, 1), 0.15)
-	color_tween.tween_property(win_label, "modulate", Color(1.0, 1.0, 1.0, 1), 0.15)
+	# FASTER COLOR CYCLING for higher wins
+	var cycle_count: int = 6 if win_amount >= 500 else 4
+	var color_tween: Tween = create_tween().set_loops(cycle_count)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.1, 1), 0.1)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.2, 0.3, 1), 0.1)
+	color_tween.tween_property(win_label, "modulate", Color(0.4, 0.9, 1.0, 1), 0.1)
 
+	# AGGRESSIVE SHAKE
 	if win_amount >= 100 and reel_grid:
 		var origin: Vector2 = reel_grid.position
 		var shake: Tween = create_tween()
-		for _i in range(8):
-			shake.tween_property(reel_grid, "position", origin + Vector2(randf_range(-6, 6), randf_range(-5, 5)), 0.05)
-		shake.tween_property(reel_grid, "position", origin, 0.05)
+		var shake_intensity: int = 12 if win_amount >= 500 else 8
+		for _i in range(shake_intensity):
+			var offset: float = 8.0 if win_amount >= 500 else 6.0
+			shake.tween_property(reel_grid, "position", origin + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)), 0.04)
+		shake.tween_property(reel_grid, "position", origin, 0.04)
+
+	# SPIN EFFECT on big wins
+	if win_amount >= 500 and reel_grid:
+		var spin: Tween = create_tween()
+		spin.tween_property(reel_grid, "rotation", TAU, 0.6).set_ease(Tween.EASE_IN_OUT)
+		spin.tween_property(reel_grid, "rotation", 0.0, 0.0)
 
 	_show_win_celebration(win_amount)
 
@@ -920,27 +942,28 @@ func _show_win_celebration(win_amount: int) -> void:
 	var tier_text: String = ""
 	var tier_color: Color = Color.WHITE
 	var do_flash: bool = false
+	var do_tile_pulse: bool = false
 	var do_fireworks: bool = false
 
 	if win_amount >= 5000:
 		tier_text = "ULTRA MEGA HUGE WIN"
 		tier_color = Color(0.9, 0.2, 1.0, 1)
-		do_flash = true
+		do_tile_pulse = true
 		do_fireworks = true
 	elif win_amount >= 3000:
 		tier_text = "MEGA HUGE WIN"
 		tier_color = Color(1.0, 0.35, 0.08, 1)
-		do_flash = true
+		do_tile_pulse = true
 		do_fireworks = true
 	elif win_amount >= 2000:
 		tier_text = "MEGA WIN"
 		tier_color = Color(1.0, 1.0, 0.1, 1)
-		do_flash = true
+		do_tile_pulse = true
 		do_fireworks = true
 	elif win_amount >= 1000:
 		tier_text = "HUGE WIN"
 		tier_color = Color(1.0, 0.55, 0.1, 1)
-		do_flash = true
+		do_tile_pulse = true
 	elif win_amount >= 500:
 		tier_text = "BIG WIN"
 		tier_color = Color(0.35, 1.0, 0.45, 1)
@@ -950,11 +973,34 @@ func _show_win_celebration(win_amount: int) -> void:
 	if tier_text != "":
 		_show_tier_label(tier_text, tier_color)
 
+	if do_tile_pulse:
+		_start_tile_pulse_effect()
+
 	if do_flash:
 		_start_flash_effect()
 
 	if do_fireworks:
 		_launch_fireworks()
+
+func _start_tile_pulse_effect() -> void:
+	var tween: Tween = create_tween()
+	for _i in range(8):
+		tween.tween_callback(_pulse_all_tiles_on)
+		tween.tween_interval(0.15)
+		tween.tween_callback(_pulse_all_tiles_off)
+		tween.tween_interval(0.15)
+
+func _pulse_all_tiles_on() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(1.5, 1.3, 0.6, 1)
+
+func _pulse_all_tiles_off() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(0.5, 0.4, 0.2, 1)
 
 func _show_big_credits_overlay(win_amount: int) -> void:
 	if not reel_grid or not ui_root:
@@ -1010,16 +1056,16 @@ func _show_tier_label(tier_text: String, tier_color: Color) -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(label)
 
-	# Slam in, pulse, then fade
+# Slam in with overshoot
 	var tween: Tween = create_tween()
-	tween.tween_property(label, "scale", Vector2(1.15, 1.15), 0.28).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(label, "scale", Vector2(1.25, 1.25), 0.32).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 1), 0.2)
-	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.14).set_ease(Tween.EASE_IN)
+	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.16).set_ease(Tween.EASE_IN)
 
-	# Pulse glow loop
-	var pulse: Tween = create_tween().set_loops(5)
-	pulse.tween_property(label, "modulate", Color(tier_color.r, tier_color.g, tier_color.b, 0.7), 0.25)
-	pulse.tween_property(label, "modulate", Color(1, 1, 1, 1), 0.25)
+	# Intense pulse glow loop
+	var pulse: Tween = create_tween().set_loops(6)
+	pulse.tween_property(label, "modulate", Color(tier_color.r * 0.8, tier_color.g * 0.8, tier_color.b * 0.8, 0.5), 0.2)
+	pulse.tween_property(label, "modulate", Color(1, 1, 1, 1), 0.2)
 
 	# Fade out after delay
 	var fade: Tween = create_tween()
@@ -1044,8 +1090,8 @@ func _launch_fireworks() -> void:
 	]
 
 	# Fire several bursts with slight delays
-	for burst in range(7):
-		var delay: float = burst * 0.32
+	for burst in range(9):
+		var delay: float = burst * 0.28
 		var burst_pos: Vector2 = Vector2(
 			randf_range(screen_size.x * 0.15, screen_size.x * 0.85),
 			randf_range(screen_size.y * 0.05, screen_size.y * 0.55)
