@@ -6,7 +6,6 @@
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lrutk"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3k5ds"]
-load_path = "res://.godot/imported/diamond.png-2a61af8029aa81ae1ee7ca0d74d1b966.ctex"
 
 [node name="SlotMachine" type="Node2D" unique_id=1648049221]
 script = ExtResource("1_gsijy")

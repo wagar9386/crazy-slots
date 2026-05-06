@@ -24,14 +24,14 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	#Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	#Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	#Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
 	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
 	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
 	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
 	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
-	Symbol.Bonus,
+	#Symbol.Bonus,
 ]
 
 # Base symbol values
@@ -132,6 +132,7 @@ var paytable_overlay: PaytablePopup
 var reel_grid: GridContainer = null
 var hud_controls: HBoxContainer = null
 @onready var credits_label: Label = null
+@onready var big_label: Label = $UILayer/SlotsUI/HUD/HUDControls/WinLabel
 @onready var win_label: Label = null
 @onready var spin_button: Button = null
 @onready var paytable_button: Button = null
@@ -253,19 +254,18 @@ func spin() -> void:
 	if is_spinning:
 		return
 
-	# Clear any lingering win overlays from the previous spin
+	# Free any persistent win overlays from the previous spin
 	for node in _persistent_overlays:
 		if is_instance_valid(node):
 			node.queue_free()
 	_persistent_overlays.clear()
-	_win_anim_done = false
 	_clear_icon_glow()
 
-	# Bet subtracts IMMEDIATELY on spin press
+	# Bet subtracts IMMEDIATELY on press – always, before anything else
 	credits -= bet
 	_update_display_grid()
 	_update_ui()
-	
+
 	is_spinning = true
 	spin_button.disabled = true
 	_set_bet_buttons_disabled(true)
@@ -403,16 +403,18 @@ func _on_spin_completed() -> void:
 	spin_button.disabled = false
 	_set_bet_buttons_disabled(false)
 
-	# If bonus triggered: wait for win animation to finish, THEN start bonus
+	# Bonus fires AFTER win celebration finishes
 	if bonus_result.count >= 3:
-		# Calculate how long the win celebration takes before starting bonus
-		var win_delay: float = 0.6  # base delay even for no win
-		if scaled_win >= 100:
-			win_delay = 4.5  # enough time for big win celebration
+		var win_delay: float = 0.8
+		if scaled_win >= 2000:
+			win_delay = 6.5
+		elif scaled_win >= 500:
+			win_delay = 5.0
+		elif scaled_win >= 100:
+			win_delay = 4.0
 		elif scaled_win > 0:
 			win_delay = 2.5
-		var bonus_timer: SceneTreeTimer = get_tree().create_timer(win_delay)
-		bonus_timer.timeout.connect(_start_bonus_sequence)
+		get_tree().create_timer(win_delay).timeout.connect(_start_bonus_sequence)
 
 # Evaluate all rows
 func _evaluate_wins() -> Dictionary:
@@ -530,6 +532,7 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 		_start_icon_glow_pulse()
 		color = WIN_TIER_MEGA_COLOR
 		mega = true
+		_start_full_flash_effect() 
 	elif win_amount >= 600:
 		color = WIN_TIER_3_COLOR
 	elif win_amount >= 100:
@@ -555,38 +558,70 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 	if mega:
 		_start_flash_effect()
 
+#################FLASHING#####################
 func _start_flash_effect() -> void:
-	# Fast chaotic flicker that builds up and STAYS ON (bright) at the end
 	var tween: Tween = create_tween()
-	# Fast random flickers - interval gets shorter = accelerates
-	var flash_intervals: Array[float] = [0.11, 0.09, 0.08, 0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03]
-	for i in range(flash_intervals.size()):
+
+	var timings: Array[float] = [0.10, 0.10, 0.08, 0.08, 0.06, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02, 0.015]
+
+	for i in range(timings.size()):
 		tween.tween_callback(_flash_all_cells_on)
-		tween.tween_interval(flash_intervals[i])
-		if i < flash_intervals.size() - 1:  # Don't turn off on last one – stay lit!
+		tween.tween_interval(timings[i])
+
+		if i < timings.size() - 1:
 			tween.tween_callback(_flash_all_cells_off)
-			tween.tween_interval(flash_intervals[i])
-	# STAY BRIGHT - don't fade back to normal; cell highlight colors remain blazing
+			tween.tween_interval(timings[i] * 0.7)
+
+	#FORCE FINAL STATE = ON
+	tween.tween_callback(_flash_all_cells_on)
+
+func _flash_full_board_on() -> void:
+	_flash_all_cells_on()
+
+	if ui_root:
+		ui_root.modulate = Color(2.2, 2.2, 2.2, 1) # bright white flash
+
+func _start_full_flash_effect() -> void:
+	var tween: Tween = create_tween()
+
+	var timings: Array[float] = [0.10, 0.08, 0.06, 0.05, 0.04, 0.03, 0.02]
+
+	for i in range(timings.size()):
+		tween.tween_callback(_flash_full_board_on)
+		tween.tween_interval(timings[i])
+
+		if i < timings.size() - 1:
+			tween.tween_callback(_flash_full_board_off)
+			tween.tween_interval(timings[i] * 0.7)
+
+	# FINAL STATE = FULL BRIGHT
+	tween.tween_callback(_flash_full_board_on)
+
+
+func _flash_full_board_off() -> void:
+	_flash_all_cells_off()
+
+	if ui_root:
+		ui_root.modulate = Color(0.4, 0.4, 0.4, 1) # dimmed board
 
 func _flash_all_cells_on() -> void:
 	for row_cells in cell_nodes:
 		for cell in row_cells:
 			if cell:
-				cell.modulate = Color(2.0, 1.8, 0.6, 1)  # Very bright golden flash
+				cell.modulate = Color(2.5, 2.5, 2.5, 1) # pure white blast
 
 func _flash_all_cells_off() -> void:
 	for row_cells in cell_nodes:
 		for cell in row_cells:
 			if cell:
-				cell.modulate = Color(0.4, 0.3, 0.1, 1)  # Dark between flashes = more contrast
-
+				cell.modulate = Color(0.15, 0.1, 0.02, 1)  # Near-black contrast
 
 func _clear_icon_glow() -> void:
 	for row in symbol_nodes:
 		for icon in row:
 			if icon:
 				icon.modulate = Color(1, 1, 1, 1)
-
+######################FLASHING##############################
 func set_grid_width(new_width: int) -> void:
 	if new_width <= 0:
 		push_warning("SlotMachineV2: Grid width must be positive.")
@@ -939,32 +974,43 @@ func _set_credits_display(value: float) -> void:
 func _dopamine_burst(win_amount: int) -> void:
 	if win_amount <= 0 or not win_label:
 		return
-
-	win_label.text = "WIN: %d" % win_amount
+	if win_label:
+		win_label.text = "WIN: %d" % win_amount
 	win_label.pivot_offset = win_label.size * 0.5
-	
-	# MORE AGGRESSIVE POP
+
+	# Pop scale based on win size
+	var pop_scale: float = 2.2 if win_amount >= 1000 else (1.9 if win_amount >= 500 else 1.6)
 	var pop: Tween = create_tween()
-	pop.tween_property(win_label, "scale", Vector2(1.8, 1.8), 0.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	pop.tween_property(win_label, "scale", Vector2(pop_scale, pop_scale), 0.10).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	pop.parallel().tween_property(win_label, "modulate", Color(1.0, 0.95, 0.1, 1), 0.08)
-	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_IN)
+	pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.18).set_ease(Tween.EASE_IN)
 
-	# FASTER COLOR CYCLING for higher wins
-	var cycle_count: int = 6 if win_amount >= 500 else 4
+	# Color cycling on win label
+	var cycle_count: int = 8 if win_amount >= 1000 else (6 if win_amount >= 500 else 4)
 	var color_tween: Tween = create_tween().set_loops(cycle_count)
-	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.1, 1), 0.1)
-	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.2, 0.3, 1), 0.1)
-	color_tween.tween_property(win_label, "modulate", Color(0.4, 0.9, 1.0, 1), 0.1)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.9, 0.1, 1), 0.08)
+	color_tween.tween_property(win_label, "modulate", Color(1.0, 0.2, 0.3, 1), 0.08)
+	color_tween.tween_property(win_label, "modulate", Color(0.3, 1.0, 1.0, 1), 0.08)
 
-	# AGGRESSIVE SHAKE
+	# SHAKE – tiered intensity
 	if win_amount >= 100 and reel_grid:
 		var origin: Vector2 = reel_grid.position
 		var shake: Tween = create_tween()
-		var shake_intensity: int = 12 if win_amount >= 500 else 8
-		for _i in range(shake_intensity):
-			var offset: float = 8.0 if win_amount >= 500 else 6.0
-			shake.tween_property(reel_grid, "position", origin + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)), 0.04)
-		shake.tween_property(reel_grid, "position", origin, 0.04)
+		var steps: int
+		var offset: float
+		if win_amount >= 2000:
+			steps = 22; offset = 18.0
+		elif win_amount >= 1000:
+			steps = 18; offset = 14.0
+		elif win_amount >= 500:
+			steps = 14; offset = 10.0
+		else:
+			steps = 8; offset = 6.0
+		var speed: float = 0.035 if win_amount >= 500 else 0.045
+		for _i in range(steps):
+			shake.tween_property(reel_grid, "position",
+				origin + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)), speed)
+		shake.tween_property(reel_grid, "position", origin, 0.06)
 
 	_show_win_celebration(win_amount)
 
@@ -982,26 +1028,31 @@ func _show_win_celebration(win_amount: int) -> void:
 
 	if win_amount >= 5000:
 		tier_text = "ULTRA MEGA HUGE WIN"
-		tier_color = Color(0.9, 0.2, 1.0, 1)
+		tier_color = Color(0.843, 0.001, 0.945, 1.0)
 		do_tile_pulse = true
 		do_fireworks = true
+		do_flash = true
 	elif win_amount >= 3000:
 		tier_text = "MEGA HUGE WIN"
 		tier_color = Color(1.0, 0.35, 0.08, 1)
 		do_tile_pulse = true
 		do_fireworks = true
+		do_flash = true
 	elif win_amount >= 2000:
 		tier_text = "MEGA WIN"
 		tier_color = Color(1.0, 1.0, 0.1, 1)
 		do_tile_pulse = true
 		do_fireworks = true
+		do_flash = true
 	elif win_amount >= 1000:
 		tier_text = "HUGE WIN"
 		tier_color = Color(1.0, 0.55, 0.1, 1)
 		do_tile_pulse = true
+		do_flash = true
 	elif win_amount >= 500:
 		tier_text = "BIG WIN"
-		tier_color = Color(0.35, 1.0, 0.45, 1)
+		tier_color = Color(0.859, 0.847, 0.85, 1.0)
+		do_tile_pulse = true
 
 	_show_big_credits_overlay(win_amount)
 
@@ -1072,11 +1123,13 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 
 	# Count up
 	tween.tween_method(
-		func(v):
-			big_label.text = "+%d" % int(v),
-		0.0,
-		float(win_amount),
-		3.0
+	func(v):
+		if big_label:
+			big_label.text = "+%d" % int(v)
+	,
+	0.0,
+	float(win_amount),
+	3.0
 	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 	# Land with a bounce
@@ -1087,9 +1140,7 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 	# A persistent rainbow shimmer to keep it alive
 	var shimmer: Tween = create_tween().set_loops()
 	shimmer.tween_property(big_label, "modulate", Color(1.0, 0.85, 0.2, 1), 0.3)
-	shimmer.tween_property(big_label, "modulate", Color(0.85, 1.0, 0.3, 1), 0.3)
-	shimmer.tween_property(big_label, "modulate", Color(1.0, 0.5, 0.9, 1), 0.3)
-	shimmer.tween_property(big_label, "modulate", Color(1.0, 0.85, 0.2, 1), 0.3)
+	shimmer.tween_property(big_label, "modulate", Color(0.987, 0.828, 0.0, 1.0), 0.3)
 
 
 func _show_tier_label(tier_text: String, tier_color: Color) -> void:
