@@ -72,8 +72,8 @@ const BURNISHED_BRASS_COLOR: Color = Color(0.93, 0.79, 0.47, 1)
 const PAYTABLE_SCENE: PackedScene = preload("res://Goti/scenes/Paytable.tscn")
 const FULL_EXPAND_FLAGS: Control.SizeFlags = Control.SIZE_FILL | Control.SIZE_EXPAND
 const WIN_TIER_1_COLOR: Color = Color(0.2, 0.8, 1.0, 0.6) # 0 - 100
-const WIN_TIER_2_COLOR: Color = Color(1.0, 0.8, 0.2, 0.7) # 100 - 600
-const WIN_TIER_3_COLOR: Color = Color(1.0, 0.3, 0.8, 0.8) # 600 - 1000
+const WIN_TIER_2_COLOR: Color = Color(0.982, 0.707, 0.0, 0.8) # 100 - 600
+const WIN_TIER_3_COLOR: Color = Color(0.982, 0.707, 0.0, 0.8) # 600 - 1000
 const WIN_TIER_MEGA_COLOR: Color = Color(1.0, 1.0, 0.3, 1.0) # 1000+
 const BONUS_SCENES: Array = [
 	{
@@ -532,11 +532,14 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 		_start_icon_glow_pulse()
 		color = WIN_TIER_MEGA_COLOR
 		mega = true
-		_start_full_flash_effect() 
+		_start_grid_flash_effect()
+		_lock_grid_on_state()
 	elif win_amount >= 600:
 		color = WIN_TIER_3_COLOR
+		_lock_grid_on_state()
 	elif win_amount >= 100:
 		color = WIN_TIER_2_COLOR
+		_lock_grid_on_state()
 	
 
 	for line in winning_lines:
@@ -556,13 +559,22 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 				cell.color = color
 
 	if mega:
-		_start_flash_effect()
+		_start_flash_effect_all_board()
 
-#################FLASHING#####################
+#####################################################FLASHING##############################################
+func _start_flash_effect_all_board() -> void:
+	_start_flash_effect() # same flash, but now we explicitly clarify intent
+
 func _start_flash_effect() -> void:
 	var tween: Tween = create_tween()
 
-	var timings: Array[float] = [0.10, 0.10, 0.08, 0.08, 0.06, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02, 0.015]
+	var timings: Array[float] = [
+		0.18, 0.18,
+		0.15, 0.15,
+		0.12, 0.12,
+		0.10, 0.10,
+		0.08, 0.08
+	]
 
 	for i in range(timings.size()):
 		tween.tween_callback(_flash_all_cells_on)
@@ -572,30 +584,43 @@ func _start_flash_effect() -> void:
 			tween.tween_callback(_flash_all_cells_off)
 			tween.tween_interval(timings[i] * 0.7)
 
-	#FORCE FINAL STATE = ON
 	tween.tween_callback(_flash_all_cells_on)
+	
+func _start_grid_flash_effect() -> void:
+	var tween: Tween = create_tween()
+
+	var timings: Array[float] = [
+		0.18, 0.18,
+		0.15, 0.15,
+		0.12, 0.12,
+		0.10, 0.10,
+		0.08, 0.08
+	]
+
+	for i in range(timings.size()):
+		tween.tween_callback(_flash_all_cells_on)
+		tween.tween_interval(timings[i])
+
+		if i < timings.size() - 1:
+			tween.tween_callback(_flash_all_cells_off)
+			tween.tween_interval(timings[i] * 0.8)
+
+	tween.tween_callback(_flash_all_cells_on)
+func _lock_grid_on_state() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(1.8, 1.6, 0.9, 1)
+
+	# optional: ensures nothing else dims UI accidentally
+	if ui_root:
+		ui_root.modulate = Color(1, 1, 1, 1)
 
 func _flash_full_board_on() -> void:
 	_flash_all_cells_on()
 
 	if ui_root:
 		ui_root.modulate = Color(2.2, 2.2, 2.2, 1) # bright white flash
-
-func _start_full_flash_effect() -> void:
-	var tween: Tween = create_tween()
-
-	var timings: Array[float] = [0.10, 0.08, 0.06, 0.05, 0.04, 0.03, 0.02]
-
-	for i in range(timings.size()):
-		tween.tween_callback(_flash_full_board_on)
-		tween.tween_interval(timings[i])
-
-		if i < timings.size() - 1:
-			tween.tween_callback(_flash_full_board_off)
-			tween.tween_interval(timings[i] * 0.7)
-
-	# FINAL STATE = FULL BRIGHT
-	tween.tween_callback(_flash_full_board_on)
 
 
 func _flash_full_board_off() -> void:
@@ -608,7 +633,7 @@ func _flash_all_cells_on() -> void:
 	for row_cells in cell_nodes:
 		for cell in row_cells:
 			if cell:
-				cell.modulate = Color(2.5, 2.5, 2.5, 1) # pure white blast
+				cell.modulate = Color(1.8, 1.6, 0.9, 1)
 
 func _flash_all_cells_off() -> void:
 	for row_cells in cell_nodes:
@@ -621,7 +646,7 @@ func _clear_icon_glow() -> void:
 		for icon in row:
 			if icon:
 				icon.modulate = Color(1, 1, 1, 1)
-######################FLASHING##############################
+#########################################################FLASHING########################################################
 func set_grid_width(new_width: int) -> void:
 	if new_width <= 0:
 		push_warning("SlotMachineV2: Grid width must be positive.")
@@ -666,6 +691,15 @@ func _apply_cell_visibility() -> void:
 		var cell: CanvasItem = reel_grid.get_child(index) as CanvasItem
 		if cell:
 			cell.visible = index < visible_count
+
+func _finalize_win_state_lock() -> void:
+	for row_cells in cell_nodes:
+		for cell in row_cells:
+			if cell:
+				cell.modulate = Color(1.8, 1.6, 0.9, 1)
+
+	if ui_root:
+		ui_root.modulate = Color(1, 1, 1, 1)
 
 func _refresh_grid_content() -> void:
 	_generate_grid()
@@ -1000,10 +1034,13 @@ func _dopamine_burst(win_amount: int) -> void:
 		var offset: float
 		if win_amount >= 2000:
 			steps = 22; offset = 18.0
+			_lock_grid_on_state()
 		elif win_amount >= 1000:
 			steps = 18; offset = 14.0
+			_lock_grid_on_state()
 		elif win_amount >= 500:
 			steps = 14; offset = 10.0
+			_lock_grid_on_state()
 		else:
 			steps = 8; offset = 6.0
 		var speed: float = 0.035 if win_amount >= 500 else 0.045
@@ -1032,18 +1069,21 @@ func _show_win_celebration(win_amount: int) -> void:
 		do_tile_pulse = true
 		do_fireworks = true
 		do_flash = true
+		_lock_grid_on_state()
 	elif win_amount >= 3000:
 		tier_text = "MEGA HUGE WIN"
 		tier_color = Color(1.0, 0.35, 0.08, 1)
 		do_tile_pulse = true
 		do_fireworks = true
 		do_flash = true
+		_lock_grid_on_state()
 	elif win_amount >= 2000:
 		tier_text = "MEGA WIN"
 		tier_color = Color(1.0, 1.0, 0.1, 1)
 		do_tile_pulse = true
 		do_fireworks = true
 		do_flash = true
+		_lock_grid_on_state()
 	elif win_amount >= 1000:
 		tier_text = "HUGE WIN"
 		tier_color = Color(1.0, 0.55, 0.1, 1)
