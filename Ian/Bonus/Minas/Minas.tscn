@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://mxvfipfl2gfx" path="res://Ian/Bonus/Minas/minas.gd" id="1_3ey2x"]
 [ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="2_8indr"]
+[ext_resource type="Texture2D" uid="uid://c8mrl2db15ek4" path="res://Ian/Bonus/Plinko/Sprites/istockphoto-119479168-612x612.jpg" id="3_260wa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3ey2x"]
 font = ExtResource("2_8indr")
@@ -26,11 +27,9 @@ grow_vertical = 2
 
 [node name="GridContainer" type="GridContainer" parent="Control" unique_id=2084246456]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 columns = 5
@@ -79,4 +78,8 @@ grow_horizontal = 2
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1916918139]
 
-[connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1472685630]
+z_index = -5
+position = Vector2(1, 0)
+scale = Vector2(1.8986928, 1.5410628)
+texture = ExtResource("3_260wa")
