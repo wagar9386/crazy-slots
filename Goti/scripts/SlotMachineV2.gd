@@ -24,14 +24,14 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	#Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	#Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	#Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
 	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
 	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
 	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
 	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
-	#Symbol.Bonus,
+	Symbol.Bonus,
 ]
 
 # Base symbol values
