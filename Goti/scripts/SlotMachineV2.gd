@@ -1273,7 +1273,7 @@ func _spawn_burst(origin: Vector2, burst_color: Color) -> void:
 		tween.tween_property(dot, "position", end_pos, duration).set_ease(Tween.EASE_OUT)
 		tween.parallel().tween_property(dot, "color", Color(dot.color.r, dot.color.g, dot.color.b, 0.0), duration).set_ease(Tween.EASE_IN)
 		tween.tween_callback(dot.queue_free)
-######################################################################
+###########################################################################
 
 
 # Gather grid nodes from scene
