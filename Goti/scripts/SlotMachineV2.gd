@@ -24,23 +24,23 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
-	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
-	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
-	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
-	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
+	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
+	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
+	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
+	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
 	Symbol.Bonus,
 ]
 
 # Base symbol values
 const SYMBOL_VALUES: Dictionary[int, int] = {
-	Symbol.A: 2,
-	Symbol.B: 3,
-	Symbol.C: 5,
-	Symbol.D: 7,
-	Symbol.E: 12,
+	Symbol.A: 3,
+	Symbol.B: 4,
+	Symbol.C: 6,
+	Symbol.D: 9,
+	Symbol.E: 13,
 	Symbol.G: 30,
 	Symbol.Wild: 33,
 	Symbol.Bonus: 333
@@ -513,13 +513,14 @@ func _calculate_payout(symbol: int, count: int) -> int:
 func _scale_win_by_bet(base_win: int) -> int:
 	return int(round(float(base_win) * (float(bet) / float(MIN_BET))))
 
-# Reset highlights
+# Reset highlights – also resets modulate so post-flash glow is fully cleared
 func _clear_cell_highlights() -> void:
 	for row in range(grid_rows):
 		for column in range(grid_cols):
 			var cell: ColorRect = cell_nodes[row][column]
 			if cell:
 				cell.color = BASE_CELL_COLOR
+				cell.modulate = Color(1, 1, 1, 1)
 
 func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 	if win_amount <= 0:
@@ -563,83 +564,60 @@ func _apply_win_visuals(win_amount: int, winning_lines: Array) -> void:
 
 #####################################################FLASHING##############################################
 func _start_flash_effect_all_board() -> void:
-	_start_flash_effect() # same flash, but now we explicitly clarify intent
+	_start_flash_effect()
 
 func _start_flash_effect() -> void:
+	# Accelerating on/off flicker that ENDS fully ON – stays bright until next spin
 	var tween: Tween = create_tween()
-
 	var timings: Array[float] = [
-		0.18, 0.18,
-		0.15, 0.15,
-		0.12, 0.12,
+		0.16, 0.16,
+		0.13, 0.13,
 		0.10, 0.10,
-		0.08, 0.08
+		0.08, 0.08,
+		0.06, 0.06,
+		0.04, 0.04,
+		0.03
 	]
-
-	for i in range(timings.size()):
+	var i: int = 0
+	while i < timings.size():
 		tween.tween_callback(_flash_all_cells_on)
 		tween.tween_interval(timings[i])
-
 		if i < timings.size() - 1:
 			tween.tween_callback(_flash_all_cells_off)
-			tween.tween_interval(timings[i] * 0.7)
-
+			tween.tween_interval(timings[i] * 0.6)
+		i += 1
+	# Final call: lock cells BLAZING ON – stays until spin() calls _clear_cell_highlights()
 	tween.tween_callback(_flash_all_cells_on)
-	
+
 func _start_grid_flash_effect() -> void:
-	var tween: Tween = create_tween()
+	_start_flash_effect()
 
-	var timings: Array[float] = [
-		0.18, 0.18,
-		0.15, 0.15,
-		0.12, 0.12,
-		0.10, 0.10,
-		0.08, 0.08
-	]
-
-	for i in range(timings.size()):
-		tween.tween_callback(_flash_all_cells_on)
-		tween.tween_interval(timings[i])
-
-		if i < timings.size() - 1:
-			tween.tween_callback(_flash_all_cells_off)
-			tween.tween_interval(timings[i] * 0.8)
-
-	tween.tween_callback(_flash_all_cells_on)
 func _lock_grid_on_state() -> void:
-	for row_cells in cell_nodes:
-		for cell in row_cells:
-			if cell:
-				cell.modulate = Color(1.8, 1.6, 0.9, 1)
-
-	# optional: ensures nothing else dims UI accidentally
+	# Only used to ensure ui_root modulate is clean – cell glow is handled by flash
 	if ui_root:
 		ui_root.modulate = Color(1, 1, 1, 1)
 
 func _flash_full_board_on() -> void:
 	_flash_all_cells_on()
-
 	if ui_root:
-		ui_root.modulate = Color(2.2, 2.2, 2.2, 1) # bright white flash
-
+		ui_root.modulate = Color(2.2, 2.2, 2.2, 1)
 
 func _flash_full_board_off() -> void:
 	_flash_all_cells_off()
-
 	if ui_root:
-		ui_root.modulate = Color(0.4, 0.4, 0.4, 1) # dimmed board
+		ui_root.modulate = Color(0.4, 0.4, 0.4, 1)
 
 func _flash_all_cells_on() -> void:
 	for row_cells in cell_nodes:
 		for cell in row_cells:
 			if cell:
-				cell.modulate = Color(1.8, 1.6, 0.9, 1)
+				cell.modulate = Color(2.2, 1.9, 0.6, 1)  # Blazing bright gold
 
 func _flash_all_cells_off() -> void:
 	for row_cells in cell_nodes:
 		for cell in row_cells:
 			if cell:
-				cell.modulate = Color(0.15, 0.1, 0.02, 1)  # Near-black contrast
+				cell.modulate = Color(0.12, 0.08, 0.01, 1)  # Near-black for max contrast
 
 func _clear_icon_glow() -> void:
 	for row in symbol_nodes:
@@ -1341,7 +1319,7 @@ func _on_bonus_hit() -> void:
 	bonus_hits_in_spin += 1
 
 
-	var extra := 2 + bonus_hits_in_spin
+	var extra := 6 + bonus_hits_in_spin
 
 	for i in range(extra):
 		spin_pool.append(Symbol.Bonus)
