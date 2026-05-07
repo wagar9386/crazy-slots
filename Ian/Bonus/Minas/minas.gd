@@ -49,7 +49,7 @@ func increase_multiplier():
 func lose():
 	game_over = true
 	multiplier = 0
-	label_status.text = "💥 Has perdido"
+	label_status.text = "Has perdido"
 	update_ui()
 
 func _on_button_cashout_pressed():
@@ -57,7 +57,7 @@ func _on_button_cashout_pressed():
 		return
 	
 	game_over = true
-	label_status.text = "💰 Ganado: x" + str(round(multiplier * 100) / 100.0)
+	label_status.text = "Ganado: x" + str(round(multiplier * 100) / 100.0)
 
 func update_ui():
 	label_multiplier.text = "x" + str(round(multiplier * 100) / 100.0)

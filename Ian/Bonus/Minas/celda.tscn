@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://choucyarms70k"]
 
+[ext_resource type="Texture2D" uid="uid://bew1wbxsoux00" path="res://Ian/Bonus/Minas/assets/Gemini_Generated_Image_439u9p439u9p439u (1).png" id="1_i5gra"]
 [ext_resource type="Script" uid="uid://bohq4t4xpcsr7" path="res://Ian/Bonus/Minas/celda.gd" id="1_ldc8s"]
-[ext_resource type="Texture2D" uid="uid://bejxymeriiswa" path="res://Ian/Bonus/Plinko/Sprites/1 (1).jpg" id="1_tnqeq"]
-[ext_resource type="Texture2D" uid="uid://dfyl7dh1mkvuk" path="res://Ian/Bonus/Minas/assets/safe.png" id="3_i5gra"]
+[ext_resource type="Texture2D" uid="uid://bpx6xwy7mepig" path="res://Ian/Bonus/Minas/assets/safe.png" id="3_i5gra"]
 
 [node name="TextureButton" type="TextureButton" unique_id=2017161597]
 offset_right = 40.0
 offset_bottom = 40.0
-texture_normal = ExtResource("1_tnqeq")
+texture_normal = ExtResource("1_i5gra")
 script = ExtResource("1_ldc8s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=267085786]

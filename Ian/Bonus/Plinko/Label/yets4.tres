@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://b3u0f25ffildk"]
+
+[ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="1_b435x"]
+
+[resource]
+font = ExtResource("1_b435x")
+font_size = 25
+font_color = Color(0.98039216, 0.92156863, 0.69803923, 1)
+outline_size = 6
+outline_color = Color(0.105882354, 0.08235294, 0.007843138, 1)

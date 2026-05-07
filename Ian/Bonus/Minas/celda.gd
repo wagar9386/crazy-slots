@@ -9,7 +9,7 @@ var revealed = false
 
 @onready var mine_texture = preload("res://Ian/Bonus/Minas/assets/bomb.png")
 @onready var safe_texture = preload("res://Ian/Bonus/Minas/assets/safe.png")
-@onready var default_texture = preload("res://Ian/Bonus/Plinko/Sprites/1 (1).jpg")
+@onready var default_texture = preload("res://Ian/Bonus/Minas/assets/Gemini_Generated_Image_439u9p439u9p439u (1).png")
 
 func _ready():
 	pressed.connect(_on_pressed)
