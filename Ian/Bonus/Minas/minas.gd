@@ -19,8 +19,8 @@ func _ready():
 	randomize()
 
 	# PAGAR APUESTA AL ENTRAR
-	if GameState.credits >= GameState.current_bet:
-		GameState.credits -= GameState.current_bet
+	if GameState.credits >= GameState.bet:
+		GameState.credits -= GameState.bet
 	else:
 		label_status.text = "Sin dinero"
 		return
@@ -97,7 +97,7 @@ func _on_button_cashout_pressed():
 
 	game_over = true
 
-	var winnings = GameState.current_bet * multiplier
+	var winnings = GameState.bet * multiplier
 
 	GameState.credits += winnings
 
@@ -126,8 +126,8 @@ func restart():
 	label_status.text = ""
 
 	# COMPROBAR DINERO
-	if GameState.credits >= GameState.current_bet:
-		GameState.credits -= GameState.current_bet
+	if GameState.credits >= GameState.bet:
+		GameState.credits -= GameState.bet
 	else:
 		label_status.text = "Sin dinero"
 		update_ui()
