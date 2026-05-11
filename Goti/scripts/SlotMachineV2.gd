@@ -1309,6 +1309,14 @@ func _generate_grid() -> void:
 
 		for row in range(grid_rows):
 			var symbol: int = spin_pool[randi() % spin_pool.size()]
+
+			# Cap: if already at 5 bonus symbols, force a re-roll until non-bonus
+			if symbol == Symbol.Bonus and bonus_hits_in_spin >= 5:
+				var attempts: int = 0
+				while symbol == Symbol.Bonus and attempts < 100:
+					symbol = spin_pool[randi() % spin_pool.size()]
+					attempts += 1
+
 			grid[column].append(symbol)
 
 			# if bonus appears → boost chances for remaining cells
@@ -1318,6 +1326,9 @@ func _generate_grid() -> void:
 func _on_bonus_hit() -> void:
 	bonus_hits_in_spin += 1
 
+	# Stop inflating the pool once cap is reached
+	if bonus_hits_in_spin >= 5:
+		return
 
 	var extra := 6 + bonus_hits_in_spin
 

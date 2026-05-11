@@ -50,46 +50,71 @@ func create_pins():
 func play_big_win_countup(label: Label, value: int) -> void:
 	if not is_instance_valid(label):
 		return
-	apply_slotmachine_win_style(label)
-	# --- MATCH SLOT MACHINE STYLE ---
-	label.visible = true
-	label.modulate = Color(1.0, 0.9, 0.2, 1)
-	label.text = "WIN: 0"
 
-	# same vibe as your dopamine_big_label
-	
+	# SAME STYLE AS MAIN SLOT
+	label.visible = true
+	label.text = "+0"
+
+	label.add_theme_font_override("font", SLOT_FONT)
+	label.add_theme_font_size_override("font_size", 120)
+	label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2, 1))
+	label.add_theme_constant_override("outline_size", 14)
+	label.add_theme_color_override("font_outline_color", Color(0.12, 0.03, 0.0))
 
 	label.pivot_offset = label.size * 0.5
 	label.scale = Vector2(0.2, 0.2)
+	label.modulate = Color(1, 1, 1, 0)
 
-	# --- POP IN ---
 	var tween := create_tween()
 
-	tween.tween_property(label, "scale", Vector2(1.35, 1.35), 0.25)\
-		.set_trans(Tween.TRANS_BACK)\
-		.set_ease(Tween.EASE_OUT)
+	# POP IN
+	tween.tween_property(label, "scale", Vector2(1.35, 1.35), 0.24)\
+		.set_ease(Tween.EASE_OUT)\
+		.set_trans(Tween.TRANS_BACK)
 
-	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 1), 0.15)
+	tween.parallel().tween_property(
+		label,
+		"modulate",
+		Color(1, 1, 1, 1),
+		0.18
+	)
 
-	# --- COUNT UP ---
+	tween.tween_property(label, "scale", Vector2(1.05, 1.05), 0.10)\
+		.set_ease(Tween.EASE_IN)
+
+	# COUNTUP (IDENTICAL FEEL)
 	tween.tween_method(
 		func(v):
-			label.text = "WIN: %d" % int(v),
+			if is_instance_valid(label):
+				label.text = "+%d" % int(v),
 		0.0,
 		float(value),
-		2.8
-	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		3.0
+	).set_trans(Tween.TRANS_QUAD)\
+	 .set_ease(Tween.EASE_OUT)
 
-	# --- SETTLE ---
-	tween.tween_property(label, "scale", Vector2(1.05, 1.05), 0.15)
-	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.15)
+	# BOUNCE
+	tween.tween_property(label, "scale", Vector2(1.25, 1.25), 0.14)\
+		.set_ease(Tween.EASE_OUT)
 
-	# optional fade out (remove if you want it permanent)
-	tween.tween_property(label, "modulate", Color(1, 1, 1, 0), 1.2)\
-		.set_delay(0.8)
+	tween.tween_property(label, "scale", Vector2(1.05, 1.05), 0.10)\
+		.set_ease(Tween.EASE_IN)
 
-	tween.tween_callback(func():
-		label.visible = false
+	# PERMANENT SHIMMER
+	var shimmer: Tween = create_tween().set_loops()
+
+	shimmer.tween_property(
+		label,
+		"modulate",
+		Color(1.0, 0.85, 0.2, 1),
+		0.3
+	)
+
+	shimmer.tween_property(
+		label,
+		"modulate",
+		Color(0.987, 0.828, 0.0, 1.0),
+		0.3
 	)
 
 func create_slots():
