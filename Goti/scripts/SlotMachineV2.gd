@@ -100,6 +100,15 @@ var bonus_hits_in_spin: int = 0
 var _persistent_overlays: Array[Node] = []
 var _win_anim_done: bool = false
 
+# Free spins system
+var free_spins_remaining: int = 0
+var spins_since_2_bonus: int = 0
+var bonus_count_last_6: int = 0
+
+# Bonus tracking for odds boost
+var spins_without_bonus: int = 0
+var bonus_spotted: int = 0
+
 
 
 # Grid data

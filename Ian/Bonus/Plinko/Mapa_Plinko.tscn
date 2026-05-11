@@ -35,10 +35,10 @@ offset_bottom = -0.06400299
 label_settings = ExtResource("2_ur7va")
 
 [node name="WinLabel" type="Label" parent="CanvasLayer" unique_id=1038868192]
-offset_left = 127.0
-offset_top = 270.0
-offset_right = 500.99988
-offset_bottom = 509.0
+offset_left = -32.0
+offset_top = 87.0
+offset_right = 341.99988
+offset_bottom = 326.0
 label_settings = ExtResource("4_rgu2i")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -71,6 +71,7 @@ show_behind_parent = true
 position = Vector2(120.26635, 16.656242)
 scale = Vector2(0.37606156, 0.042)
 texture = ExtResource("5_xnh8j")
+metadata/_edit_lock_ = true
 
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D2" unique_id=32141271]
 visible = false

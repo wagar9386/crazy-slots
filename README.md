@@ -34,18 +34,18 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 
 <table>
   <tr>
-    <td align="center">
-      <img src="https://github.com/wagar9386.png" width="100px" alt=""/><br />
-      <b>Goti</b><br />
-      <i>Slots Principals</i><br />
-      <a href="https://github.com/wagar9386">GitHub</a>
-    </td>
-    <td align="center">
-      <img src="https://github.com/Racuzan-fem.png" width="100px" alt=""/><br />
-      <b>Ian</b><br />
-      <i>Bonuses</i><br />
-      <a href="https://github.com/Racuzan-fem">GitHub</a>
-    </td>
+	<td align="center">
+	  <img src="https://github.com/wagar9386.png" width="100px" alt=""/><br />
+	  <b>Goti</b><br />
+	  <i>Slots Principals</i><br />
+	  <a href="https://github.com/wagar9386">GitHub</a>
+	</td>
+	<td align="center">
+	  <img src="https://github.com/Racuzan-fem.png" width="100px" alt=""/><br />
+	  <b>Ian</b><br />
+	  <i>Bonuses</i><br />
+	  <a href="https://github.com/Racuzan-fem">GitHub</a>
+	</td>
   </tr>
 </table>
 
@@ -54,4 +54,3 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.2-green.svg)]()
 [![Downloads](https://img.shields.io/npm/dm/Crazy-Slots.svg)]()
-
