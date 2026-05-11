@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://mxvfipfl2gfx" path="res://Ian/Bonus/Minas/minas.gd" id="1_3ey2x"]
 [ext_resource type="FontFile" uid="uid://dl0xqc1i0pdfe" path="res://Goti/assets/Cowboy Outlaw.otf" id="2_8indr"]
 [ext_resource type="Texture2D" uid="uid://c8mrl2db15ek4" path="res://Ian/Bonus/Plinko/Sprites/istockphoto-119479168-612x612.jpg" id="3_260wa"]
+[ext_resource type="LabelSettings" uid="uid://dhof0lp1r2s8d" path="res://Ian/Bonus/Plinko/Label/yets3.tres" id="4_f7jqt"]
+[ext_resource type="LabelSettings" uid="uid://kq0qk0l0cvih" path="res://Ian/Bonus/Plinko/Label/yets.tres" id="5_2a48a"]
+[ext_resource type="LabelSettings" uid="uid://c43xq6nsi4j62" path="res://Ian/Bonus/Plinko/Label/yets2.tres" id="6_mmrai"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1qkdt"]
 font = ExtResource("2_8indr")
@@ -87,6 +90,28 @@ offset_bottom = -181.0
 grow_horizontal = 2
 label_settings = SubResource("LabelSettings_260wa")
 
+[node name="CreditsLabel" type="Label" parent="Control" unique_id=1045390059]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.734
+anchor_top = 0.094000004
+anchor_right = 0.74300003
+anchor_bottom = 0.193
+offset_left = 270.64
+offset_top = -3.7600002
+offset_right = 271.28
+offset_bottom = 36.28
+label_settings = ExtResource("5_2a48a")
+
+[node name="WinLabel" type="Label" parent="Control" unique_id=1697645968]
+layout_mode = 0
+offset_top = -71.65
+offset_right = 43.999878
+offset_bottom = 91.71014
+label_settings = ExtResource("6_mmrai")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1916918139]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1472685630]
@@ -94,3 +119,19 @@ z_index = -5
 position = Vector2(1, 0)
 scale = Vector2(1.8986928, 1.5410628)
 texture = ExtResource("3_260wa")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1251105079]
+visible = false
+
+[node name="BetLabel" type="Label" parent="CanvasLayer" unique_id=1489635918]
+anchors_preset = -1
+anchor_left = 0.734
+anchor_top = 0.094000004
+anchor_right = 0.74300003
+anchor_bottom = 0.193
+offset_left = 149.43195
+offset_top = 65.762
+offset_right = 149.06396
+offset_bottom = 65.61013
+label_settings = ExtResource("4_f7jqt")
+horizontal_alignment = 2
