@@ -1,5 +1,4 @@
 # Slot Machine Main Script
-class_name SlotMachineV2
 extends Node2D
 
 # Symbol enum

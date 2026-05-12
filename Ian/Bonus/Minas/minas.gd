@@ -30,6 +30,7 @@ func _ready():
 		GameState.credits -= GameState.bet
 	else:
 		label_status.text = "Sin dinero"
+		push_warning("Minas: Insufficient credits. Credits: %d, Bet: %d" % [GameState.credits, GameState.bet])
 		return
 
 	create_grid()
@@ -152,6 +153,7 @@ func restart():
 		GameState.credits -= GameState.bet
 	else:
 		label_status.text = "Sin dinero"
+		push_warning("Minas restart: Insufficient credits. Credits: %d, Bet: %d" % [GameState.credits, GameState.bet])
 		update_ui()
 		return
 

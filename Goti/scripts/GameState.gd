@@ -1,7 +1,12 @@
 extends Node
 
-var credits: int = 100
+var _credits: int = 100
 var bet: int = 4
+
+var credits: int:
+	get: return _credits
+	set(value):
+		_credits = max(0, value)  # Prevent negative credits
 
 # Slot machine fonts and colors
 const COWBOY_MOVIE_FONT: Font = preload("res://Goti/assets/Cowboy Movie.ttf")
