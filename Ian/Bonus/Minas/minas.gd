@@ -16,7 +16,7 @@ var cells = []
 var multiplier = 1.0
 var game_over = false
 
-var mine_chance = 0.20
+var mine_chance = 0.15
 
 
 func _ready():
@@ -86,7 +86,7 @@ func on_cell_pressed(cell):
 
 func increase_multiplier():
 
-	multiplier *= 1.2
+	multiplier *= 3.6
 
 	update_ui()
 

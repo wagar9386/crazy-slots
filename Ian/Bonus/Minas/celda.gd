@@ -14,7 +14,7 @@ func _ready():
 
 	icon.texture = null
 
-	icon.scale = Vector2(0.18, 0.18)
+	icon.scale = Vector2(0.4, 0.4)
 
 
 func _on_pressed():
@@ -45,7 +45,7 @@ func animate_icon():
 	tween.tween_property(
 		icon,
 		"scale",
-		Vector2(0.18,0.18),
+		Vector2(0.4,0.4),
 		0.15
 	).set_trans(Tween.TRANS_BACK)\
 	 .set_ease(Tween.EASE_OUT)
