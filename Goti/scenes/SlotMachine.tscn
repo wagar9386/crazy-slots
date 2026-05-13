@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d1l22hjvdfsbb"]
 
-[ext_resource type="Script" uid="uid://bsccwr4lssfix" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
+[ext_resource type="Script" uid="uid://ca151sk6pyb3w" path="res://Goti/scripts/SlotMachineV2.gd" id="1_gsijy"]
 [ext_resource type="Texture2D" uid="uid://ds3n8yetavkgm" path="res://Goti/symbols/seven.png" id="7_cbq64"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lrutk"]

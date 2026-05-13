@@ -121,7 +121,6 @@ scale = Vector2(1.8986928, 1.5410628)
 texture = ExtResource("3_260wa")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1251105079]
-visible = false
 
 [node name="BetLabel" type="Label" parent="CanvasLayer" unique_id=1489635918]
 anchors_preset = -1

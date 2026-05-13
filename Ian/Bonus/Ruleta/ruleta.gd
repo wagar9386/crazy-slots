@@ -19,7 +19,7 @@ var angle_offset = 110
 func _ready():
 	rng.randomize()
 	win_label.visible = false
-	await get_tree().create_timer(4.0).timeout
+	await get_tree().create_timer(0.6).timeout
 	spin()
 
 
@@ -65,7 +65,7 @@ func apply_result(result):
 	
 	show_final_animation(win)
 	
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(6).timeout
 	get_tree().change_scene_to_file("res://Goti/scenes/SlotMachine.tscn")
 
 

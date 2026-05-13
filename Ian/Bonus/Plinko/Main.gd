@@ -89,7 +89,7 @@ func register_ball_result(win):
 func show_final_result():
 	GameState.show_bonus_countup_animation(self, total_win)
 
-	await get_tree().create_timer(3.2).timeout
+	await get_tree().create_timer(6).timeout
 
 	get_tree().change_scene_to_file("res://Goti/scenes/SlotMachine.tscn")
 

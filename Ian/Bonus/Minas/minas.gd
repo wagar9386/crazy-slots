@@ -102,7 +102,7 @@ func lose():
 
 	update_ui()
 
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(6.0).timeout
 
 	get_tree().change_scene_to_file("res://Goti/scenes/SlotMachine.tscn")
 
@@ -122,7 +122,7 @@ func _on_button_pressed():
 
 	show_final_animation(winnings)
 
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(6.0).timeout
 
 	get_tree().change_scene_to_file("res://Goti/scenes/SlotMachine.tscn")
 
