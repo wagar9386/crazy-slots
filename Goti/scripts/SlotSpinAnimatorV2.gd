@@ -10,11 +10,13 @@ var symbol_nodes: Array = []
 var get_random_symbol_func: Callable
 var textures: Dictionary = {}
 var symbol_materials: Array = []
+var sfx_manager: SFXManager = null
 
-func setup(nodes: Array, random_func: Callable, tex_dict: Dictionary) -> void:
+func setup(nodes: Array, random_func: Callable, tex_dict: Dictionary, sfx_mgr: SFXManager = null) -> void:
 	symbol_nodes = nodes
 	get_random_symbol_func = random_func
 	textures = tex_dict
+	sfx_manager = sfx_mgr
 	_build_blur_materials()
 
 func start_spin(final_grid: Array) -> void:
@@ -29,6 +31,10 @@ func start_spin(final_grid: Array) -> void:
 	
 	# Reset all blur just in case
 	_set_all_blur(0.0)
+	
+	# Start roll sound loop
+	if sfx_manager:
+		sfx_manager.play_roll_loop()
 
 	for column in range(cols):
 		# Only blur the current column that is about to spin
@@ -50,6 +56,11 @@ func start_spin(final_grid: Array) -> void:
 
 		# Snap back to clarity and set final symbols
 		_set_column_blur(column, 0.0)
+		
+		# Stop roll sound when column settles and play hit sound for each reel
+		if sfx_manager:
+			sfx_manager.stop_roll()
+		
 		for row in range(rows):
 			var final_symbol: int = final_grid[column][row] as int
 			var settle_node: TextureRect = symbol_nodes[row][column] as TextureRect
@@ -60,7 +71,15 @@ func start_spin(final_grid: Array) -> void:
 				var pop_tween: Tween = get_tree().create_tween()
 				pop_tween.tween_property(settle_node, "scale", Vector2(1.15, 1.15), 0.07)
 				pop_tween.tween_property(settle_node, "scale", Vector2.ONE, 0.07)
+		
+		# Play shot hit sound when reel lands
+		if sfx_manager:
+			sfx_manager.play_shot_random_pitch()
 
+	# Stop roll sound after all columns have settled
+	if sfx_manager:
+		sfx_manager.stop_roll()
+	
 	is_spinning = false
 	spin_completed.emit()
 

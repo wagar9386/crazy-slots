@@ -23,14 +23,14 @@ const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2
 
 # Weighted symbol pool (controls RNG probability)
 const WEIGHTED_SYMBOLS: Array[int] = [
-	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
-	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
-	Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
+	#Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
+	#Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
+	#Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C, Symbol.C,
 	Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D, Symbol.D,
 	Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E, Symbol.E,
 	Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G, Symbol.G,
 	Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild, Symbol.Wild,
-	Symbol.Bonus,
+	#Symbol.Bonus,
 ]
 
 # Base symbol values
@@ -131,8 +131,14 @@ var is_spinning: bool = false
 #FIX #1: store last win globally so UI can access it
 var last_win: int = 0
 
+# Track coin sound loop state
+var coin_loop_playing: bool = false
+
 # Animator
 var animator: SlotSpinAnimatorV2
+
+# SFX Manager
+var sfx_manager: SFXManager
 
 var paytable_overlay: PaytablePopup
 
@@ -179,10 +185,14 @@ func _ready() -> void:
 	# Setup grid visuals
 	_apply_grid_configuration()
 
+	# Setup SFX manager
+	sfx_manager = SFXManager.new()
+	add_child(sfx_manager)
+	
 	# Setup animator
 	animator = ANIMATOR_SCRIPT.new()
 	add_child(animator)
-	animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES)
+	animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES, sfx_manager)
 	animator.spin_completed.connect(_on_spin_completed)
 	
 	# Connect UI
@@ -261,6 +271,9 @@ func _trigger_bonus_game() -> void:
 func spin() -> void:
 	if is_spinning:
 		return
+
+	# Stop coin sound from previous win
+	_stop_win_coin_loop()
 
 	# Free any persistent win overlays from the previous spin
 	for node in _persistent_overlays:
@@ -389,6 +402,11 @@ func _on_spin_completed() -> void:
 	var winning_lines: Array = win_result.get("lines", []) as Array
 
 	last_win = scaled_win
+	
+	# Play spin finish sound
+	if sfx_manager:
+		sfx_manager.play_shot_hit(1.0)
+	
 	_apply_win_visuals(scaled_win, winning_lines)
 
 	if credits <= 0:
@@ -984,19 +1002,23 @@ func _animate_win_countup(from: int, to: int) -> void:
 	if to <= 0:
 		return
 	var duration: float = clamp(float(to - from) * 0.012, 2.0, 6.0)
+	
 	var tween: Tween = create_tween()
 	tween.tween_method(_set_credits_display, float(from), float(to), duration).set_ease(Tween.EASE_OUT)
 
 func _set_credits_display(value: float) -> void:
 	if credits_label:
 		credits_label.text = "CREDITS: %d" % int(value)
-		
+
 func _dopamine_burst(win_amount: int) -> void:
 	if win_amount <= 0 or not win_label:
 		return
 	if win_label:
 		win_label.text = "WIN: %d" % win_amount
 	win_label.pivot_offset = win_label.size * 0.5
+	
+	# Start coin sound loop when win appears
+	_start_win_coin_loop()
 
 	# Pop scale based on win size
 	var pop_scale: float = 2.2 if win_amount >= 1000 else (1.9 if win_amount >= 500 else 1.6)
@@ -1147,6 +1169,13 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 	tween.parallel().tween_property(big_label, "modulate", Color(1, 1, 1, 1), 0.18)
 	tween.tween_property(big_label, "scale", Vector2(1.05, 1.05), 0.10).set_ease(Tween.EASE_IN)
 
+	# Wait 0.3s before playing coin sound
+	tween.tween_interval(0.3)
+	tween.tween_callback(func():
+		if sfx_manager:
+			sfx_manager.play_coin_loop()
+	)
+
 	# Count up
 	tween.tween_method(
 	func(v):
@@ -1161,6 +1190,12 @@ func _show_big_credits_overlay(win_amount: int) -> void:
 	# Land with a bounce
 	tween.tween_property(big_label, "scale", Vector2(1.25, 1.25), 0.14).set_ease(Tween.EASE_OUT)
 	tween.tween_property(big_label, "scale", Vector2(1.05, 1.05), 0.10).set_ease(Tween.EASE_IN)
+
+	# Stop coin sound
+	tween.tween_callback(func():
+		if sfx_manager:
+			sfx_manager.stop_coin()
+	)
 
 	# Settle + STAY VISIBLE until next spin (do NOT queue_free or fade out here)
 	# A persistent rainbow shimmer to keep it alive
@@ -1354,3 +1389,29 @@ func _update_display_grid() -> void:
 			if node:
 				node.texture = SYMBOL_TEXTURES.get(symbol)
 				node.self_modulate = Color.WHITE
+
+# Coin sound management for win label
+func _start_win_coin_loop() -> void:
+	if not sfx_manager or coin_loop_playing:
+		return
+	coin_loop_playing = true
+	if sfx_manager:
+		sfx_manager.play_coin_loop()
+	# Monitor win label and stop coin sound when it's cleared
+	get_tree().create_timer(0.1).timeout.connect(_monitor_win_label_for_coin_stop)
+
+func _monitor_win_label_for_coin_stop() -> void:
+	# If win label still has text, keep checking
+	if win_label and win_label.text.length() > 0:
+		if coin_loop_playing:
+			get_tree().create_timer(0.15).timeout.connect(_monitor_win_label_for_coin_stop)
+	else:
+		# Win label is empty/cleared, stop coin sound
+		_stop_win_coin_loop()
+
+func _stop_win_coin_loop() -> void:
+	if not sfx_manager or not coin_loop_playing:
+		return
+	coin_loop_playing = false
+	if sfx_manager:
+		sfx_manager.stop_coin()
