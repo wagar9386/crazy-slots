@@ -4,6 +4,7 @@ extends Node2D
 @onready var label = $CanvasLayer/CreditsLabel
 @onready var bet_label = $CanvasLayer/BetLabel
 @onready var win_label = $CanvasLayer/WinLabel
+@onready var spin_sound = $AudioStreamPlayer2D
 
 var spinning = false
 
@@ -14,6 +15,8 @@ var final_result = 0
 var rng = RandomNumberGenerator.new()
 
 var angle_offset = 110
+
+var last_section = -1
 
 
 func _ready():
@@ -30,6 +33,7 @@ func spin():
 	spinning = true
 	
 	final_result = rng.randi_range(0, sections - 1)
+	last_section = -1
 	
 	var angle_per_section = 360.0 / sections
 	
@@ -56,6 +60,22 @@ func _process(delta):
 	label.text = "Coins: " + str(GameState.credits)
 	bet_label.text = "Bet: " + str(GameState.bet)
 
+	if spinning:
+		var angle_per_section = 360.0 / sections
+		
+		var angle = fmod(wheel.rotation_degrees, 360.0)
+		
+		# 🔥 DESPLAZAMOS MEDIA SECCIÓN PARA QUE SUENE AL INICIO
+		angle = fmod(angle + angle_per_section * 0.5, 360.0)
+		
+		var section = int(angle / angle_per_section)
+		
+		if section != last_section:
+			last_section = section
+			
+			spin_sound.pitch_scale = randf_range(0.9, 1.1)
+			spin_sound.play()
+
 
 func apply_result(result):
 	var multiplier = multipliers[result]
@@ -71,6 +91,7 @@ func apply_result(result):
 
 func show_final_animation(win: int) -> void:
 	GameState.show_bonus_countup_animation(self, win)
+
 
 func change_font_size(value, lbl):
 	if is_instance_valid(lbl):

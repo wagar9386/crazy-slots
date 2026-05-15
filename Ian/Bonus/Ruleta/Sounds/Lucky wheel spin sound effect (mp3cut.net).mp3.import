@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cqhwxcpnj4624"
+path="res://.godot/imported/Lucky wheel spin sound effect (mp3cut.net).mp3-6fc544240b8c1b4937cd509259df394f.mp3str"
+
+[deps]
+
+source_file="res://Ian/Bonus/Ruleta/Sounds/Lucky wheel spin sound effect (mp3cut.net).mp3"
+dest_files=["res://.godot/imported/Lucky wheel spin sound effect (mp3cut.net).mp3-6fc544240b8c1b4937cd509259df394f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
