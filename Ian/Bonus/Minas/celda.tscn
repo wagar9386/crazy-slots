@@ -3,12 +3,16 @@
 [ext_resource type="Texture2D" uid="uid://bew1wbxsoux00" path="res://Ian/Bonus/Minas/assets/Gemini_Generated_Image_439u9p439u9p439u (1).png" id="1_i5gra"]
 [ext_resource type="Script" uid="uid://bohq4t4xpcsr7" path="res://Ian/Bonus/Minas/celda.gd" id="1_ldc8s"]
 [ext_resource type="Texture2D" uid="uid://bpx6xwy7mepig" path="res://Ian/Bonus/Minas/assets/safe.png" id="3_i5gra"]
+[ext_resource type="AudioStream" uid="uid://bgebtuwmf7dm0" path="res://Ian/Bonus/Minas/Sound/240801__ryanconway__pickaxe-mining-stone (mp3cut.net).wav" id="3_v7uoc"]
+[ext_resource type="AudioStream" uid="uid://1nqaf16n21x4" path="res://Ian/Bonus/Minas/Sound/Exploding Dynamite for Unity (mp3cut.net).mp3" id="4_g2a35"]
 
 [node name="TextureButton" type="TextureButton" unique_id=2017161597]
 offset_right = 40.0
 offset_bottom = 40.0
 texture_normal = ExtResource("1_i5gra")
 script = ExtResource("1_ldc8s")
+click_sound = ExtResource("3_v7uoc")
+mine_sound = ExtResource("4_g2a35")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=267085786]
 position = Vector2(42, 35.000004)

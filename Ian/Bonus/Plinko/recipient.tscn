@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dfgy4xbfc6os"]
 
 [ext_resource type="Script" uid="uid://dvwi2c4pg07d0" path="res://Ian/Bonus/Plinko/recipient.gd" id="1_e61sb"]
+[ext_resource type="AudioStream" uid="uid://54m0o83mo04j" path="res://Goti/sfx/coin.wav" id="2_3o6oi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e61sb"]
 size = Vector2(30, 35)
@@ -28,3 +29,6 @@ offset_bottom = 13.0
 label_settings = SubResource("LabelSettings_e61sb")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=513048201]
+stream = ExtResource("2_3o6oi")

@@ -2,11 +2,13 @@ extends Area2D
 
 @export var multiplier: int = 1
 @onready var label = $Label
+@onready var sound = $AudioStreamPlayer2D
 
 
 func _ready():
 	label.text = "x" + str(multiplier)
 	body_entered.connect(_on_body_entered)
+
 
 func _on_body_entered(body):
 	if not body is RigidBody2D:
@@ -17,6 +19,9 @@ func _on_body_entered(body):
 
 	body.set_meta("scored", true)
 
+	# 🔥 SONIDO AL ENTRAR EN EL SLOT
+	play_slot_sound()
+
 	var win = GameState.bet * multiplier
 	GameState.credits += win
 
@@ -24,9 +29,18 @@ func _on_body_entered(body):
 
 	call_deferred("_free_ball", body)
 
+
+func play_slot_sound():
+	if sound:
+		sound.pitch_scale = randf_range(0.9, 1.1)
+		sound.volume_db = randf_range(-3, 0)
+		sound.play()
+
+
 func update_label():
 	if label:
 		label.text = "x" + str(multiplier)
+
 
 func show_win_effect(win):
 	var popup = Label.new()
@@ -42,8 +56,9 @@ func show_win_effect(win):
 	tween.tween_property(popup, "position", popup.position + Vector2(0, -60), 1.0)
 	tween.parallel().tween_property(popup, "modulate", Color(1,1,1,0), 1.0)
 	tween.tween_callback(popup.queue_free)
-	
+
 	get_tree().current_scene.register_ball_result(win)
+
 
 func _free_ball(body):
 	if is_instance_valid(body):
