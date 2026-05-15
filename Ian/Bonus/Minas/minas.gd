@@ -87,7 +87,7 @@ func on_cell_pressed(cell):
 
 func increase_multiplier():
 
-	multiplier *= 2.6
+	multiplier *= 1.9
 
 	update_ui()
 

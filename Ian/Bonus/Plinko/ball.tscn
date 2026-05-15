@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c88a50mib632n" path="res://Ian/Bonus/Plinko/ball.gd" id="1_eaxm0"]
 [ext_resource type="Texture2D" uid="uid://ceq5isfcuq45a" path="res://Ian/Bonus/Plinko/Sprites/Ball.png" id="1_s7118"]
+[ext_resource type="AudioStream" uid="uid://dmltalgp8a7ly" path="res://Ian/Bonus/Plinko/Sounds/photos-long-click-409643 (mp3cut.net).mp3" id="2_shbet"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_22ksv"]
 bounce = 0.4
@@ -14,6 +15,7 @@ collision_layer = 2
 physics_material_override = SubResource("PhysicsMaterial_22ksv")
 continuous_cd = 1
 script = ExtResource("1_eaxm0")
+hit_sound = ExtResource("2_shbet")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=816036238]
 self_modulate = Color(1, 0.34219137, 0.2758705, 0.78431374)
