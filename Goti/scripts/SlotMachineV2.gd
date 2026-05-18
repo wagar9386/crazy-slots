@@ -874,7 +874,7 @@ func _apply_visual_polish() -> void:
 	spin_button.add_theme_font_size_override("font_size", 26)
 	spin_button.add_theme_color_override("font_color", Color(0.06, 0.02, 0))
 	spin_button.text = spin_button.text.to_upper()
-
+	#yep
 	if credits_label:
 		credits_label.add_theme_font_override("font", COWBOY_OUTLAW_FONT)
 		credits_label.add_theme_font_size_override("font_size", 24)
