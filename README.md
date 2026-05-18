@@ -12,13 +12,13 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 ## Screenshots
 
 ### Slots 
-![Menu Screenshot](Goti/screenshots/slot.png)
+![Slots](Goti/screenshots/slot.png)
 
 ### Wins
-![Settings](Goti/screenshots/win.png)
+![Wins](Goti/screenshots/win.png)
 
 ### Bonuses
-![Mobile](https://via.placeholder.com/400x600?text=Mobile+View)
+![Bonuses](Goti/screenshots/bonus.png)
 
 ## Features
 
