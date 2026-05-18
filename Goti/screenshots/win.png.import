@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dx2edid71wnyo"
-path="res://.godot/imported/paytable.png-312d2abb04579fb7f1d5aaee0178a799.ctex"
+uid="uid://bqv6ldmptiddp"
+path="res://.godot/imported/win.png-761aa9ac8f92f96091adc2986b6d207d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Goti/screenshots/paytable.png"
-dest_files=["res://.godot/imported/paytable.png-312d2abb04579fb7f1d5aaee0178a799.ctex"]
+source_file="res://Goti/screenshots/win.png"
+dest_files=["res://.godot/imported/win.png-761aa9ac8f92f96091adc2986b6d207d.ctex"]
 
 [params]
 

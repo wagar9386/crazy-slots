@@ -12,12 +12,12 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 ## Screenshots
 
 ### Slots 
-![Main Interface](https://via.placeholder.com/800x400?text=Main+Interface)
+![Menu Screenshot](Goti/screenshots/slot.png)
 
-### Ruleta Bonuses
-![Settings](https://via.placeholder.com/800x400?text=Settings+Panel)
+### Wins
+![Settings](Goti/screenshots/win.png)
 
-### Plinko
+### Bonuses
 ![Mobile](https://via.placeholder.com/400x600?text=Mobile+View)
 
 ## Features
