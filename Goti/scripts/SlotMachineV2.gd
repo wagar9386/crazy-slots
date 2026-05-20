@@ -190,6 +190,9 @@ func _ready() -> void:
 	bet_16_button.pressed.connect(_on_bet_button_pressed.bind(16))
 	bet_30_button.pressed.connect(_on_bet_button_pressed.bind(32))
 	paytable_button.pressed.connect(_on_paytable_pressed)
+	
+	# Connect paytable overlay buttons for SFX
+	
 	paytable_overlay = PAYTABLE_SCENE.instantiate() as PaytablePopup
 	ui_root.add_child(paytable_overlay)
 	paytable_overlay.call_deferred("setup", SYMBOL_TEXTURES, SYMBOL_VALUES, BET_OPTIONS, bet, MIN_BET)
@@ -288,6 +291,7 @@ func get_random_symbol() -> int:
 func _on_spin_pressed() -> void:
 	if sfx_manager:
 		sfx_manager.play_roll_loop()
+	
 	spin()
 
 func _on_paytable_pressed() -> void:
