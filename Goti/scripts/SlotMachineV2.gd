@@ -82,11 +82,11 @@ const BONUS_SCENES: Array = [
 	},
 	{
 		"scene": preload("res://Ian/Bonus/Ruleta/ruleta.tscn"),
-		"name": "RULETA"
+		"name": "ROULETTE"
 	},
 	{
 		"scene": preload("res://Ian/Bonus/Minas/Minas.tscn"),
-		"name": "MINAS"
+		"name": "MINESWEEPER"
 	}
 ]
 
@@ -127,6 +127,7 @@ var last_win: int = 0
 var animator: SlotSpinAnimatorV2
 
 var paytable_overlay: PaytablePopup
+var sfx_manager: SFXManager = null
 
 # UI references
 var reel_grid: GridContainer = null
@@ -154,6 +155,11 @@ func _ready() -> void:
 	randomize()
 	_cache_ui_nodes()
 
+	# Setup SFX manager
+	if not sfx_manager:
+		sfx_manager = SFXManager.new()
+		add_child(sfx_manager)
+
 	if not _validate_ui_nodes():
 		push_warning("SlotMachineV2: Missing UI nodes, slot setup aborted.")
 		return
@@ -174,7 +180,7 @@ func _ready() -> void:
 	# Setup animator
 	animator = ANIMATOR_SCRIPT.new()
 	add_child(animator)
-	animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES)
+	animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES, sfx_manager)
 	animator.spin_completed.connect(_on_spin_completed)
 	
 	# Connect UI
@@ -280,9 +286,13 @@ func get_random_symbol() -> int:
 	return WEIGHTED_SYMBOLS[randi() % WEIGHTED_SYMBOLS.size()]
 
 func _on_spin_pressed() -> void:
+	if sfx_manager:
+		sfx_manager.play_roll_loop()
 	spin()
 
 func _on_paytable_pressed() -> void:
+	if sfx_manager:
+		sfx_manager.play_roll_loop()
 	if not paytable_overlay:
 		return
 	paytable_overlay.set_display_bet(bet)
@@ -293,6 +303,8 @@ func _on_paytable_pressed() -> void:
 func _on_bet_button_pressed(amount: int) -> void:
 	if is_spinning:
 		return
+	if sfx_manager:
+		sfx_manager.play_roll_loop()
 
 	if BET_OPTIONS.has(amount):
 		bet = amount
@@ -652,7 +664,7 @@ func _apply_grid_configuration() -> void:
 	_gather_grid_nodes()
 	_set_symbol_pivots()
 	if animator:
-		animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES)
+		animator.setup(symbol_nodes, get_random_symbol, SYMBOL_TEXTURES, sfx_manager)
 
 func _apply_cell_visibility() -> void:
 	if not reel_grid:
@@ -969,9 +981,28 @@ func _process(_delta: float) -> void:
 func _animate_win_countup(from: int, to: int) -> void:
 	if to <= 0:
 		return
-	var duration: float = clamp(float(to - from) * 0.012, 2.0, 6.0)
+	var delta: int = to - from
+	var duration: float = clamp(float(delta) * 0.012, 2.0, 6.0)
+	if sfx_manager and delta > 0:
+		if delta > 100:
+			var interval: float = duration / float(delta)
+			for i in range(delta):
+				var timer: SceneTreeTimer = get_tree().create_timer(interval * float(i))
+				timer.timeout.connect(func() -> void:
+					if sfx_manager:
+						sfx_manager.play_coin_loop()
+				)
+			var end_timer: SceneTreeTimer = get_tree().create_timer(duration)
+			end_timer.timeout.connect(func() -> void:
+				if sfx_manager:
+					sfx_manager.stop_coin()
+			)
+		else:
+			sfx_manager.play_coin_loop()
 	var tween: Tween = create_tween()
 	tween.tween_method(_set_credits_display, float(from), float(to), duration).set_ease(Tween.EASE_OUT)
+	if sfx_manager and delta <= 100:
+		tween.tween_callback(sfx_manager.stop_coin)
 
 func _set_credits_display(value: float) -> void:
 	if credits_label:

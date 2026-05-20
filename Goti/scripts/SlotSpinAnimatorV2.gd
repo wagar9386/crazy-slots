@@ -32,8 +32,11 @@ func start_spin(final_grid: Array) -> void:
 	# Reset all blur just in case
 	_set_all_blur(0.0)
 	
-	# Start roll sound loop
+	# Start roll sound loop pitched lower (quieter)
 	if sfx_manager:
+		sfx_manager.stop_roll()
+		sfx_manager.roll_player.pitch_scale = 0.7
+		sfx_manager.roll_player.volume_db = SFXManager.ROLL_VOLUME_DB - 6.0
 		sfx_manager.play_roll_loop()
 
 	for column in range(cols):
@@ -57,9 +60,6 @@ func start_spin(final_grid: Array) -> void:
 		# Snap back to clarity and set final symbols
 		_set_column_blur(column, 0.0)
 		
-		# Stop roll sound when column settles and play hit sound for each reel
-		if sfx_manager:
-			sfx_manager.stop_roll()
 		
 		for row in range(rows):
 			var final_symbol: int = final_grid[column][row] as int
