@@ -22,7 +22,7 @@ const BASE_CELL_COLOR: Color = Color(0, 0, 0, 0)
 # Animator script
 const ANIMATOR_SCRIPT: GDScript = preload("res://Goti/scripts/SlotSpinAnimatorV2.gd")
 
-# Weighted symbol pool (controls RNG probability)
+# Pool de simbols principals (probabilitats)
 const WEIGHTED_SYMBOLS: Array[int] = [
 	Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A, Symbol.A,
 	Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B, Symbol.B,
@@ -96,7 +96,7 @@ var selected_bonus_scene: PackedScene = null
 var spin_pool: Array[int] = []
 var bonus_hits_in_spin: int = 0
 
-# Persistent win overlays – cleared on next spin
+# Persistent win overlays/cleared on next spin
 var _persistent_overlays: Array[Node] = []
 var _win_anim_done: bool = false
 
@@ -120,7 +120,7 @@ var bet: int:
 	
 var is_spinning: bool = false
 
-#FIX #1: store last win globally so UI can access it
+#Global
 var last_win: int = 0
 
 # Animator
@@ -158,7 +158,7 @@ func _ready() -> void:
 		push_warning("SlotMachineV2: Missing UI nodes, slot setup aborted.")
 		return
 
-	# --- UI POLISH ---
+	# polish
 	_apply_visual_polish()
 
 	# Ensure bet is valid
@@ -225,7 +225,7 @@ func _trigger_bonus_game() -> void:
 			get_tree().change_scene_to_packed(selected_bonus_scene)
 		return
 
-	# Fade out the entire scene (all visual content)
+	# Fade out the entire scene (for bonus)
 	var fade := ColorRect.new()
 	fade.color = Color(0, 0, 0, 0)
 	fade.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -233,7 +233,7 @@ func _trigger_bonus_game() -> void:
 	fade.z_index = 10000
 	ui_root.add_child(fade)
 
-	# First: quickly dim everything under the overlay
+
 	var dim_tween := create_tween()
 	dim_tween.tween_property(ui_root, "modulate", Color(0.3, 0.3, 0.3, 1.0), 0.25)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
@@ -453,12 +453,6 @@ func _evaluate_row(row: int) -> Dictionary:
 			3: wild_win_amount = base_val * 10
 			4: wild_win_amount = base_val * 25
 			5: wild_win_amount = base_val * 60
-
-	# --- SUBSTITUTION LOGIC ---
-	# FIX #3 (COMMENT ONLY): 
-	# This finds the FIRST non-wild symbol from the LEFT.
-	# All wilds before it will act as that symbol.
-	# Only LEFT-TO-RIGHT matches count (classic slots behavior).
 
 	var target_symbol: int = -1
 
@@ -821,7 +815,7 @@ func _apply_visual_polish() -> void:
 		_clear_symbol_backgrounds()
 
 	if title_label:
-		title_label.text = "COWGIRL SLOTS"
+		title_label.text = "CRAZY SLOTS"
 		title_label.add_theme_font_override("font", COWBOY_MOVIE_FONT)
 		title_label.add_theme_font_size_override("font_size", 69)
 		title_label.add_theme_color_override("font_color", GOLDEN_METAL)
