@@ -54,15 +54,17 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
+offset_left = -107.0
 offset_top = 192.0
-offset_right = 100.0
+offset_right = 108.0
 offset_bottom = 272.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_8indr")
 theme_override_font_sizes/font_size = 50
-text = "Retirar"
+text = "Withdraw "
+alignment = 2
+icon_alignment = 1
 
 [node name="Label_Multiplier" type="Label" parent="Control" unique_id=439420133]
 layout_mode = 1

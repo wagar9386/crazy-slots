@@ -98,7 +98,7 @@ func lose():
 
 	multiplier = 0
 
-	label_status.text = "Has perdido"
+	label_status.text = "You Lose"
 
 	update_ui()
 
