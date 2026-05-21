@@ -11,9 +11,12 @@ config_version=5
 [application]
 
 config/name="Crazy-Slots"
+config/description="Slot Machine"
 run/main_scene="res://Goti/scenes/SlotMachine.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.284527, 0.021207185, 0.03150005, 1)
+boot_splash/image="uid://4oae6k3m501o"
+config/icon="uid://bcwd8iadd8fc6"
 
 [autoload]
 
