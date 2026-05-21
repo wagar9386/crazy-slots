@@ -17,10 +17,19 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0.284527, 0.021207185, 0.03150005, 1)
 boot_splash/image="uid://4oae6k3m501o"
 config/icon="uid://bcwd8iadd8fc6"
+boot_splash/minimum_display_time=333
+
+[audio]
+
+buses/default_bus_layout=""
 
 [autoload]
 
 GameState="*res://Goti/scripts/GameState.gd"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [input]
 
