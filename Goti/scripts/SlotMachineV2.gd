@@ -170,10 +170,7 @@ func _ready() -> void:
 	# Ensure bet is valid
 	if not BET_OPTIONS.has(bet):
 		bet = MIN_BET
-	
-	
 		
-
 	# Setup grid visuals
 	_apply_grid_configuration()
 
@@ -1018,14 +1015,14 @@ func _dopamine_burst(win_amount: int) -> void:
 	win_label.text = "WIN: %d" % win_amount
 	win_label.pivot_offset = win_label.size * 0.5
 
-	# ── TIER 1: small win 1–99 ── subtle, quick, clean
+	#1–99
 	if win_amount < 100:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(1.3, 1.3), 0.08).set_ease(Tween.EASE_OUT)
 		pop.tween_property(win_label, "scale", Vector2(1.0, 1.0), 0.12).set_ease(Tween.EASE_IN)
 		return
 
-	# ── TIER 2: 100–499 ── noticeable pop + short shake
+	#100–499
 	if win_amount < 500:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(1.6, 1.6), 0.10).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -1043,7 +1040,7 @@ func _dopamine_burst(win_amount: int) -> void:
 		_show_win_celebration(win_amount)
 		return
 
-	# ── TIER 3: 500–999 BIG WIN ── strong pop, longer shake, color cycle
+	#500–999
 	if win_amount < 1000:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(1.9, 1.9), 0.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -1061,7 +1058,7 @@ func _dopamine_burst(win_amount: int) -> void:
 		_show_win_celebration(win_amount)
 		return
 
-	# ── TIER 4: 1000–1999 HUGE WIN ── violent shake, screen flash, fast color storm
+	#HUGE WIN
 	if win_amount < 2000:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(2.2, 2.2), 0.14).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -1094,7 +1091,7 @@ func _dopamine_burst(win_amount: int) -> void:
 		_show_win_celebration(win_amount)
 		return
 
-	# ── TIER 5: 2000–2999 MEGA WIN ── double flash, prolonged chaos shake, zoom pulse
+	#MEGA WIN
 	if win_amount < 3000:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(2.6, 2.6), 0.16).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -1131,7 +1128,7 @@ func _dopamine_burst(win_amount: int) -> void:
 		_show_win_celebration(win_amount)
 		return
 
-	# ── TIER 6: 3000–4999 MEGA HUGE WIN ── everything above + ui_root scale pulse
+	# MEGA HUGE WIN
 	if win_amount < 5000:
 		var pop: Tween = create_tween()
 		pop.tween_property(win_label, "scale", Vector2(3.0, 3.0), 0.18).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -1490,15 +1487,14 @@ func _set_symbol_pivots() -> void:
 			if symbol:
 				symbol.pivot_offset = symbol.custom_minimum_size * 0.5
 
-# Generate random grid
+# Grid Generator
 func _generate_grid() -> void:
 	grid.clear()
 	grid.resize(grid_cols)
 
-	# reset per spin
+	# reset bonus booster
 	bonus_hits_in_spin = 0
 	
-	# copy your ORIGINAL weighted pool (unchanged)
 	spin_pool = WEIGHTED_SYMBOLS.duplicate()
 
 	for column in range(grid_cols):
@@ -1508,7 +1504,7 @@ func _generate_grid() -> void:
 			var symbol: int = spin_pool[randi() % spin_pool.size()]
 			grid[column].append(symbol)
 
-			# if bonus appears → boost chances for remaining cells
+			# if bonus appears better odds
 			if symbol == Symbol.Bonus:
 				_on_bonus_hit()
 				
