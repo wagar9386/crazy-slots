@@ -52,5 +52,4 @@ Tragaperras amb bonuses dinamics i tematica del oest.
 [![Contributors](https://contrib.rocks/image?repo=username/repo)](https://github.com/wagar9386/crazy-slots/contributors)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.2-green.svg)]()
-[![Downloads](https://img.shields.io/npm/dm/Crazy-Slots.svg)]()
+[![Version](https://img.shields.io/badge/version-1.0.3-green.svg)]()
